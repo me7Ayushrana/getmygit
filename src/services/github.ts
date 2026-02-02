@@ -29,6 +29,11 @@ export class GitHubService {
             language: data.language,
             default_branch: data.default_branch,
             topics: data.topics || [],
+            forks_count: data.forks_count,
+            watchers_count: data.watchers_count,
+            open_issues_count: data.open_issues_count,
+            updated_at: data.updated_at,
+            homepage: data.homepage,
         };
     }
 

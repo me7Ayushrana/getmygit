@@ -6,6 +6,11 @@ export interface GitHubRepo {
     language: string;
     default_branch: string;
     topics: string[];
+    forks_count: number;
+    watchers_count: number;
+    open_issues_count: number;
+    updated_at: string;
+    homepage?: string;
 }
 
 export interface FileTreeNode {

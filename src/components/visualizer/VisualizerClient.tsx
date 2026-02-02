@@ -14,7 +14,7 @@ import ReactFlow, {
 import 'reactflow/dist/style.css';
 import dagre from 'dagre';
 import { GlassNode } from './GlassNode';
-import { LayoutGrid, Table as TableIcon, Search, FileCode } from 'lucide-react';
+import { LayoutGrid, Table as TableIcon, Search, FileCode, Star, GitFork, Eye, CircleDot, Calendar, ExternalLink, Github } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const nodeTypes = {
