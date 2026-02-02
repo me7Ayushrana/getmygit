@@ -15,9 +15,10 @@ export function InteractiveTimeline() {
     const [activeStep, setActiveStep] = useState(0);
 
     return (
-        <section id="how-it-works" className="py-32">
-            <div className="container max-w-5xl px-4">
-                <h2 className="text-3xl font-display font-bold mb-16 text-center text-white">
+        <section id="how-it-works" className="py-32 relative">
+            <div className="absolute inset-0 bg-neon-blue/5 [mask-image:radial-gradient(ellipse_at_center,transparent_0%,black_100%)] pointer-events-none" />
+            <div className="container max-w-7xl px-4 relative z-10">
+                <h2 className="text-4xl md:text-5xl font-display font-bold mb-20 text-center text-white tracking-widest">
                     OPERATIONAL <span className="text-gray-600">FLOW</span>
                 </h2>
 
@@ -28,8 +29,8 @@ export function InteractiveTimeline() {
                             key={step.id}
                             onClick={() => setActiveStep(step.id)}
                             className={`group flex items-center gap-3 px-6 py-3 rounded-full transition-all duration-300 border ${activeStep === step.id
-                                    ? 'bg-neon-blue/10 border-neon-blue/50 text-white shadow-[0_0_15px_rgba(0,240,255,0.2)]'
-                                    : 'bg-transparent border-white/5 text-gray-500 hover:border-white/10 hover:text-gray-300'
+                                ? 'bg-neon-blue/10 border-neon-blue/50 text-white shadow-[0_0_15px_rgba(0,240,255,0.2)]'
+                                : 'bg-transparent border-white/5 text-gray-500 hover:border-white/10 hover:text-gray-300'
                                 }`}
                         >
                             <span className={`font-mono text-xs font-bold tracking-widest ${activeStep === step.id ? 'text-neon-blue' : ''}`}>0{step.id + 1}</span>
