@@ -3,7 +3,8 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Sparkles, ArrowRight } from 'lucide-react';
-import { HeroBackground } from './HeroBackground';
+// import { HeroBackground } from './HeroBackground';
+import { HeroScene } from './HeroScene';
 
 export function Hero() {
     return (
