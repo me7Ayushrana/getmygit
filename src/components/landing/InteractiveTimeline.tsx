@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { Link2, Cpu, Grid, MousePointerClick } from 'lucide-react';
 
 const steps = [
@@ -12,61 +12,94 @@ const steps = [
 ];
 
 export function InteractiveTimeline() {
-    const [activeStep, setActiveStep] = useState(0);
+    const containerRef = useRef<HTMLDivElement>(null);
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ["start end", "end start"]
+    });
 
     return (
-        <section id="how-it-works" className="py-32 relative">
+        <section id="how-it-works" ref={containerRef} className="py-32 relative min-h-[200vh]">
+            {/* Background Effects */}
             <div className="absolute inset-0 bg-neon-blue/5 [mask-image:radial-gradient(ellipse_at_center,transparent_0%,black_100%)] pointer-events-none" />
-            <div className="container max-w-7xl px-4 relative z-10">
-                <h2 className="text-3xl md:text-5xl font-display font-bold mb-20 text-center text-white tracking-widest">
-                    OPERATIONAL <span className="text-gray-600">FLOW</span>
-                </h2>
 
-                {/* Navigation Buttons (Tabs) */}
-                <div className="flex flex-wrap justify-center gap-4 mb-16">
-                    {steps.map((step) => (
-                        <button
-                            key={step.id}
-                            onClick={() => setActiveStep(step.id)}
-                            className={`group flex items-center gap-3 px-6 py-3 rounded-full transition-all duration-300 border ${activeStep === step.id
-                                ? 'bg-neon-blue/10 border-neon-blue/50 text-white shadow-[0_0_15px_rgba(0,240,255,0.2)]'
-                                : 'bg-transparent border-white/5 text-gray-500 hover:border-white/10 hover:text-gray-300'
-                                }`}
-                        >
-                            <span className={`font-mono text-xs font-bold tracking-widest ${activeStep === step.id ? 'text-neon-blue' : ''}`}>0{step.id + 1}</span>
-                            <span className="font-display font-bold text-xs tracking-wider">{step.title}</span>
-                        </button>
-                    ))}
+            <div className="container max-w-5xl px-4 relative z-10">
+                <div className="text-center mb-32">
+                    <h2 className="text-3xl md:text-5xl font-display font-bold mb-4 text-white tracking-widest leading-tight">
+                        OPERATIONAL <span className="text-gray-600">FLOW</span>
+                    </h2>
+                    <p className="text-sm font-mono text-neon-green/80 tracking-widest">NEURAL GIT GRAPH</p>
                 </div>
 
-                {/* Content Display */}
-                <div className="glass-panel p-[1px] rounded-3xl relative max-w-3xl mx-auto">
-                    <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent rounded-3xl pointer-events-none" />
+                <div className="relative">
+                    {/* Living Line (The Commit History) */}
+                    <div className="absolute left-[20px] md:left-1/2 top-0 bottom-0 w-[2px] bg-white/5 md:-translate-x-1/2">
+                        <motion.div
+                            style={{ scaleY: scrollYProgress, transformOrigin: "top" }}
+                            className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-neon-blue via-neon-green to-neon-purple shadow-[0_0_15px_#00f0ff]"
+                        />
+                    </div>
 
-                    <div className="bg-[#030014]/50 backdrop-blur-xl rounded-3xl p-12 min-h-[300px] flex flex-col items-center justify-center text-center relative overflow-hidden">
-                        <AnimatePresence mode="wait">
-                            <motion.div
-                                key={activeStep}
-                                initial={{ opacity: 0, scale: 0.95, filter: 'blur(10px)' }}
-                                animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-                                exit={{ opacity: 0, scale: 1.05, filter: 'blur(10px)' }}
-                                transition={{ duration: 0.4 }}
-                                className="relative z-10"
-                            >
-                                <div className="w-20 h-20 rounded-2xl bg-gradient-to-tr from-neon-blue/10 to-purple-500/10 flex items-center justify-center mb-8 border border-white/5 mx-auto shadow-2xl relative">
-                                    <div className="absolute inset-0 bg-neon-blue/20 blur-xl opacity-20" />
-                                    {(() => {
-                                        const Icon = steps[activeStep].icon;
-                                        return <Icon size={32} className="text-white relative z-10" />;
-                                    })()}
-                                </div>
-                                <h3 className="text-3xl font-display font-bold mb-4 text-white tracking-widest">{steps[activeStep].title}</h3>
-                                <p className="text-lg text-gray-400 font-light max-w-md mx-auto">{steps[activeStep].desc}</p>
-                            </motion.div>
-                        </AnimatePresence>
+                    <div className="space-y-32">
+                        {steps.map((step, index) => (
+                            <TimelineNode key={step.id} step={step} index={index} />
+                        ))}
                     </div>
                 </div>
             </div>
         </section>
+    );
+}
+
+function TimelineNode({ step, index }: { step: any, index: number }) {
+    const isEven = index % 2 === 0;
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className={`relative flex items-center md:items-center gap-8 md:gap-16 ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'} pl-16 md:pl-0`}
+        >
+            {/* The Node Point */}
+            <div className="absolute left-[9px] md:left-1/2 top-1/2 -translate-y-1/2 md:-translate-x-1/2 z-20">
+                <div className="relative w-6 h-6 rounded-full bg-[#030014] border-2 border-white/20 shadow-[0_0_20px_rgba(0,0,0,1)] flex items-center justify-center group">
+                    <motion.div
+                        initial={{ scale: 0 }}
+                        whileInView={{ scale: 1 }}
+                        transition={{ duration: 0.5, delay: 0.4 }}
+                        className="w-2.5 h-2.5 rounded-full bg-neon-green shadow-[0_0_10px_#00ff9d]"
+                    />
+                    {/* Pulse Effect */}
+                    <div className="absolute inset-0 rounded-full animate-ping bg-neon-green/20" />
+                </div>
+            </div>
+
+            {/* Content Card */}
+            <div className={`flex-1 ${isEven ? 'md:text-right' : 'md:text-left'}`}>
+                <div className="glass-panel p-8 rounded-3xl border border-white/10 hover:border-neon-blue/30 transition-all duration-500 group relative overflow-hidden backdrop-blur-xl bg-[#0a0a0a]/60">
+                    {/* Glow Gradient */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-neon-blue/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+
+                    <div className={`relative z-10 flex flex-col ${isEven ? 'md:items-end' : 'md:items-start'} items-start`}>
+                        <div className="mb-4 p-3 rounded-xl bg-white/5 w-fit border border-white/10 text-neon-blue">
+                            <step.icon size={24} />
+                        </div>
+                        <h3 className="text-2xl font-display font-bold text-white mb-2">{step.title}</h3>
+                        <p className="text-gray-400 font-light text-sm tracking-wide leading-relaxed max-w-sm">
+                            {step.desc}
+                        </p>
+
+                        <div className="mt-6 flex items-center gap-2 text-[10px] font-mono tracking-[0.2em] text-neon-green/60 uppercase">
+                            <span>Hash: 0x7F...{3 + index}9</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Spacer for alignment */}
+            <div className="flex-1 hidden md:block" />
+        </motion.div>
     );
 }
