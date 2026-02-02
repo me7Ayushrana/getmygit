@@ -47,7 +47,58 @@ export function StorySection() {
                         accent="border-neon-green/50"
                     />
                 </div>
+
+                {/* Know More Interaction */}
+                <div className="mt-16 text-center">
+                    <button
+                        onClick={() => setIsModalOpen(true)}
+                        className="group relative px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full overflow-hidden transition-all duration-300"
+                    >
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+                        <span className="relative z-10 font-display font-bold tracking-widest text-white group-hover:text-neon-blue transition-colors">
+                            KNOW MORE
+                        </span>
+                    </button>
+                </div>
             </div>
+
+            {/* Mission Modal */}
+            <AnimatePresence>
+                {isModalOpen && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setIsModalOpen(false)}
+                            className="absolute inset-0 bg-black/80 backdrop-blur-md"
+                        />
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                            className="relative bg-[#0a0a0a] border border-white/10 p-12 max-w-2xl rounded-[2rem] shadow-2xl overflow-hidden"
+                        >
+                            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-neon-purple via-neon-blue to-neon-green" />
+
+                            <h3 className="text-3xl font-display font-bold text-white mb-6 tracking-wide">
+                                OUR <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-blue to-neon-green">MISSION</span>
+                            </h3>
+
+                            <p className="text-gray-300 leading-relaxed text-lg font-light">
+                                Understanding unfamiliar GitHub repositories is often slow and overwhelming. <span className="text-white font-medium">getmygit</span> was built to simplify that process by starting with visual clarity instead of raw code. It presents architecture, data flow, and component relationships in an interactive visual format, helping users understand the big picture before diving into details.
+                            </p>
+
+                            <button
+                                onClick={() => setIsModalOpen(false)}
+                                className="mt-8 text-sm font-mono text-gray-500 hover:text-white transition-colors tracking-widest uppercase border-b border-transparent hover:border-white"
+                            >
+                                Close Transmission
+                            </button>
+                        </motion.div>
+                    </div>
+                )}
+            </AnimatePresence>
         </section>
     );
 }
