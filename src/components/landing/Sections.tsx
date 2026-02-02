@@ -2,31 +2,72 @@ import { AlertTriangle, Lightbulb } from 'lucide-react';
 
 export function StorySection() {
     return (
-        <section id="story" className="py-24 relative overflow-hidden">
-            {/* Background accent */}
-            <div className="absolute top-1/2 right-0 -translate-y-1/2 w-[600px] h-[600px] bg-purple-900/10 rounded-full blur-[120px] -z-10" />
+        <section id="story" className="py-32 relative overflow-hidden flex flex-col items-center">
+            {/* Animated Grid Background */}
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
 
-            <div className="container max-w-4xl text-center">
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-yellow-500/10 text-yellow-500 mb-8 border border-yellow-500/20">
-                    <Lightbulb size={16} />
-                    <span className="text-sm font-bold uppercase tracking-wider">Idea & Motivation</span>
+            <div className="container max-w-6xl px-4 relative z-10">
+                {/* Manifesto Header */}
+                <div className="text-center mb-24">
+                    <h2 className="text-6xl md:text-9xl font-display font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-white/10 opacity-20 select-none absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full pointer-events-none">
+                        MANIFESTO
+                    </h2>
+                    <h2 className="relative text-5xl md:text-7xl font-display font-bold tracking-tight text-white mb-6">
+                        WHY WE <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-purple to-neon-blue">EXIST</span>?
+                    </h2>
+                    <p className="text-xl text-gray-400 max-w-2xl mx-auto font-light leading-relaxed">
+                        The codebase is a territory. We are the cartographers.
+                    </p>
                 </div>
 
-                <h2 className="text-4xl md:text-5xl font-bold mb-8">Why getmygit Exists</h2>
-
-                <div className="space-y-6 text-xl text-gray-300 leading-relaxed font-light">
-                    <p>
-                        We've all been there: staring at a massive GitHub repository, clicking through folder after folder, trying to build a mental map of how the system works. It's overwhelming, inefficient, and often frustrating.
-                    </p>
-                    <p>
-                        Readme files are great for *how to run* the code, but they rarely explain *how the code is structured*.
-                    </p>
-                    <p>
-                        We built <span className="text-white font-medium">getmygit</span> because we believe clarity should come before complexity. Visualizing architecture shouldn't be a manual chore—it should be instant, interactive, and accessible to everyone.
-                    </p>
+                {/* Data Blocks Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <ManifestoCard
+                        title="COMPLEXITY OVERLOAD"
+                        number="01"
+                        desc="Modern systems are vast labyrinths. Developers spend 70% of their time just navigating, trying to build a mental model that breaks the moment they switch context."
+                        accent="border-neon-purple/50"
+                    />
+                    <ManifestoCard
+                        title="VISUAL COGNITION"
+                        number="02"
+                        desc="We evolved to see patterns, not regex. Text-based documentation is linear and slow. Visual graphs are parallel, instant, and reveal the hidden truth of dependencies."
+                        accent="border-neon-blue/50"
+                    />
+                    <ManifestoCard
+                        title="INSTANT CLARITY"
+                        number="03"
+                        desc="Onboarding shouldn't take weeks. Debugging shouldn't require archaeology. We act as the lens that brings the chaotic reality of code into sharp, actionable focus."
+                        accent="border-neon-green/50"
+                    />
                 </div>
             </div>
         </section>
+    );
+}
+
+function ManifestoCard({ title, number, desc, accent }: { title: string, number: string, desc: string, accent: string }) {
+    return (
+        <div className={`group relative p-8 h-full bg-[#0a0a0a] border border-white/10 hover:border-white/20 transition-all duration-500 overflow-hidden`}>
+            {/* Hover Accent Line */}
+            <div className={`absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-white/50 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-700 ${accent.replace('border-', 'bg-')}`} />
+
+            <div className="flex justify-between items-start mb-8">
+                <h3 className="text-2xl font-display font-bold text-gray-200 tracking-wide group-hover:text-white transition-colors">{title}</h3>
+                <span className="font-mono text-xs font-bold text-gray-600 tracking-widest">{number}</span>
+            </div>
+
+            <p className="text-gray-400 leading-relaxed font-mono text-sm tracking-wide group-hover:text-gray-300 transition-colors">
+                {desc}
+            </p>
+
+            {/* Decorative Tech Elements */}
+            <div className="absolute bottom-4 right-4 flex gap-1">
+                <div className="w-1 h-1 bg-gray-700 rounded-full" />
+                <div className="w-1 h-1 bg-gray-700 rounded-full" />
+                <div className="w-1 h-1 bg-gray-700 rounded-full" />
+            </div>
+        </div>
     );
 }
 
