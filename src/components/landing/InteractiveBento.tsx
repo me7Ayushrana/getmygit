@@ -1,6 +1,7 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { useRef, useState } from 'react';
+import { motion, useMotionValue, useTransform } from 'framer-motion';
 import { Layout, GitBranch, Zap, Layers, ChevronRight } from 'lucide-react';
 
 const features = [
@@ -43,32 +44,69 @@ export function InteractiveBento() {
                     </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 perspective-1000">
                     {features.map((f, i) => (
-                        <motion.div
-                            key={i}
-                            whileHover={{ scale: 1.02, translateY: -5 }}
-                            className="group relative h-80 rounded-[2rem] overflow-hidden glass-panel p-10 flex flex-col items-center justify-center text-center border-white/5 hover:border-neon-blue/30 transition-all duration-500"
-                        >
-                            {/* Background Gradient Blob */}
-                            <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-br ${f.color} opacity-5 blur-[80px] group-hover:opacity-20 transition-opacity duration-700`} />
-
-                            <div className="relative z-10 flex flex-col items-center">
-                                <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${f.color} flex items-center justify-center mb-8 text-white shadow-[0_10px_30px_rgba(0,0,0,0.3)] ring-1 ring-white/20 group-hover:scale-110 transition-transform duration-500`}>
-                                    <f.icon size={28} />
-                                </div>
-
-                                <h3 className="text-2xl font-display font-bold text-white mb-4 tracking-wide">{f.title}</h3>
-                                <p className="text-gray-400 text-base leading-relaxed max-w-sm font-light">{f.desc}</p>
-                            </div>
-
-                            {/* Corner Accents */}
-                            <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                            <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-neon-green/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                        </motion.div>
+                        <TiltCard key={i} index={i} feature={f} />
                     ))}
                 </div>
             </div>
         </section>
+    );
+}
+
+function TiltCard({ feature, index }: { feature: any, index: number }) {
+    const x = useMotionValue(0);
+    const y = useMotionValue(0);
+    const rotateX = useTransform(y, [-100, 100], [10, -10]);
+    const rotateY = useTransform(x, [-100, 100], [-10, 10]);
+
+    function handleMouseMove(event: React.MouseEvent<HTMLDivElement>) {
+        const rect = event.currentTarget.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        x.set(event.clientX - centerX);
+        y.set(event.clientY - centerY);
+    }
+
+    function handleMouseLeave() {
+        x.set(0);
+        y.set(0);
+    }
+
+    return (
+        <motion.div
+            style={{ rotateX, rotateY, z: 100 }}
+            whileHover={{ scale: 1.05, z: 50 }}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            className="relative h-96 w-full rounded-[2rem] bg-[#0a0a0a]/80 border border-white/10 backdrop-blur-xl flex flex-col items-center justify-center text-center p-8 shadow-2xl group cursor-pointer overflow-hidden transform-gpu"
+        >
+            {/* Dynamic Glow Gradient */}
+            <div className={`absolute inset-0 bg-gradient-to-br ${feature.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
+            <motion.div
+                style={{ x: useTransform(x, [-100, 100], [-20, 20]), y: useTransform(y, [-100, 100], [-20, 20]) }}
+                className="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+            />
+
+            <div className="relative z-10 flex flex-col items-center transform-style-3d">
+                <motion.div
+                    style={{ z: 30 }}
+                    className={`w-20 h-20 rounded-3xl bg-gradient-to-br ${feature.color} flex items-center justify-center mb-8 text-white shadow-[0_20px_40px_rgba(0,0,0,0.5)] ring-1 ring-white/20`}
+                >
+                    <feature.icon size={32} />
+                </motion.div>
+
+                <motion.h3 style={{ z: 20 }} className="text-3xl font-display font-bold text-white mb-4 tracking-wide group-hover:text-neon-green transition-colors">{feature.title}</motion.h3>
+                <motion.p style={{ z: 10 }} className="text-gray-400 text-base leading-relaxed max-w-xs font-light tracking-wide">{feature.desc}</motion.p>
+            </div>
+
+            {/* Cyber Corner Accents */}
+            <div className="absolute top-6 right-6 w-3 h-3 border-t-2 border-r-2 border-white/20 group-hover:border-neon-green group-hover:w-6 group-hover:h-6 transition-all duration-300" />
+            <div className="absolute bottom-6 left-6 w-3 h-3 border-b-2 border-l-2 border-white/20 group-hover:border-neon-blue group-hover:w-6 group-hover:h-6 transition-all duration-300" />
+        </motion.div>
     );
 }
