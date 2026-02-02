@@ -8,34 +8,28 @@ import { RepoSearch } from '@/components/RepoSearch';
 
 export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col bg-[#0A0A0B] text-white selection:bg-purple-500/30">
+    <div className="min-h-screen flex flex-col overflow-x-hidden">
       <Navbar />
 
-      <main className="flex-1 overflow-x-hidden">
-        {/* Hero Section */}
+      <main className="flex-1 relative z-10">
         <Hero />
 
-        {/* Action Section - Lifted up with negative margin to blend with Hero */}
-        <section className="container relative z-30 -mt-24 mb-12">
+        {/* Repo Input - Floating below hero */}
+        <section className="container relative z-20 -mt-24 mb-32 px-4">
           <RepoSearch />
         </section>
 
-        {/* Features - Bento Grid Style */}
-        <div className="relative z-20 bg-[#0A0A0B]">
+        <div className="space-y-32 mb-32 relative z-10">
           <InteractiveBento />
+          <InteractiveTimeline />
+          <StorySection />
         </div>
-
-        {/* How It Works - Interactive Timeline */}
-        <InteractiveTimeline />
-
-        {/* Story - Simple Typography */}
-        <StorySection />
       </main>
 
       <Footer />
 
-      {/* Global Background Glow */}
-      <div className="fixed top-0 left-0 w-full h-full pointer-events-none -z-50 bg-[url('/noise.png')] opacity-20" />
+      {/* Global Grid Overlay */}
+      <div className="fixed inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:100px_100px] [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_100%)] pointer-events-none -z-0" />
     </div>
   );
 }

@@ -2,95 +2,28 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  /* Premium Palette */
-  --bg-app: #030014;
-  /* Deep space black/purple */
-  --bg-secondary: #0a0a0f;
-
-  --primary: #a855f7;
-  --primary-glow: rgba(168, 85, 247, 0.4);
-  --secondary: #ec4899;
-
-  --text-main: #f8fafc;
-  --text-muted: #94a3b8;
-  --text-dim: #64748b;
-
-  /* Refined Glass */
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --glass-bg: rgba(255, 255, 255, 0.03);
-  --glass-shine: rgba(255, 255, 255, 0.05);
-}
-
-@layer base {
-  body {
-    @apply bg-[var(--bg-app)] text-[var(--text-main)] font-sans antialiased selection:bg-purple-500/30;
-    font-feature-settings: "rlig" 1, "calt" 1;
-    /* Clean ligatures */
-  }
-}
-
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--bg-app);
-}
-
-::-webkit-scrollbar-thumb {
-  background: #333;
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-
-/* Premium Glass Panel */
-.glass-panel {
-  @apply bg-white/[0.03] backdrop-blur-xl border border-white/[0.08] shadow-2xl;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
-}
-
-.glass-panel:hover {
-  @apply border-white/[0.15];
-  box-shadow: 0 0 30px rgba(168, 85, 247, 0.1);
-}
-
-/* Text Gradients */
-.text-gradient {
-  @apply bg-clip-text text-transparent bg-gradient-to-r from-white via-purple-200 to-purple-400;
-}
-
-/* Animations */
-@keyframes float {
-
-  0%,
-  100% {
-    transform: translateY(0);
+@layer utilities {
+  .glass-panel {
+    @apply bg-white/[0.03] backdrop-blur-xl border border-white/[0.08] shadow-2xl;
   }
 
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-.animate-float {
-  animation: float 6s ease-in-out infinite;
-}
-
-@keyframes shine {
-  0% {
-    transform: translateX(-100%);
+  .glass-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   }
 
-  100% {
-    transform: translateX(100%);
+  .text-glow {
+    text-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
   }
-}
 
-.animate-shine {
-  animation: shine 1.5s ease-in-out infinite;
+  .shimmer-text {
+    background: linear-gradient(90deg, #ffffff 0%, #ffffff 40%, #00f0ff 50%, #ffffff 60%, #ffffff 100%);
+    background-size: 200% auto;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: shimmer 3s linear infinite;
+  }
 }
