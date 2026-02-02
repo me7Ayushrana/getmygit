@@ -1,6 +1,12 @@
+'use client';
+
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { AlertTriangle, Lightbulb } from 'lucide-react';
 
 export function StorySection() {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     return (
         <section id="story" className="py-32 relative overflow-hidden flex flex-col items-center">
             {/* Animated Grid Background */}
