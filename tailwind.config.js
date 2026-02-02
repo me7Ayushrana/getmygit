@@ -16,7 +16,8 @@ module.exports = {
                 neon: {
                     blue: "#00f0ff",
                     purple: "#d8b4fe",
-                    white: "#F8FAFC"
+                    white: "#F8FAFC",
+                    green: "#00ff9d",
                 }
             },
             animation: {

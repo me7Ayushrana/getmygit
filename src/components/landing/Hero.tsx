@@ -3,21 +3,23 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Sparkles, ArrowRight } from 'lucide-react';
+import { HeroBackground } from './HeroBackground';
 
 export function Hero() {
     return (
         <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden z-10">
             {/* Void Background Elements */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-neon-purple/20 rounded-full blur-[120px] -z-10 opacity-50 pointer-events-none" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-neon-purple/10 rounded-full blur-[120px] -z-10 opacity-30 pointer-events-none" />
+            <HeroBackground />
             <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,transparent_0%,#030014_100%)] -z-10 pointer-events-none" />
 
             <div className="container px-4 text-center z-10">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-neon-blue/30 bg-neon-blue/5 text-neon-blue text-xs tracking-widest font-display mb-8"
+                    className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-neon-green/30 bg-neon-green/5 text-neon-green text-xs tracking-widest font-display mb-8"
                 >
-                    <div className="w-1.5 h-1.5 rounded-full bg-neon-blue animate-pulse shadow-[0_0_10px_#00f0ff]" />
+                    <div className="w-1.5 h-1.5 rounded-full bg-neon-green animate-pulse shadow-[0_0_10px_#00ff9d]" />
                     <span>VISUAL ENGINE READY</span>
                 </motion.div>
 

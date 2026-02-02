@@ -23,11 +23,11 @@ export function Navbar() {
       `}>
                 {/* Logo */}
                 <Link href="/" className="flex items-center gap-3 group">
-                    <div className="w-8 h-8 rounded-full border border-neon-blue/30 flex items-center justify-center relative overflow-hidden group-hover:border-neon-blue/60 transition-colors">
-                        <div className="absolute inset-0 bg-neon-blue/20 blur-md" />
-                        <span className="relative z-10 text-xs font-display font-bold text-neon-blue">GG</span>
+                    <div className="w-8 h-8 rounded-full border border-neon-green/30 flex items-center justify-center relative overflow-hidden group-hover:border-neon-green/60 transition-colors">
+                        <div className="absolute inset-0 bg-neon-green/20 blur-md" />
+                        <span className="relative z-10 text-xs font-display font-bold text-neon-green">GG</span>
                     </div>
-                    <span className="text-lg font-display font-bold tracking-widest text-white group-hover:text-neon-blue transition-colors">
+                    <span className="text-lg font-display font-bold tracking-widest text-white group-hover:text-neon-green transition-colors">
                         getmygit
                     </span>
                 </Link>
