@@ -2,7 +2,7 @@ import { Navbar } from '@/components/landing/Navbar';
 import { Hero } from '@/components/landing/Hero';
 import { InteractiveTimeline } from '@/components/landing/InteractiveTimeline';
 import { InteractiveBento } from '@/components/landing/InteractiveBento';
-import { StorySection } from '@/components/landing/Sections';
+import { StorySection, TargetAudienceSection } from '@/components/landing/Sections';
 import { Footer } from '@/components/landing/Footer';
 import { RepoSearch } from '@/components/RepoSearch';
 
@@ -23,6 +23,7 @@ export default function Home() {
           <InteractiveBento />
           <InteractiveTimeline />
           <StorySection />
+          <TargetAudienceSection />
         </div>
       </main>
 

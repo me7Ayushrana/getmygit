@@ -182,3 +182,95 @@ export function Limitations() {
         </section>
     );
 }
+
+import { ArrowUpRight } from 'lucide-react';
+import { Code, Briefcase, Users } from 'lucide-react';
+
+export function TargetAudienceSection() {
+    return (
+        <section className="py-24 relative overflow-hidden">
+            {/* Background Mesh */}
+            <div className="absolute inset-0 bg-[#020010]" />
+            <div className="absolute inset-0 bg-[radial-gradient(#ffffff05_1px,transparent_1px)] [background-size:24px_24px] opacity-20" />
+
+            <div className="container relative z-10 px-4">
+                <div className="text-center mb-24">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-gray-400 mb-6 uppercase tracking-widest">
+                        <span className="w-2 h-2 rounded-full bg-neon-green/50 animate-pulse" />
+                        Who is this for?
+                    </div>
+                    <h2 className="text-4xl md:text-6xl font-display font-bold text-white mb-6">
+                        BUILT FOR <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-blue to-purple-500">EVERYONE</span>
+                    </h2>
+                    <p className="text-gray-400 max-w-2xl mx-auto text-lg font-light leading-relaxed">
+                        Whether you write the code or manage the people who do, getmygit gives you the vision you need.
+                    </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <PersonaCard
+                        role="DEVELOPERS"
+                        desc="Stop grepping through thousands of files. Visualize the architecture instantly and onboard 10x faster."
+                        accent="neon-blue"
+                        icon={Code}
+                    />
+                    <PersonaCard
+                        role="MANAGERS"
+                        desc="Understand technical debt and dependency complexity without needing to read a single line of code."
+                        accent="purple-500"
+                        icon={Briefcase}
+                    />
+                    <PersonaCard
+                        role="HR & RECRUITERS"
+                        desc="Assess candidate take-home assignments or portfolio projects with a glance at their architectural decisions."
+                        accent="pink-500"
+                        icon={Users}
+                    />
+                </div>
+            </div>
+        </section>
+    );
+}
+
+function PersonaCard({ role, desc, accent, icon: Icon }: { role: string, desc: string, accent: string, icon: any }) {
+    // Dynamic color classes based on accent
+    const borderColor = accent === 'neon-blue' ? 'border-neon-blue' : accent === 'purple-500' ? 'border-purple-500' : 'border-pink-500';
+    const textColor = accent === 'neon-blue' ? 'text-neon-blue' : accent === 'purple-500' ? 'text-purple-500' : 'text-pink-500';
+    const bgGradient = accent === 'neon-blue' ? 'from-neon-blue/20' : accent === 'purple-500' ? 'from-purple-500/20' : 'from-pink-500/20';
+    const hoverBorder = accent === 'neon-blue' ? 'group-hover:border-neon-blue' : accent === 'purple-500' ? 'group-hover:border-purple-500' : 'group-hover:border-pink-500';
+
+    return (
+        <div className={`relative group p-1 bg-gradient-to-b from-white/5 to-transparent rounded-3xl overflow-hidden hover:-translate-y-2 transition-transform duration-500`}>
+            <div className="absolute inset-0 bg-[#0a0a0a] m-[1px] rounded-[23px] z-0" />
+
+            {/* Glow Effect */}
+            <div className={`absolute -inset-1 bg-gradient-to-r ${bgGradient} to-transparent opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-700`} />
+
+            <div className="relative z-10 p-8 flex flex-col h-full bg-[#0a0a0a]/80 backdrop-blur-xl rounded-[23px]">
+                <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br from-white/5 to-transparent flex items-center justify-center mb-8 border border-white/5 ${hoverBorder} transition-colors duration-500`}>
+                    <Icon className={`w-7 h-7 text-gray-400 group-hover:${textColor} transition-colors duration-300`} />
+                </div>
+
+                <h3 className="text-xl font-display font-bold text-white mb-4 tracking-wide group-hover:text-white transition-colors">{role}</h3>
+                <p className="text-gray-400 leading-relaxed mb-10 flex-1 text-sm">
+                    {desc}
+                </p>
+
+                {/* Specially Designed Holographic Button */}
+                <button className={`relative w-full py-4 overflow-hidden rounded-xl border border-white/5 ${hoverBorder} transition-colors duration-300 overflow-hidden`}>
+                    {/* Holographic background */}
+                    <div className={`absolute inset-0 bg-gradient-to-r ${bgGradient} to-transparent opacity-0 group-hover:opacity-20 transition-opacity duration-500`} />
+                    <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay" />
+
+                    {/* Scanline effect */}
+                    <div className="absolute top-0 left-0 w-full h-[1px] bg-white/50 shadow-[0_0_15px_white] -translate-y-full group-hover:animate-[scan_2s_ease-in-out_infinite]" />
+
+                    <div className="relative flex items-center justify-center gap-3">
+                        <span className={`font-bold tracking-[0.2em] text-xs text-gray-400 group-hover:${textColor} transition-colors`}>ACCESS TOOLS</span>
+                        <ArrowUpRight className={`w-4 h-4 text-gray-500 group-hover:${textColor} transition-colors`} />
+                    </div>
+                </button>
+            </div>
+        </div>
+    );
+}
