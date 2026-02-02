@@ -14,7 +14,7 @@ const features = [
         icon: GitBranch,
         title: 'Interactive Nodes',
         desc: 'trace dependencies and reveal file paths with a click.',
-        color: 'from-purple-500 to-pink-500'
+        color: 'from-neon-green to-neon-blue'
     },
     {
         icon: Layers,
@@ -26,7 +26,7 @@ const features = [
         icon: Zap,
         title: 'Zero Configuration',
         desc: 'No setup files needed. Just paste a URL and scan.',
-        color: 'from-emerald-500 to-teal-500'
+        color: 'from-neon-green to-emerald-500'
     }
 ];
 
