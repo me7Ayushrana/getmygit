@@ -4,66 +4,99 @@ export class RepoAnalyzer {
     static analyze(repo: GitHubRepo, files: FileTreeNode[]): RepoAnalysis {
         const nodes: GraphNode[] = [];
         const edges: GraphEdge[] = [];
+        const nodeMap = new Map<string, GraphNode>();
 
         // 1. Identify Framework/Stack
         const techStack = this.detectStack(files);
 
         // 2. Create Root Node
         const rootId = 'root';
-        nodes.push({
+        const rootNode: GraphNode = {
             id: rootId,
             label: repo.name,
             type: 'folder',
             data: { description: repo.description, tech: techStack },
-            position: { x: 0, y: 0 }
+            position: { x: 0, y: 0, z: 0 },
+            val: 20 // Size weight
+        };
+        nodes.push(rootNode);
+        nodeMap.set(rootId, rootNode);
+
+        // 3. Build Graph from File Tree
+        files.forEach(file => {
+            const parts = file.path.split('/');
+            let parentId = rootId;
+
+            parts.forEach((part, index) => {
+                const isLast = index === parts.length - 1;
+                // Unique ID for this specific path segment
+                const currentId = parts.slice(0, index + 1).join('/');
+
+                if (!nodeMap.has(currentId)) {
+                    // Determine type and size
+                    let type: 'folder' | 'file' | 'component' | 'service' = 'folder';
+                    let size = 5;
+                    let color = '#a0a0a0'; // Default gray
+
+                    if (isLast) {
+                        type = 'file';
+                        size = 2; // Smaller for files
+                        const ext = part.split('.').pop()?.toLowerCase();
+
+                        // Color coding
+                        if (['ts', 'tsx', 'js', 'jsx'].includes(ext || '')) color = '#00f0ff'; // Neon Blue (JS/TS)
+                        else if (['css', 'scss', 'less'].includes(ext || '')) color = '#d8b4fe'; // Purple (Styles)
+                        else if (['json', 'yml', 'yaml', 'toml'].includes(ext || '')) color = '#facc15'; // Yellow (Config)
+                        else if (['md', 'txt'].includes(ext || '')) color = '#9ca3af'; // Gray (Docs)
+                        else if (['png', 'jpg', 'svg'].includes(ext || '')) color = '#00ff9d'; // Green (Assets)
+
+                        // Component Heuristic
+                        if (part.match(/^[A-Z]/) && ['tsx', 'jsx', 'vue', 'svelte'].includes(ext || '')) {
+                            type = 'component';
+                            size = 8;
+                            color = '#ff0055'; // Pink/Red for components
+                        }
+                    } else {
+                        // Folder Heuristics
+                        if (['src', 'app', 'pages'].includes(part)) {
+                            size = 12;
+                            color = '#ffffff';
+                        }
+                    }
+
+                    const newNode: GraphNode = {
+                        id: currentId,
+                        label: part,
+                        type: type,
+                        color: color,
+                        val: size,
+                        position: { x: 0, y: 0, z: 0 }, // Position handled by Force Graph
+                        data: { path: currentId }
+                    };
+
+                    nodes.push(newNode);
+                    nodeMap.set(currentId, newNode);
+
+                    // Create Edge from Parent
+                    edges.push({
+                        id: `e-${parentId}-${currentId}`,
+                        source: parentId,
+                        target: currentId,
+                        animated: true,
+                        // color: '#ffffff20' 
+                    });
+                }
+
+                parentId = currentId;
+            });
         });
 
-        // 3. Identify High-Level Architecture based on folders
-        interface VitalFolder {
-            name: string;
-            label: string;
-            type: 'folder' | 'component' | 'service';
-        }
-
-        const vitalFolders: VitalFolder[] = [
-            { name: 'src', label: 'Source Code', type: 'folder' },
-            { name: 'pages', label: 'Pages (Routes)', type: 'component' },
-            { name: 'app', label: 'App Folder', type: 'component' },
-            { name: 'components', label: 'UI Components', type: 'component' },
-            { name: 'api', label: 'API Routes', type: 'service' },
-            { name: 'lib', label: 'Utilities/Lib', type: 'folder' },
-            { name: 'services', label: 'Services', type: 'service' },
-            { name: 'models', label: 'Data Models', type: 'folder' },
-        ];
-
-        vitalFolders.forEach((vf, index) => {
-            const found = files.find(f => f.path.startsWith(vf.name) || f.path.startsWith(`src/${vf.name}`));
-            if (found) {
-                const id = vf.name;
-                nodes.push({
-                    id,
-                    label: vf.label,
-                    type: vf.type,
-                    position: { x: (index % 3) * 200, y: Math.floor(index / 3) * 150 + 150 }
-                });
-
-                edges.push({
-                    id: `e-${rootId}-${id}`,
-                    source: rootId,
-                    target: id,
-                    animated: true
-                });
-            }
-        });
-
-        // 4. Connect dependencies (Simple heuristic)
-        if (nodes.find(n => n.id === 'pages') && nodes.find(n => n.id === 'components')) {
-            edges.push({ id: 'e-pages-components', source: 'pages', target: 'components', animated: true, label: 'imports' });
-        }
+        // 4. Simple Dependency Linking (Heuristic based on imports if we had content)
+        // For now, we rely on structure. 
 
         return {
             repo,
-            summary: `Detected ${techStack} project.`,
+            summary: `Detected ${techStack} project with ${files.length} files.`,
             architecture: { nodes, edges },
             fileTree: files
         };

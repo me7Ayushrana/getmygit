@@ -21,7 +21,9 @@ export interface GraphNode {
     label: string;
     type: 'component' | 'file' | 'folder' | 'service';
     data?: any;
-    position?: { x: number; y: number };
+    position?: { x: number; y: number; z?: number };
+    val?: number;
+    color?: string;
 }
 
 export interface GraphEdge {

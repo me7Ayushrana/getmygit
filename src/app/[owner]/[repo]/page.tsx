@@ -2,8 +2,8 @@ import { GitHubService } from '@/services/github';
 import { RepoAnalyzer } from '@/services/analyzer';
 import VisualizerClient from '@/components/visualizer/VisualizerClient';
 
-export default async function DashboardPage({ params }: { params: { owner: string; repo: string } }) {
-    const { owner, repo } = params;
+export default async function DashboardPage({ params }: { params: Promise<{ owner: string; repo: string }> }) {
+    const { owner, repo } = await params;
 
     try {
         const [repoData, files] = await Promise.all([
