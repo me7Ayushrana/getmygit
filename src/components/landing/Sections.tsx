@@ -200,7 +200,7 @@ export function TargetAudienceSection() {
                         Who is this for?
                     </div>
                     <h2 className="text-4xl md:text-6xl font-display font-bold text-white mb-6">
-                        BUILT FOR <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-blue to-purple-500">EVERYONE</span>
+                        BUILT <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-blue to-purple-500">FOR:</span>
                     </h2>
                     <p className="text-gray-400 max-w-2xl mx-auto text-lg font-light leading-relaxed">
                         Whether you write the code or manage the people who do, getmygit gives you the vision you need.
