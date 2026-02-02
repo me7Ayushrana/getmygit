@@ -246,7 +246,7 @@ function PersonaCard({ role, desc, accent, icon: Icon }: { role: string, desc: s
             {/* Glow Effect */}
             <div className={`absolute -inset-1 bg-gradient-to-r ${bgGradient} to-transparent opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-700`} />
 
-            <div className="relative z-10 p-8 flex flex-col h-full bg-[#0a0a0a]/80 backdrop-blur-xl rounded-[23px]">
+            <div className="relative z-10 p-8 flex flex-col items-center text-center h-full bg-[#0a0a0a]/80 backdrop-blur-xl rounded-[23px]">
                 <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br from-white/5 to-transparent flex items-center justify-center mb-8 border border-white/5 ${hoverBorder} transition-colors duration-500`}>
                     <Icon className={`w-7 h-7 text-gray-400 group-hover:${textColor} transition-colors duration-300`} />
                 </div>
