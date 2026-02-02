@@ -35,10 +35,10 @@ export function InteractiveBento() {
         <section id="features" className="py-32 relative">
             <div className="container max-w-7xl px-4">
                 <div className="text-center mb-20">
-                    <h2 className="text-4xl md:text-5xl font-display font-bold mb-6 text-white tracking-widest">
+                    <h2 className="text-3xl md:text-5xl font-display font-bold mb-6 text-white tracking-widest leading-tight">
                         SYSTEM <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-green to-neon-blue">CAPABILITIES</span>
                     </h2>
-                    <p className="text-gray-400 text-sm tracking-[0.3em] font-mono uppercase">
+                    <p className="text-gray-400 text-xs md:text-sm tracking-[0.2em] md:tracking-[0.3em] font-mono uppercase px-4">
                         Advanced Repository Parsing Engine
                     </p>
                 </div>

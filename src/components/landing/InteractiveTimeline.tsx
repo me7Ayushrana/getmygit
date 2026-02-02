@@ -18,7 +18,7 @@ export function InteractiveTimeline() {
         <section id="how-it-works" className="py-32 relative">
             <div className="absolute inset-0 bg-neon-blue/5 [mask-image:radial-gradient(ellipse_at_center,transparent_0%,black_100%)] pointer-events-none" />
             <div className="container max-w-7xl px-4 relative z-10">
-                <h2 className="text-4xl md:text-5xl font-display font-bold mb-20 text-center text-white tracking-widest">
+                <h2 className="text-3xl md:text-5xl font-display font-bold mb-20 text-center text-white tracking-widest">
                     OPERATIONAL <span className="text-gray-600">FLOW</span>
                 </h2>
 
