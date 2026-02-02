@@ -24,7 +24,6 @@ function Node({ position, color }: { position: [number, number, number]; color: 
                     emissive={color}
                     emissiveIntensity={2}
                     roughness={0}
-                    height={1}
                 />
                 <pointLight distance={3} intensity={5} color={color} />
             </mesh>
@@ -59,6 +58,7 @@ function Connections({ count = 15 }: { count?: number }) {
                             count={2}
                             array={new Float32Array([...line.start, ...line.end])}
                             itemSize={3}
+                            args={[new Float32Array([...line.start, ...line.end]), 3]}
                         />
                     </bufferGeometry>
                     <lineBasicMaterial color="#00f0ff" transparent opacity={0.1} />
