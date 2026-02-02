@@ -11,6 +11,13 @@ module.exports = {
                 sans: ["var(--font-inter)", "sans-serif"],
                 display: ["var(--font-orbitron)", "sans-serif"],
             },
+            container: {
+                center: true,
+                padding: "2rem",
+                screens: {
+                    "2xl": "1400px",
+                },
+            },
             colors: {
                 void: "#030014",
                 neon: {
