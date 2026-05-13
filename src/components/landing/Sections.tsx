@@ -243,9 +243,9 @@ export function TargetAudienceSection() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.8 }}
-                        className="text-4xl md:text-6xl font-display font-bold text-white mb-6"
+                        className="text-4xl md:text-6xl font-display font-bold text-white mb-6 uppercase tracking-tight"
                     >
-                        BUILT AND DESIGNED <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-blue to-purple-500">FOR:</span>
+                        BUILT AND DESIGNED FOR:
                     </motion.h2>
                     <motion.p 
                         initial={{ opacity: 0, y: 20 }}
