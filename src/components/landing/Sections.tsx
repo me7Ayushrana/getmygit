@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { AlertTriangle, Lightbulb } from 'lucide-react';
+import { AlertTriangle, Lightbulb, ArrowUpRight, Code, Briefcase, Users } from 'lucide-react';
 
 export function StorySection() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -225,9 +225,6 @@ export function Limitations() {
     );
 }
 
-import { ArrowUpRight } from 'lucide-react';
-import { Code, Briefcase, Users } from 'lucide-react';
-
 export function TargetAudienceSection() {
     return (
         <section className="py-24 relative overflow-hidden">
@@ -241,12 +238,24 @@ export function TargetAudienceSection() {
                         <span className="w-2 h-2 rounded-full bg-neon-green/50 animate-pulse" />
                         Who is this for?
                     </div>
-                    <h2 className="text-4xl md:text-6xl font-display font-bold text-white mb-6">
-                        BUILT AND <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-blue to-purple-500">DESIGNED FOR:</span>
-                    </h2>
-                    <p className="text-gray-400 max-w-2xl mx-auto text-lg font-light leading-relaxed">
+                    <motion.h2 
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8 }}
+                        className="text-4xl md:text-6xl font-display font-bold text-white mb-6"
+                    >
+                        BUILT AND DESIGNED <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-blue to-purple-500">FOR:</span>
+                    </motion.h2>
+                    <motion.p 
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8, delay: 0.2 }}
+                        className="text-gray-400 max-w-2xl mx-auto text-lg font-light leading-relaxed"
+                    >
                         Whether you write code or oversee the teams that do, getmygit helps you see the structure and flow.
-                    </p>
+                    </motion.p>
                 </div>
 
                 <motion.div 
