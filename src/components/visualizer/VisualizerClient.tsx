@@ -228,14 +228,16 @@ export default function VisualizerClient({ data }: { data: RepoAnalysis }) {
     const handleCopyBadge = useCallback(() => {
         try {
             const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
+            const shareMessage = `Explore the visual architecture and structural intelligence of this repository: ${currentUrl}`;
+            
             if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(currentUrl).then(() => {
+                navigator.clipboard.writeText(shareMessage).then(() => {
                     setShowBadgeCopied(true);
                     setTimeout(() => setShowBadgeCopied(false), 3000);
                 });
             } else {
                 const textArea = document.createElement("textarea");
-                textArea.value = currentUrl;
+                textArea.value = shareMessage;
                 document.body.appendChild(textArea);
                 textArea.select();
                 try {
@@ -291,7 +293,7 @@ export default function VisualizerClient({ data }: { data: RepoAnalysis }) {
                             className="relative flex items-center gap-2 px-3 py-1.5 rounded-lg bg-green-600/10 text-green-400 border border-green-600/20 hover:bg-green-600/20 transition-all text-xs font-medium"
                         >
                             <Shield size={14} /> 
-                            {showBadgeCopied ? 'Link Copied!' : 'Share Analysis'}
+                            {showBadgeCopied ? 'Intelligence Link Copied!' : 'Generate Intelligence Link'}
                         </button>
                         <div className="relative group/tooltip flex items-center mr-2">
                             <button className="p-1 text-zinc-500 hover:text-zinc-300 transition-colors">
