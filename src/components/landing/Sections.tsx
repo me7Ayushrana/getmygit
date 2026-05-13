@@ -268,9 +268,14 @@ export function TargetAudienceSection() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                        className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-2 uppercase tracking-tight"
+                        className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-2 uppercase tracking-tight flex items-center justify-center gap-4 flex-wrap"
                     >
-                        BUILT AND DESIGNED
+                        BUILT
+                        <span className="relative inline-flex items-center justify-center text-5xl md:text-6xl lg:text-7xl px-4 py-1 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/15 shadow-[0_0_30px_rgba(168,85,247,0.15)] text-transparent bg-clip-text bg-gradient-to-br from-purple-300 via-blue-300 to-cyan-300 animate-[gradient-shift_3s_ease_infinite] bg-[length:200%_200%]">
+                            <span className="absolute inset-0 rounded-2xl bg-gradient-to-r from-transparent via-white/10 to-transparent animate-[purpleShimmer_3s_linear_infinite]" />
+                            &amp;
+                        </span>
+                        DESIGNED
                     </motion.h2>
                     <motion.h2 
                         initial={{ opacity: 0, y: 30 }}
