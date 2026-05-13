@@ -228,30 +228,64 @@ export function Limitations() {
 export function TargetAudienceSection() {
     return (
         <section className="py-24 relative overflow-hidden">
-            {/* Background Mesh */}
+            {/* Background */}
             <div className="absolute inset-0 bg-[#020010]" />
             <div className="absolute inset-0 bg-[radial-gradient(#ffffff05_1px,transparent_1px)] [background-size:24px_24px] opacity-20" />
 
+            {/* Floating Particles */}
+            {[...Array(6)].map((_, i) => (
+                <motion.div
+                    key={i}
+                    className="absolute w-1 h-1 bg-purple-500/30 rounded-full"
+                    style={{ left: `${15 + i * 15}%`, top: `${20 + (i % 3) * 25}%` }}
+                    animate={{
+                        y: [0, -30, 0],
+                        opacity: [0.2, 0.6, 0.2],
+                    }}
+                    transition={{
+                        duration: 3 + i * 0.5,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        delay: i * 0.4,
+                    }}
+                />
+            ))}
+
             <div className="container relative z-10 px-4">
                 <div className="text-center mb-24">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-gray-400 mb-6 uppercase tracking-widest">
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6 }}
+                        className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-gray-400 mb-6 uppercase tracking-widest"
+                    >
                         <span className="w-2 h-2 rounded-full bg-neon-green/50 animate-pulse" />
                         Who is this for?
-                    </div>
+                    </motion.div>
                     <motion.h2 
-                        initial={{ opacity: 0, y: 20 }}
+                        initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        transition={{ duration: 0.8 }}
-                        className="text-4xl md:text-6xl font-display font-bold text-white mb-6 uppercase tracking-tight"
+                        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                        className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-2 uppercase tracking-tight"
                     >
-                        BUILT AND DESIGNED FOR:
+                        BUILT AND DESIGNED
+                    </motion.h2>
+                    <motion.h2 
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+                        className="text-4xl md:text-5xl lg:text-6xl font-display font-bold mb-6 uppercase tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-blue-400 to-cyan-400 animate-[gradient-shift_3s_ease_infinite] bg-[length:200%_200%]"
+                    >
+                        FOR:
                     </motion.h2>
                     <motion.p 
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        transition={{ duration: 0.8, delay: 0.2 }}
+                        transition={{ duration: 0.8, delay: 0.3 }}
                         className="text-gray-400 max-w-2xl mx-auto text-lg font-light leading-relaxed"
                     >
                         Whether you write code or oversee the teams that do, getmygit helps you see the structure and flow.
