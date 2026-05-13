@@ -44,7 +44,7 @@ export function Navbar() {
                             Dashboard
                         </Link>
                     )}
-                    {['Features', 'How it Works'].map((item) => (
+                    {['Story', 'Features', 'How it Works'].map((item) => (
                         <Link key={item} href={`/#${item.toLowerCase().replace(/\s/g, '-')}`} className="px-5 py-2 text-xs font-display tracking-widest text-gray-400 hover:text-white hover:bg-white/5 rounded-full transition-all uppercase">
                             {item}
                         </Link>

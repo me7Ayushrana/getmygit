@@ -3,6 +3,7 @@ import { Hero } from '@/components/landing/Hero';
 import { TrendingFeed } from '@/components/landing/TrendingFeed';
 import { FeaturesSection } from '@/components/landing/FeaturesSection';
 import { WorkflowTimeline } from '@/components/landing/WorkflowTimeline';
+import { StorySection, TargetAudienceSection } from '@/components/landing/Sections';
 import { Footer } from '@/components/landing/Footer';
 import { RepoSearch } from '@/components/RepoSearch';
 
@@ -15,11 +16,17 @@ export default function Home() {
         <Hero />
         <TrendingFeed />
 
+        {/* Story & Manifesto */}
+        <StorySection />
+
         {/* Live Visualization Mockup & Features */}
         <div className="relative z-10">
           <FeaturesSection />
           <WorkflowTimeline />
         </div>
+
+        {/* Target Audience */}
+        <TargetAudienceSection />
       </main>
 
       <Footer />
