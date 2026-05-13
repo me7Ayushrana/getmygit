@@ -1,0 +1,104 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  DEVELOPER
+  REVIEWER
+}
+
+enum PrStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  role      Role     @default(DEVELOPER)
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  reviews       Review[]
+  assignments   Assignment[] @relation("ReviewerAssignments")
+  createdAssignments Assignment[] @relation("AnalystAssignments")
+  auditLogs     AuditLog[]
+  notifications Notification[]
+}
+
+model PullRequest {
+  id            String   @id @default(cuid())
+  githubUrl     String   @unique
+  owner         String
+  repo          String
+  pullNumber    Int
+  title         String
+  author        String
+  filesChanged  Int
+  additions     Int
+  deletions     Int
+  riskScore     Int      @default(0)
+  status        PrStatus @default(PENDING)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  reviews     Review[]
+  assignments Assignment[]
+}
+
+model Review {
+  id         String   @id @default(cuid())
+  prId       String
+  reviewerId String
+  status     PrStatus
+  comment    String?
+  createdAt  DateTime @default(now())
+
+  pr       PullRequest @relation(fields: [prId], references: [id])
+  reviewer User        @relation(fields: [reviewerId], references: [id])
+}
+
+model Assignment {
+  id         String   @id @default(cuid())
+  prId       String
+  reviewerId String
+  analystId  String
+  createdAt  DateTime @default(now())
+
+  pr       PullRequest @relation(fields: [prId], references: [id])
+  reviewer User        @relation(fields: [reviewerId], references: [id], name: "ReviewerAssignments")
+  analyst  User        @relation(fields: [analystId], references: [id], name: "AnalystAssignments")
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String
+  action    String
+  details   String?
+  timestamp DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  message   String
+  type      String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}

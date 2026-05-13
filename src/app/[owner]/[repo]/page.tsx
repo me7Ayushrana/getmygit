@@ -6,13 +6,19 @@ export default async function DashboardPage({ params }: { params: Promise<{ owne
     const { owner, repo } = await params;
 
     try {
-        const [repoData, files] = await Promise.all([
-            GitHubService.getRepo(owner, repo),
-            GitHubService.getFileTree(owner, repo, 'main') // Assuming main for now, needs real branch logic
-                .catch(() => GitHubService.getFileTree(owner, repo, 'master')) // Fallback to master
+        // 1. Fetch Repo Metadata first to get the correct default branch
+        const repoData = await GitHubService.getRepo(owner, repo);
+        
+        // 2. Fetch the rest using the correct default branch
+        const [files, languages, readme] = await Promise.all([
+            GitHubService.getFileTree(owner, repo, repoData.default_branch),
+            GitHubService.getLanguages(owner, repo).catch(() => ({})),
+            GitHubService.getReadme(owner, repo).catch(() => '')
         ]);
 
         const analysis = RepoAnalyzer.analyze(repoData, files);
+        analysis.languages = languages;
+        analysis.readme = readme;
 
         return (
             <div className="w-full h-[calc(100vh-60px)] p-6">
@@ -24,7 +30,9 @@ export default async function DashboardPage({ params }: { params: Promise<{ owne
             <div className="flex flex-col items-center justify-center h-[50vh]">
                 <h2 className="text-2xl font-bold text-red-400 mb-4">Analysis Failed</h2>
                 <p className="text-gray-400 max-w-md text-center">
-                    {error.message || 'Could not analyze repository. Please check the URL and try again.'}
+                    {error.message?.includes('403') 
+                        ? 'GitHub API rate limit reached. Please try again shortly.' 
+                        : (error.message || 'Could not analyze repository. Please check the URL and try again.')}
                 </p>
                 <p className="text-xs text-gray-500 mt-4">
                     Note: This requires a public repository and is subject to GitHub API rate limits.

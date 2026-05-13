@@ -34,7 +34,7 @@ export class RepoAnalyzer {
 
                 if (!nodeMap.has(currentId)) {
                     // Determine type and size
-                    let type: 'folder' | 'file' | 'component' | 'service' = 'folder';
+                    let type: 'folder' | 'file' | 'component' | 'service' | 'config' = 'folder';
                     let size = 5;
                     let color = '#a0a0a0'; // Default gray
 
@@ -44,21 +44,26 @@ export class RepoAnalyzer {
                         const ext = part.split('.').pop()?.toLowerCase();
 
                         // Color coding
-                        if (['ts', 'tsx', 'js', 'jsx'].includes(ext || '')) color = '#00f0ff'; // Neon Blue (JS/TS)
-                        else if (['css', 'scss', 'less'].includes(ext || '')) color = '#d8b4fe'; // Purple (Styles)
-                        else if (['json', 'yml', 'yaml', 'toml'].includes(ext || '')) color = '#facc15'; // Yellow (Config)
-                        else if (['md', 'txt'].includes(ext || '')) color = '#9ca3af'; // Gray (Docs)
-                        else if (['png', 'jpg', 'svg'].includes(ext || '')) color = '#00ff9d'; // Green (Assets)
+                        if (['ts', 'tsx', 'js', 'jsx', 'mjs', 'cjs'].includes(ext || '')) color = '#00f0ff'; // Neon Blue (JS/TS)
+                        else if (['css', 'scss', 'less', 'sass', 'styl'].includes(ext || '')) color = '#d8b4fe'; // Purple (Styles)
+                        else if (['json', 'yml', 'yaml', 'toml', 'xml', 'env'].includes(ext || '')) {
+                            color = '#facc15'; // Yellow (Config)
+                            type = 'config';
+                        }
+                        else if (['md', 'txt', 'LICENSE'].includes(ext || '')) color = '#9ca3af'; // Gray (Docs)
+                        else if (['png', 'jpg', 'jpeg', 'svg', 'gif', 'ico'].includes(ext || '')) color = '#00ff9d'; // Green (Assets)
+                        else if (['go', 'rs', 'java', 'py', 'rb', 'php', 'c', 'cpp', 'h'].includes(ext || '')) color = '#ff5722'; // Orange (Backend/System)
+                        else if (['dockerfile', 'makefile'].includes(part.toLowerCase())) color = '#3b82f6'; // Blue (Build)
 
-                        // Component Heuristic
-                        if (part.match(/^[A-Z]/) && ['tsx', 'jsx', 'vue', 'svelte'].includes(ext || '')) {
+                        // Component Heuristic - PascalCase + UI extension + NOT a config file
+                        if (part.match(/^[A-Z][a-zA-Z0-9]*\.(tsx|jsx|vue|svelte)$/) && !part.includes('config')) {
                             type = 'component';
                             size = 8;
                             color = '#ff0055'; // Pink/Red for components
                         }
                     } else {
                         // Folder Heuristics
-                        if (['src', 'app', 'pages'].includes(part)) {
+                        if (['src', 'app', 'pages', 'components', 'lib', 'utils'].includes(part)) {
                             size = 12;
                             color = '#ffffff';
                         }
@@ -82,8 +87,8 @@ export class RepoAnalyzer {
                         id: `e-${parentId}-${currentId}`,
                         source: parentId,
                         target: currentId,
-                        animated: true,
-                        // color: '#ffffff20' 
+                        animated: false,
+                        style: { stroke: '#4b5563', strokeWidth: 1, opacity: 0.5 }
                     });
                 }
 
@@ -103,12 +108,25 @@ export class RepoAnalyzer {
     }
 
     static detectStack(files: FileTreeNode[]): string {
-        const paths = files.map(f => f.path);
-        if (paths.includes('next.config.js') || paths.includes('next.config.mjs')) return 'Next.js';
-        if (paths.includes('remix.config.js')) return 'Remix';
-        if (paths.includes('vite.config.ts') || paths.includes('vite.config.js')) return 'Vite/React';
-        if (paths.includes('requirements.txt')) return 'Python';
-        if (paths.includes('Cargo.toml')) return 'Rust';
+        const paths = files.map(f => f.path.toLowerCase());
+
+        // Frameworks
+        if (paths.some(p => p.includes('next.config'))) return 'Next.js';
+        if (paths.some(p => p.includes('remix.config'))) return 'Remix';
+        if (paths.some(p => p.includes('vite.config'))) return 'Vite/React';
+        if (paths.some(p => p.includes('nuxt.config'))) return 'Nuxt';
+        if (paths.some(p => p.includes('angular.json'))) return 'Angular';
+
+        // Languages/Platforms
+        if (paths.includes('cargo.toml')) return 'Rust';
+        if (paths.includes('go.mod')) return 'Go';
+        if (paths.includes('pom.xml') || paths.some(p => p.endsWith('.java'))) return 'Java/Maven';
+        if (paths.includes('build.gradle') || paths.some(p => p.endsWith('.kt'))) return 'Kotlin/Gradle';
+        if (paths.includes('requirements.txt') || paths.includes('pyproject.toml') || paths.includes('poetry.lock')) return 'Python';
+        if (paths.includes('composer.json')) return 'PHP/Laravel';
+        if (paths.includes('gemfile')) return 'Ruby/Rails';
+        if (paths.includes('dockerfile')) return 'Docker';
+
         return 'JavaScript/Unknown';
     }
 }

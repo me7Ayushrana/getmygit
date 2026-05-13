@@ -1,28 +1,42 @@
 'use client';
 
 import { Canvas, useFrame } from '@react-three/fiber';
-import { useRef, useMemo } from 'react';
+import { useRef, useMemo, useState, useEffect } from 'react';
 import * as THREE from 'three';
 import { Float, Environment } from '@react-three/drei';
 
 function Node({ position, color }: { position: [number, number, number]; color: string }) {
     const meshRef = useRef<THREE.Mesh>(null);
+    const [clicked, setClicked] = useState(false);
 
     useFrame((state) => {
         if (meshRef.current) {
-            meshRef.current.rotation.x += 0.01;
-            meshRef.current.rotation.y += 0.01;
+            meshRef.current.rotation.x += clicked ? 0.1 : 0.01;
+            meshRef.current.rotation.y += clicked ? 0.1 : 0.01;
         }
     });
 
+    useEffect(() => {
+        if (clicked) {
+            const timeout = setTimeout(() => setClicked(false), 500);
+            return () => clearTimeout(timeout);
+        }
+    }, [clicked]);
+
     return (
         <Float speed={2} rotationIntensity={1} floatIntensity={1}>
-            <mesh ref={meshRef} position={position}>
-                <icosahedronGeometry args={[0.5, 0]} />
+            <mesh
+                ref={meshRef}
+                position={position}
+                onClick={(e) => { e.stopPropagation(); setClicked(true); }}
+                onPointerOver={() => document.body.style.cursor = 'pointer'}
+                onPointerOut={() => document.body.style.cursor = 'auto'}
+            >
+                <icosahedronGeometry args={[clicked ? 0.7 : 0.5, 0]} />
                 <meshStandardMaterial
-                    color={color}
-                    emissive={color}
-                    emissiveIntensity={2}
+                    color={clicked ? '#ffffff' : color}
+                    emissive={clicked ? '#ffffff' : color}
+                    emissiveIntensity={clicked ? 4 : 2}
                     roughness={0}
                 />
                 <pointLight distance={3} intensity={5} color={color} />
@@ -96,7 +110,7 @@ function Scene() {
 
 export function HeroScene() {
     return (
-        <div className="absolute inset-0 z-0 pointer-events-none">
+        <div className="absolute inset-0 z-0">
             <Canvas
                 camera={{ position: [0, 0, 10], fov: 45 }}
                 dpr={[1, 2]} // Optimization for varying pixel ratios

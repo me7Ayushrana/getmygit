@@ -24,7 +24,7 @@ export interface FileTreeNode {
 export interface GraphNode {
     id: string;
     label: string;
-    type: 'component' | 'file' | 'folder' | 'service';
+    type: 'component' | 'file' | 'folder' | 'service' | 'config';
     data?: any;
     position?: { x: number; y: number; z?: number };
     val?: number;
@@ -37,6 +37,7 @@ export interface GraphEdge {
     target: string;
     label?: string;
     animated?: boolean;
+    style?: any; // React.CSSProperties
 }
 
 export interface RepoAnalysis {
@@ -47,4 +48,6 @@ export interface RepoAnalysis {
         edges: GraphEdge[];
     };
     fileTree: FileTreeNode[];
+    readme?: string;
+    languages?: Record<string, number>;
 }

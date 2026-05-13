@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter, Orbitron } from 'next/font/google'
 import './globals.css'
+import { AuthProvider } from '@/context/AuthContext'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const orbitron = Orbitron({ subsets: ['latin'], variable: '--font-orbitron' })
@@ -18,7 +19,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} ${orbitron.variable} font-sans antialiased bg-void text-white selection:bg-neon-blue/30`}>
-        {children}
+        <AuthProvider>
+          {children}
+        </AuthProvider>
       </body>
     </html>
   )

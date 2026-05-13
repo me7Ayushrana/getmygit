@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { Handle, Position } from 'reactflow';
-import { File, Folder, Box, Server, Settings } from 'lucide-react';
+import { File, Folder, Box, Server, Settings, ChevronRight, ChevronDown } from 'lucide-react';
 
 const icons = {
     folder: Folder,
@@ -12,28 +12,38 @@ const icons = {
 
 export const GlassNode = memo(({ data, type }: any) => {
     const Icon = icons[type as keyof typeof icons] || (data.label?.includes('.') ? File : Folder);
+    const isFolder = type === 'folder' || type === 'root';
+    const isCollapsed = data.collapsed;
+    const hasChildren = data.hasChildren;
 
     return (
-        <div className="relative group min-w-[180px]">
-            {/* Glow backing */}
-            <div className={`absolute -inset-0.5 bg-gradient-to-r from-neon-blue to-purple-600 rounded-lg blur opacity-20 group-hover:opacity-75 transition duration-500`} />
-
-            <div className="relative flex flex-col items-center bg-[#0a0a0a]/90 backdrop-blur-md border border-white/10 rounded-lg p-3 shadow-xl">
-                <div className="flex items-center gap-3 w-full">
-                    <div className={`p-2 rounded-md bg-white/5 border border-white/5 ${type === 'component' ? 'text-neon-blue' : 'text-gray-400'}`}>
-                        <Icon size={16} />
+        <div className="relative group min-w-[150px]">
+            <div className={`relative flex items-center bg-[#09090b] border ${isFolder ? 'border-l-4 border-l-blue-500 border-y-[#27272a] border-r-[#27272a]' : 'border-[#27272a]'} rounded-md p-2 shadow-sm hover:border-[#3f3f46] hover:shadow-md transition-all duration-200`}>
+                <div className="flex items-center gap-2 w-full">
+                    {/* Icon Container */}
+                    <div className={`p-1.5 rounded bg-[#18181b] border border-[#27272a] ${type === 'component' ? 'text-blue-400' : 'text-zinc-400'}`}>
+                        <Icon size={14} strokeWidth={1.5} />
                     </div>
-                    <div className="flex flex-col overflow-hidden">
-                        <span className="text-xs font-bold text-gray-200 truncate max-w-[120px]" title={data.label}>
+
+                    {/* Label & Meta */}
+                    <div className="flex flex-col overflow-hidden mr-2">
+                        <span className="text-[12px] font-medium text-zinc-200 truncate max-w-[120px]" title={data.label}>
                             {data.label}
                         </span>
-                        {data.tech && <span className="text-[10px] text-gray-500 font-mono">{data.tech}</span>}
+                        {/* {data.tech && <span className="text-[9px] text-zinc-500 font-mono mt-0.5">{data.tech}</span>} */}
                     </div>
+
+                    {/* Collapse Indicator */}
+                    {isFolder && hasChildren && (
+                        <div className="ml-auto text-zinc-500">
+                            {isCollapsed ? <ChevronRight size={14} /> : <ChevronDown size={14} />}
+                        </div>
+                    )}
                 </div>
             </div>
 
-            <Handle type="target" position={Position.Top} className="!bg-gray-500 !w-2 !h-2" />
-            <Handle type="source" position={Position.Bottom} className="!bg-neon-blue !w-2 !h-2" />
+            <Handle type="target" position={Position.Left} className="!bg-zinc-600 !w-1.5 !h-1.5 !border-none !-left-0.5" />
+            <Handle type="source" position={Position.Right} className="!bg-zinc-600 !w-1.5 !h-1.5 !border-none !-right-0.5" />
         </div>
     );
 });
