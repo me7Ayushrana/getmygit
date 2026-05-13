@@ -249,7 +249,19 @@ export function TargetAudienceSection() {
                     </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <motion.div 
+                    initial="hidden"
+                    whileInView="show"
+                    viewport={{ once: true }}
+                    variants={{
+                        hidden: { opacity: 0 },
+                        show: {
+                            opacity: 1,
+                            transition: { staggerChildren: 0.2 }
+                        }
+                    }}
+                    className="grid grid-cols-1 md:grid-cols-3 gap-8"
+                >
                     <PersonaCard
                         role="DEVELOPERS"
                         desc="Stop grepping through thousands of files. Visualize the architecture instantly and onboard 10x faster."
@@ -268,51 +280,52 @@ export function TargetAudienceSection() {
                         accent="pink-500"
                         icon={Users}
                     />
-                </div>
+                </motion.div>
             </div>
         </section>
     );
 }
 
 function PersonaCard({ role, desc, accent, icon: Icon }: { role: string, desc: string, accent: string, icon: any }) {
-    // Dynamic color classes based on accent
     const borderColor = accent === 'neon-blue' ? 'border-neon-blue' : accent === 'purple-500' ? 'border-purple-500' : 'border-pink-500';
     const textColor = accent === 'neon-blue' ? 'text-neon-blue' : accent === 'purple-500' ? 'text-purple-500' : 'text-pink-500';
     const bgGradient = accent === 'neon-blue' ? 'from-neon-blue/20' : accent === 'purple-500' ? 'from-purple-500/20' : 'from-pink-500/20';
     const hoverBorder = accent === 'neon-blue' ? 'group-hover:border-neon-blue' : accent === 'purple-500' ? 'group-hover:border-purple-500' : 'group-hover:border-pink-500';
 
     return (
-        <div className={`relative group p-1 bg-gradient-to-b from-white/5 to-transparent rounded-3xl overflow-hidden hover:-translate-y-2 transition-transform duration-500`}>
+        <motion.div 
+            variants={{
+                hidden: { opacity: 0, scale: 0.95 },
+                show: { opacity: 1, scale: 1, transition: { duration: 0.6 } }
+            }}
+            whileHover={{ y: -10 }}
+            className={`relative group p-1 bg-gradient-to-b from-white/5 to-transparent rounded-3xl overflow-hidden transition-all duration-500`}
+        >
             <div className="absolute inset-0 bg-[#0a0a0a] m-[1px] rounded-[23px] z-0" />
 
             {/* Glow Effect */}
             <div className={`absolute -inset-1 bg-gradient-to-r ${bgGradient} to-transparent opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-700`} />
 
-            <div className="relative z-10 p-8 flex flex-col items-center text-center h-full bg-[#0a0a0a]/80 backdrop-blur-xl rounded-[23px]">
+            <div className="relative z-10 p-8 flex flex-col items-center text-center h-full bg-[#0a0a0a]/60 backdrop-blur-xl rounded-[23px] border border-white/5 group-hover:border-white/10 transition-colors">
                 <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br from-white/5 to-transparent flex items-center justify-center mb-8 border border-white/5 ${hoverBorder} transition-colors duration-500`}>
                     <Icon className={`w-7 h-7 text-gray-400 group-hover:${textColor} transition-colors duration-300`} />
                 </div>
 
                 <h3 className="text-xl font-display font-bold text-white mb-4 tracking-wide group-hover:text-white transition-colors">{role}</h3>
-                <p className="text-gray-400 leading-relaxed mb-10 flex-1 text-sm">
+                <p className="text-gray-400 leading-relaxed mb-10 flex-1 text-sm font-light">
                     {desc}
                 </p>
 
-                {/* Specially Designed Holographic Button */}
-                <button className={`relative w-full py-4 overflow-hidden rounded-xl border border-white/5 ${hoverBorder} transition-colors duration-300 overflow-hidden`}>
-                    {/* Holographic background */}
+                <button className={`relative w-full py-4 overflow-hidden rounded-xl border border-white/10 ${hoverBorder} transition-all duration-300 overflow-hidden bg-white/5 hover:bg-white/10`}>
                     <div className={`absolute inset-0 bg-gradient-to-r ${bgGradient} to-transparent opacity-0 group-hover:opacity-20 transition-opacity duration-500`} />
-                    <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay" />
-
-                    {/* Scanline effect */}
-                    <div className="absolute top-0 left-0 w-full h-[1px] bg-white/50 shadow-[0_0_15px_white] -translate-y-full group-hover:animate-[scan_2s_ease-in-out_infinite]" />
+                    <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay" />
 
                     <div className="relative flex items-center justify-center gap-3">
-                        <span className={`font-bold tracking-[0.2em] text-xs text-gray-400 group-hover:${textColor} transition-colors`}>ACCESS TOOLS</span>
+                        <span className={`font-bold tracking-[0.2em] text-xs text-gray-400 group-hover:${textColor} transition-colors uppercase`}>Access Tools</span>
                         <ArrowUpRight className={`w-4 h-4 text-gray-500 group-hover:${textColor} transition-colors`} />
                     </div>
                 </button>
             </div>
-        </div>
+        </motion.div>
     );
 }
