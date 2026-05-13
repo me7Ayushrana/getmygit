@@ -225,11 +225,34 @@ export default function VisualizerClient({ data }: { data: RepoAnalysis }) {
     }, [graphRef, data.repo.name]);
 
     const handleCopyBadge = useCallback(() => {
-        const origin = typeof window !== 'undefined' ? window.location.origin : 'https://getmygit.com';
-        const badgeMarkdown = `[![GetMyGit Analyzed](https://img.shields.io/badge/GetMyGit-Analyzed-8BFF4D?style=for-the-badge&logo=github)](${origin}/${data.repo.owner}/${data.repo.name})`;
-        navigator.clipboard.writeText(badgeMarkdown);
-        setShowBadgeCopied(true);
-        setTimeout(() => setShowBadgeCopied(false), 3000);
+        try {
+            const origin = typeof window !== 'undefined' ? window.location.origin : 'https://getmygit.vercel.app';
+            const badgeMarkdown = `[![GetMyGit Analyzed](https://img.shields.io/badge/GetMyGit-Analyzed-8BFF4D?style=for-the-badge&logo=github)](${origin}/${data.repo.owner}/${data.repo.name})`;
+            
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(badgeMarkdown).then(() => {
+                    setShowBadgeCopied(true);
+                    setTimeout(() => setShowBadgeCopied(false), 3000);
+                });
+            } else {
+                // Fallback for older browsers or non-secure contexts
+                const textArea = document.createElement("textarea");
+                textArea.value = badgeMarkdown;
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    setShowBadgeCopied(true);
+                    setTimeout(() => setShowBadgeCopied(false), 3000);
+                } catch (err) {
+                    console.error('Fallback copy failed', err);
+                    alert('Failed to copy badge markdown. Please copy it manually.');
+                }
+                document.body.removeChild(textArea);
+            }
+        } catch (error) {
+            console.error('Badge copy error:', error);
+        }
     }, [data.repo.owner, data.repo.name]);
 
     return (
