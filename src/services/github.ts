@@ -20,16 +20,16 @@ export class GitHubService {
                 return {
                     owner: data.owner.login,
                     name: data.name,
-                    description: data.description,
+                    description: data.description ?? '',
                     stars: data.stargazers_count,
-                    language: data.language,
+                    language: data.language ?? '',
                     default_branch: data.default_branch,
                     topics: data.topics || [],
                     forks_count: data.forks_count,
                     watchers_count: data.watchers_count,
                     open_issues_count: data.open_issues_count,
                     updated_at: data.updated_at,
-                    homepage: data.homepage,
+                    homepage: data.homepage ?? '',
                 };
             } catch (error: any) {
                 if (error.status === 404) throw new Error('Repository not found (404)');
