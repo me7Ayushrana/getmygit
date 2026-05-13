@@ -227,18 +227,15 @@ export default function VisualizerClient({ data }: { data: RepoAnalysis }) {
 
     const handleCopyBadge = useCallback(() => {
         try {
-            const origin = typeof window !== 'undefined' ? window.location.origin : 'https://getmygit.vercel.app';
-            const badgeMarkdown = `[![GetMyGit Analyzed](https://img.shields.io/badge/GetMyGit-Analyzed-8BFF4D?style=for-the-badge&logo=github)](${origin}/${data.repo.owner}/${data.repo.name})`;
-            
+            const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
             if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(badgeMarkdown).then(() => {
+                navigator.clipboard.writeText(currentUrl).then(() => {
                     setShowBadgeCopied(true);
                     setTimeout(() => setShowBadgeCopied(false), 3000);
                 });
             } else {
-                // Fallback for older browsers or non-secure contexts
                 const textArea = document.createElement("textarea");
-                textArea.value = badgeMarkdown;
+                textArea.value = currentUrl;
                 document.body.appendChild(textArea);
                 textArea.select();
                 try {
@@ -247,14 +244,13 @@ export default function VisualizerClient({ data }: { data: RepoAnalysis }) {
                     setTimeout(() => setShowBadgeCopied(false), 3000);
                 } catch (err) {
                     console.error('Fallback copy failed', err);
-                    alert('Failed to copy badge markdown. Please copy it manually.');
                 }
                 document.body.removeChild(textArea);
             }
         } catch (error) {
-            console.error('Badge copy error:', error);
+            console.error('Link copy error:', error);
         }
-    }, [data.repo.owner, data.repo.name]);
+    }, []);
 
     return (
         <div className="w-full h-full min-h-[700px] flex flex-col gap-4">
@@ -295,7 +291,7 @@ export default function VisualizerClient({ data }: { data: RepoAnalysis }) {
                             className="relative flex items-center gap-2 px-3 py-1.5 rounded-lg bg-green-600/10 text-green-400 border border-green-600/20 hover:bg-green-600/20 transition-all text-xs font-medium"
                         >
                             <Shield size={14} /> 
-                            {showBadgeCopied ? 'Markdown Copied!' : 'Get Badge'}
+                            {showBadgeCopied ? 'Link Copied!' : 'Share Analysis'}
                         </button>
                         <div className="relative group/tooltip flex items-center mr-2">
                             <button className="p-1 text-zinc-500 hover:text-zinc-300 transition-colors">
