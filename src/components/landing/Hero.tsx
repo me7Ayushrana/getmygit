@@ -76,37 +76,6 @@ export function Hero() {
                 />
             </div>
 
-            {/* Subtle Floating Hexagons */}
-            {isMounted && (
-                <div className="absolute inset-0 overflow-hidden pointer-events-none -z-20">
-                    {[...Array(8)].map((_, i) => (
-                        <motion.div
-                            key={i}
-                            className="absolute opacity-10"
-                            style={{
-                                left: `${Math.random() * 100}%`,
-                                top: `${Math.random() * 100}%`,
-                            }}
-                            initial={{ scale: 0, rotate: 0 }}
-                            animate={{ 
-                                scale: [1, 1.2, 1], 
-                                rotate: [0, 360],
-                                y: [0, -50, 0]
-                            }}
-                            transition={{
-                                duration: Math.random() * 20 + 20,
-                                repeat: Infinity,
-                                ease: "linear",
-                            }}
-                        >
-                            <svg width="150" height="150" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M50 0L93.3013 25V75L50 100L6.69873 75V25L50 0Z" fill="white" fillOpacity="0.1" stroke="white" strokeOpacity="0.2" strokeWidth="0.5"/>
-                            </svg>
-                        </motion.div>
-                    ))}
-                </div>
-            )}
-
             {/* Premium Right Border Animation (Data Flow) */}
             <div className="absolute right-0 top-0 w-32 h-full pointer-events-none hidden xl:block z-0 mix-blend-screen opacity-60">
                 {/* Subtle Grid Lines */}
