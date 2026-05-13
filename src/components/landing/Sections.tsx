@@ -14,39 +14,71 @@ export function StorySection() {
 
             <div className="container max-w-6xl px-4 relative z-10">
                 {/* Manifesto Header */}
-                <div className="text-center mb-24">
-                    <h2 className="text-6xl md:text-9xl font-display font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-white/10 opacity-20 select-none absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full pointer-events-none">
+                <div className="text-center mb-24 relative">
+                    <motion.h2 
+                        initial={{ opacity: 0, y: -20 }}
+                        whileInView={{ opacity: 0.15, y: 0 }}
+                        transition={{ duration: 1.5, ease: "easeOut" }}
+                        className="text-6xl md:text-9xl font-display font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-white/10 select-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full pointer-events-none z-0"
+                    >
                         MANIFESTO
-                    </h2>
-                    <h2 className="relative text-5xl md:text-7xl font-display font-bold tracking-tight text-white mb-6">
+                    </motion.h2>
+                    <motion.h2 
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.8 }}
+                        className="relative text-5xl md:text-7xl font-display font-bold tracking-tight text-white mb-6 z-10"
+                    >
                         WHY WE <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-purple to-neon-blue">EXIST</span>?
-                    </h2>
-                    <p className="text-xl text-gray-400 max-w-2xl mx-auto font-light leading-relaxed">
+                    </motion.h2>
+                    <motion.p 
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        transition={{ delay: 0.3, duration: 1 }}
+                        className="relative text-xl text-gray-400 max-w-2xl mx-auto font-light leading-relaxed z-10"
+                    >
                         The codebase is a territory. We are the cartographers.
-                    </p>
+                    </motion.p>
                 </div>
 
                 {/* Data Blocks Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <motion.div 
+                    initial="hidden"
+                    whileInView="show"
+                    viewport={{ once: true }}
+                    variants={{
+                        hidden: { opacity: 0 },
+                        show: {
+                            opacity: 1,
+                            transition: {
+                                staggerChildren: 0.2
+                            }
+                        }
+                    }}
+                    className="grid grid-cols-1 md:grid-cols-3 gap-8"
+                >
                     <ManifestoCard
                         title="COMPLEXITY OVERLOAD"
                         number="01"
                         desc="Modern systems are vast labyrinths. Developers spend 70% of their time just navigating, trying to build a mental model that breaks the moment they switch context."
                         accent="border-neon-purple/50"
+                        delay={0.1}
                     />
                     <ManifestoCard
                         title="VISUAL COGNITION"
                         number="02"
                         desc="We evolved to see patterns, not regex. Text-based documentation is linear and slow. Visual graphs are parallel, instant, and reveal the hidden truth of dependencies."
                         accent="border-neon-blue/50"
+                        delay={0.2}
                     />
                     <ManifestoCard
                         title="INSTANT CLARITY"
                         number="03"
                         desc="Onboarding shouldn't take weeks. Debugging shouldn't require archaeology. We act as the lens that brings the chaotic reality of code into sharp, actionable focus."
                         accent="border-neon-green/50"
+                        delay={0.3}
                     />
-                </div>
+                </motion.div>
 
                 {/* Know More Interaction */}
                 <div className="mt-16 text-center">
@@ -103,28 +135,38 @@ export function StorySection() {
     );
 }
 
-function ManifestoCard({ title, number, desc, accent }: { title: string, number: string, desc: string, accent: string }) {
+function ManifestoCard({ title, number, desc, accent, delay }: { title: string, number: string, desc: string, accent: string, delay: number }) {
     return (
-        <div className={`group relative p-8 h-full bg-[#0a0a0a] border border-white/10 hover:border-white/20 transition-all duration-500 overflow-hidden`}>
+        <motion.div 
+            variants={{
+                hidden: { opacity: 0, y: 30 },
+                show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
+            }}
+            whileHover={{ scale: 1.02, y: -5 }}
+            className={`group relative p-8 h-full bg-[#0a0a0a]/40 backdrop-blur-md border border-white/10 hover:border-white/30 transition-all duration-500 overflow-hidden rounded-2xl`}
+        >
+            {/* Shimmer Effect */}
+            <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+            
             {/* Hover Accent Line */}
             <div className={`absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-white/50 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-700 ${accent.replace('border-', 'bg-')}`} />
 
-            <div className="flex justify-between items-start mb-8">
+            <div className="flex justify-between items-start mb-8 relative z-10">
                 <h3 className="text-2xl font-display font-bold text-gray-200 tracking-wide group-hover:text-white transition-colors">{title}</h3>
                 <span className="font-mono text-xs font-bold text-gray-600 tracking-widest">{number}</span>
             </div>
 
-            <p className="text-gray-400 leading-relaxed font-mono text-sm tracking-wide group-hover:text-gray-300 transition-colors">
+            <p className="text-gray-400 leading-relaxed font-mono text-sm tracking-wide group-hover:text-gray-300 transition-colors relative z-10">
                 {desc}
             </p>
 
             {/* Decorative Tech Elements */}
-            <div className="absolute bottom-4 right-4 flex gap-1">
-                <div className="w-1 h-1 bg-gray-700 rounded-full" />
-                <div className="w-1 h-1 bg-gray-700 rounded-full" />
-                <div className="w-1 h-1 bg-gray-700 rounded-full" />
+            <div className="absolute bottom-4 right-4 flex gap-1 z-10">
+                <div className="w-1 h-1 bg-gray-700 rounded-full group-hover:bg-neon-blue group-hover:animate-pulse transition-colors" />
+                <div className="w-1 h-1 bg-gray-700 rounded-full group-hover:bg-neon-purple group-hover:animate-pulse delay-75 transition-colors" />
+                <div className="w-1 h-1 bg-gray-700 rounded-full group-hover:bg-neon-green group-hover:animate-pulse delay-150 transition-colors" />
             </div>
-        </div>
+        </motion.div>
     );
 }
 
