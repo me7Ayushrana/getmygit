@@ -66,28 +66,43 @@ export function Hero() {
             {/* Cinematic Netflix/Vercel Background */}
             <div className="absolute inset-0 bg-void -z-30" />
 
-            {/* Subtle Floating Particles */}
+            {/* Premium Purple Glassmorphism Shimmer (Moving Right to Left) */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none -z-25">
+                <motion.div 
+                    initial={{ x: '100%' }}
+                    animate={{ x: '-100%' }}
+                    transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+                    className="absolute inset-0 w-[200%] h-full bg-gradient-to-r from-transparent via-purple-500/10 to-transparent blur-[120px] skew-x-12"
+                />
+            </div>
+
+            {/* Subtle Floating Hexagons */}
             {isMounted && (
                 <div className="absolute inset-0 overflow-hidden pointer-events-none -z-20">
-                    {[...Array(20)].map((_, i) => (
+                    {[...Array(8)].map((_, i) => (
                         <motion.div
                             key={i}
-                            className="absolute w-1 h-1 bg-white rounded-full opacity-20 shadow-[0_0_10px_rgba(255,255,255,0.8)]"
-                            initial={{
-                                x: Math.random() * window.innerWidth,
-                                y: Math.random() * window.innerHeight,
-                                scale: Math.random() * 0.5 + 0.5,
+                            className="absolute opacity-10"
+                            style={{
+                                left: `${Math.random() * 100}%`,
+                                top: `${Math.random() * 100}%`,
                             }}
-                            animate={{
-                                y: [null, Math.random() * -200],
-                                opacity: [0.2, 0.5, 0.2],
+                            initial={{ scale: 0, rotate: 0 }}
+                            animate={{ 
+                                scale: [1, 1.2, 1], 
+                                rotate: [0, 360],
+                                y: [0, -50, 0]
                             }}
                             transition={{
-                                duration: Math.random() * 10 + 10,
+                                duration: Math.random() * 20 + 20,
                                 repeat: Infinity,
                                 ease: "linear",
                             }}
-                        />
+                        >
+                            <svg width="150" height="150" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M50 0L93.3013 25V75L50 100L6.69873 75V25L50 0Z" fill="white" fillOpacity="0.1" stroke="white" strokeOpacity="0.2" strokeWidth="0.5"/>
+                            </svg>
+                        </motion.div>
                     ))}
                 </div>
             )}
