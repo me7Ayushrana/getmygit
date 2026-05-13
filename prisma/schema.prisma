@@ -10,23 +10,23 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Role {
-  ADMIN
-  DEVELOPER
-  REVIEWER
-}
+// enum Role {
+//   ADMIN
+//   DEVELOPER
+//   REVIEWER
+// }
 
-enum PrStatus {
-  PENDING
-  APPROVED
-  REJECTED
-}
+// enum PrStatus {
+//   PENDING
+//   APPROVED
+//   REJECTED
+// }
 
 model User {
   id        String   @id @default(cuid())
   email     String   @unique
   password  String
-  role      Role     @default(DEVELOPER)
+  role      String   @default("DEVELOPER")
   name      String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -50,7 +50,7 @@ model PullRequest {
   additions     Int
   deletions     Int
   riskScore     Int      @default(0)
-  status        PrStatus @default(PENDING)
+  status        String   @default("PENDING")
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
@@ -62,7 +62,7 @@ model Review {
   id         String   @id @default(cuid())
   prId       String
   reviewerId String
-  status     PrStatus
+  status     String
   comment    String?
   createdAt  DateTime @default(now())
 

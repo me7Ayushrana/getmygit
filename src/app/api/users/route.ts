@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { UserService } from '@/services/userService';
 
 export const dynamic = 'force-dynamic';
-import { Role } from '@prisma/client';
+import { Role } from '@/types/prisma';
 
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);

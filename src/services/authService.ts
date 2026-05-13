@@ -1,6 +1,6 @@
 import prisma from '@/lib/prisma';
 import { hashPassword, comparePassword, signToken } from '@/lib/auth';
-import { Role } from '@prisma/client';
+import { Role } from '@/types/prisma';
 
 export class AuthService {
     static async register(data: { email: string; password: string; name?: string; role?: Role }) {

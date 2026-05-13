@@ -1,6 +1,6 @@
 import prisma from '@/lib/prisma';
 import { PrAnalyzerService } from './prAnalyzer';
-import { PrStatus } from '@prisma/client';
+import { PrStatus } from '@/types/prisma';
 
 export class PrService {
     static async syncPr(githubUrl: string) {

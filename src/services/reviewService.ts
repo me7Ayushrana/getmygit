@@ -1,5 +1,5 @@
 import prisma from '@/lib/prisma';
-import { PrStatus } from '@prisma/client';
+import { PrStatus } from '@/types/prisma';
 import { NotificationService } from './notificationService';
 import { AuditService } from './auditService';
 
