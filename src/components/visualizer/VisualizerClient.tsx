@@ -23,7 +23,6 @@ import { TimelineView } from './TimelineView';
 import { LayoutGrid, Table as TableIcon, Search, FileCode, Star, GitFork, Eye, CircleDot, Calendar, ExternalLink, Github, X, BookOpen, BarChart2, Download, Code, Globe, Shield, Activity, Clock, Info } from 'lucide-react';
 import { toPng } from 'html-to-image';
 import { motion } from 'framer-motion';
-import { GitHubService } from '@/services/github';
 
 const nodeTypes = {
     folder: GlassNode,
@@ -195,7 +194,9 @@ export default function VisualizerClient({ data }: { data: RepoAnalysis }) {
                 setIsLoadingCode(false);
             } else {
                 try {
-                    const content = await GitHubService.getFileContent(owner, name, path);
+                    const res = await fetch(`/api/github/content?owner=${owner}&repo=${name}&path=${encodeURIComponent(path)}`);
+                    if (!res.ok) throw new Error('Failed to fetch');
+                    const content = await res.text();
                     setCodeContent(content);
                 } catch (error) {
                     console.error("Failed to fetch code", error);
