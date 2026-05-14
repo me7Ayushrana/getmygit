@@ -12,8 +12,22 @@ export function Hero() {
     const [isMounted, setIsMounted] = useState(false);
     const router = useRouter();
 
+    const [isOnline, setIsOnline] = useState(true);
+
     useEffect(() => {
         setIsMounted(true);
+        setIsOnline(navigator.onLine);
+
+        const handleOnline = () => setIsOnline(true);
+        const handleOffline = () => setIsOnline(false);
+
+        window.addEventListener('online', handleOnline);
+        window.addEventListener('offline', handleOffline);
+
+        return () => {
+            window.removeEventListener('online', handleOnline);
+            window.removeEventListener('offline', handleOffline);
+        };
     }, []);
 
     const handleAnalyze = () => {
@@ -113,12 +127,14 @@ export function Hero() {
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                    whileHover={{ scale: 1.05, backgroundColor: 'rgba(0,0,0,0.08)' }}
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-black/5 dark:border-white/10 bg-white/50 dark:bg-white/5 backdrop-blur-md mb-8 hover:bg-black/5 dark:hover:bg-white/10 transition-all cursor-pointer shadow-sm group"
+                    whileHover={{ scale: 1.05 }}
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-black/5 dark:border-white/10 bg-white/50 dark:bg-white/5 backdrop-blur-md mb-8 hover:bg-black/5 dark:hover:bg-white/10 transition-all cursor-default shadow-sm group"
                 >
-                    <span className="flex h-2 w-2 rounded-full bg-primary shadow-[0_0_10px_#E11D48]" />
-                    <span className="text-xs font-semibold tracking-wide text-gray-600 dark:text-zinc-300">GetMyGit Cinematic Engine is live</span>
-                    <ArrowRight size={14} className="text-gray-400 dark:text-zinc-500 group-hover:translate-x-1 transition-transform" />
+                    <span className={`flex h-2 w-2 rounded-full ${isOnline ? 'bg-emerald-500 shadow-[0_0_10px_#10b981]' : 'bg-rose-500 shadow-[0_0_10px_#f43f5e] animate-pulse'}`} />
+                    <span className="text-xs font-semibold tracking-wide text-gray-600 dark:text-zinc-300">
+                        {isOnline ? 'GetMyGit Cinematic Engine is live' : 'Engine connection lost - working offline'}
+                    </span>
+                    <ArrowRight size={14} className={`text-gray-400 dark:text-zinc-500 group-hover:translate-x-1 transition-transform ${!isOnline && 'hidden'}`} />
                 </motion.div>
 
                 {/* Main Headline with Split Text Effect */}
