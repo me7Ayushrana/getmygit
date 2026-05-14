@@ -35,7 +35,7 @@ export const StatsPanel = ({ languages, repo }: StatsPanelProps) => {
                     <h3 className="text-sm font-semibold text-gray-900 dark:text-zinc-100 flex items-center gap-2">
                         <PieChart size={16} /> Languages
                     </h3>
-                    <Tooltip text="The distribution of programming languages used in the codebase, calculated by total byte count per file." position="bottom-left">
+                    <Tooltip text="The distribution of programming languages used in the codebase, calculated by total byte count per file." position="bottom">
                         <Info size={14} className="text-zinc-500 hover:text-white cursor-help" />
                     </Tooltip>
                 </div>
@@ -67,7 +67,7 @@ export const StatsPanel = ({ languages, repo }: StatsPanelProps) => {
             <div className="space-y-2 pt-4 border-t border-black/[0.05] dark:border-zinc-800">
                 <div className="flex items-center justify-between mb-2">
                     <h3 className="text-sm font-semibold text-gray-900 dark:text-zinc-100">Details</h3>
-                    <Tooltip text="Key metadata and synchronization details retrieved from the GitHub API." position="bottom-left">
+                    <Tooltip text="Key metadata and synchronization details retrieved from the GitHub API." position="bottom">
                         <Info size={14} className="text-zinc-500 hover:text-white cursor-help" />
                     </Tooltip>
                 </div>

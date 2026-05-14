@@ -286,7 +286,7 @@ export default function VisualizerClient({ data }: { data: RepoAnalysis }) {
                             <Shield size={14} /> 
                             {showBadgeCopied ? 'Intelligence Link Copied!' : 'Generate Intelligence Link'}
                         </button>
-                        <Tooltip text="Copy a markdown snippet to display your repository's structural intelligence on your GitHub README." position="bottom-left">
+                        <Tooltip text="Copy a markdown snippet to display your repository's structural intelligence on your GitHub README." position="bottom">
                             <button className="p-1 text-gray-400 dark:text-zinc-500 hover:text-gray-900 dark:hover:text-zinc-300 transition-colors">
                                 <Info size={14} className="cursor-help" />
                             </button>

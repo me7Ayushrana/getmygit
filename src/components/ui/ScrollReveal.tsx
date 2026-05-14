@@ -31,7 +31,7 @@ export function ScrollReveal({
             transition: {
                 duration,
                 delay,
-                ease: [0.25, 0.1, 0.25, 1], // Custom cubic-bezier for classy motion
+                ease: [0.25, 0.1, 0.25, 1] as any, // Custom cubic-bezier for classy motion
             },
         },
     };

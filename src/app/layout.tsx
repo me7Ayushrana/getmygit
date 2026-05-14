@@ -52,7 +52,7 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://raw.githubusercontent.com" />
       </head>
       <body className={`${inter.variable} ${orbitron.variable} font-sans antialiased bg-[#fafafa] dark:bg-void text-gray-900 dark:text-white transition-colors duration-500`}>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
 
           <AuthProvider>
             <SmoothScroll>

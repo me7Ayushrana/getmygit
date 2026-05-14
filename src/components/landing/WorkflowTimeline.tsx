@@ -61,11 +61,10 @@ export function WorkflowTimeline() {
                         
                         {/* Primary electric pulse */}
                         <motion.div
-                            className="absolute top-0 h-full w-20 rounded-full"
+                            className="absolute top-0 h-full w-20 rounded-full dark:!bg-white" // Overwrite for dark mode to be bright white
                             style={{ 
                                 background: 'linear-gradient(90deg, transparent, rgba(124,58,237,0.4), rgba(59,130,246,0.6), rgba(124,58,237,0.4), transparent)',
                             }}
-                            className="dark:!bg-white" // Overwrite for dark mode to be bright white
                             animate={{ left: ['-10%', '110%'] }}
                             transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut", repeatDelay: 1 }}
                         />
