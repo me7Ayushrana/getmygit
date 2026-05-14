@@ -1,9 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import { Github, LogOut, User } from 'lucide-react';
+import { Github, LogOut, User, Sparkles } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
+import { ThemeToggle } from '@/components/theme/ThemeToggle';
 
 export function Navbar() {
     const [scrolled, setScrolled] = useState(false);
@@ -16,63 +17,87 @@ export function Navbar() {
     }, []);
 
     return (
-        <div className="fixed top-6 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none">
+        <div className="fixed top-5 left-0 right-0 z-50 flex justify-center px-6 pointer-events-none">
             <nav className={`
-        transition-all duration-500 ease-out pointer-events-auto
-        ${scrolled ? 'py-3 bg-[#030014]/80 backdrop-blur-xl border border-white/10 shadow-[0_0_20px_rgba(0,240,255,0.1)]' : 'py-6 bg-transparent border border-transparent'}
-        rounded-full px-8 flex items-center justify-between
-        w-full max-w-7xl
-      `}>
+                transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-auto
+                ${scrolled 
+                    ? 'py-2.5 bg-white/70 dark:bg-[#0a0814]/60 backdrop-blur-2xl border border-black/[0.05] dark:border-white/[0.08] shadow-[0_8px_32px_rgba(0,0,0,0.05)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.4)]' 
+                    : 'py-4 bg-transparent border border-transparent shadow-none'
+                }
+                rounded-2xl px-6 flex items-center justify-between
+                w-full max-w-6xl
+            `}>
                 {/* Logo */}
                 <Link href="/" className="flex items-center gap-3 group">
-                    <div className="w-8 h-8 rounded-full border border-neon-green/30 flex items-center justify-center relative overflow-hidden group-hover:border-neon-green/60 transition-colors">
-                        <div className="absolute inset-0 bg-neon-green/20 blur-md" />
-                        <span className="relative z-10 text-xs font-display font-bold text-neon-green">GG</span>
+                    <div className="relative w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 border border-emerald-500/20 flex items-center justify-center overflow-hidden group-hover:border-emerald-400/40 transition-all duration-300">
+                        <div className="absolute inset-0 bg-emerald-500/10 dark:bg-emerald-500/10 blur-sm" />
+                        <span className="relative z-10 text-xs font-display font-black text-emerald-600 dark:text-emerald-400 tracking-tight">GG</span>
                     </div>
-                    <span className="text-lg font-display font-bold tracking-widest text-white group-hover:text-neon-green transition-colors">
+                    <span className="text-base font-display font-bold tracking-[0.15em] text-gray-900 dark:text-white/90 group-hover:text-black dark:group-hover:text-white transition-colors">
                         getmygit
                     </span>
                 </Link>
 
                 {/* Desktop Links */}
-                <div className="hidden md:flex items-center gap-1">
-                    <Link href="/analyze-pr" className="px-5 py-2 text-xs font-display tracking-widest text-blue-400 hover:text-white hover:bg-blue-500/10 rounded-full transition-all uppercase border border-blue-500/20">
-                        PR Intelligence
+                <div className="hidden lg:flex items-center gap-0.5 bg-black/[0.03] dark:bg-white/[0.03] rounded-xl border border-black/[0.05] dark:border-white/[0.05] px-1.5 py-1">
+                    <Link href="/analyze-pr" className="px-4 py-2 text-[11px] font-display tracking-[0.15em] text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:bg-blue-500/5 dark:hover:bg-blue-500/10 rounded-lg transition-all duration-200 uppercase">
+                        PR Intel
                     </Link>
                     {user && (
-                        <Link href="/dashboard" className="px-5 py-2 text-xs font-display tracking-widest text-purple-400 hover:text-white hover:bg-purple-500/10 rounded-full transition-all uppercase border border-purple-500/20">
+                        <Link href="/dashboard" className="px-4 py-2 text-[11px] font-display tracking-[0.15em] text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.06] rounded-lg transition-all duration-200 uppercase">
                             Dashboard
                         </Link>
                     )}
-                    {['Story', 'Features', 'How it Works'].map((item) => (
-                        <Link key={item} href={`/#${item.toLowerCase().replace(/\s/g, '-')}`} className="px-5 py-2 text-xs font-display tracking-widest text-gray-400 hover:text-white hover:bg-white/5 rounded-full transition-all uppercase">
+                    {['Story', 'Features'].map((item) => (
+                        <Link key={item} href={`/#${item.toLowerCase()}`} className="px-4 py-2 text-[11px] font-display tracking-[0.15em] text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.06] rounded-lg transition-all duration-200 uppercase">
                             {item}
                         </Link>
                     ))}
+                    <Link href="/#how-it-works" className="px-4 py-2 text-[11px] font-display tracking-[0.15em] text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.06] rounded-lg transition-all duration-200 uppercase">
+                        How it Works
+                    </Link>
+
+                    {/* Divider */}
+                    <div className="w-px h-5 bg-black/[0.08] dark:bg-white/[0.08] mx-1" />
+
+                    <Link href="/#prospects" className="px-4 py-2 text-[11px] font-display tracking-[0.15em] text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 hover:bg-purple-500/5 dark:hover:bg-purple-500/10 rounded-lg transition-all duration-200 uppercase flex items-center gap-1.5">
+                        <Sparkles className="w-3 h-3" />
+                        Prospects
+                    </Link>
                 </div>
 
-                {/* Action */}
-                <div className="flex items-center gap-4">
-                    <a href="https://github.com/me7Ayushrana/getmygit" target="_blank" rel="noreferrer" className="text-gray-400 hover:text-neon-blue transition-colors">
-                        <Github size={18} />
+                {/* Right Actions */}
+                <div className="flex items-center gap-3">
+                    <ThemeToggle />
+                    
+                    <a 
+                        href="https://github.com/me7Ayushrana/getmygit" 
+                        target="_blank" 
+                        rel="noreferrer" 
+                        className="w-8 h-8 flex items-center justify-center rounded-lg bg-black/[0.03] dark:bg-white/[0.03] border border-black/10 dark:border-white/[0.06] hover:bg-black/5 dark:hover:bg-white/[0.08] hover:border-black/20 dark:hover:border-white/[0.12] text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all duration-200"
+                    >
+                        <Github size={15} />
                     </a>
 
                     {user ? (
-                        <div className="flex items-center gap-3">
-                            <div className="hidden sm:flex items-center gap-2 px-3 py-1 bg-white/5 border border-white/10 rounded-full">
-                                <User size={12} className="text-neon-green" />
-                                <span className="text-[10px] font-display tracking-widest text-zinc-400 uppercase">{user.role}</span>
+                        <div className="flex items-center gap-2">
+                            <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-black/[0.03] dark:bg-white/[0.03] border border-black/[0.05] dark:border-white/[0.06] rounded-lg">
+                                <User size={12} className="text-emerald-600 dark:text-emerald-400" />
+                                <span className="text-[10px] font-display tracking-[0.15em] text-gray-500 dark:text-gray-400 uppercase">{user.role}</span>
                             </div>
                             <button
                                 onClick={logout}
-                                className="flex items-center gap-2 px-4 py-2 bg-red-500/10 border border-red-500/20 hover:bg-red-500/20 text-red-400 rounded-full text-[10px] font-display font-bold tracking-widest transition-all"
+                                className="flex items-center gap-1.5 px-3 py-1.5 bg-red-500/[0.06] border border-red-500/15 hover:bg-red-500/[0.12] text-red-600 dark:text-red-400 rounded-lg text-[10px] font-display font-bold tracking-[0.15em] transition-all duration-200"
                             >
-                                <LogOut size={12} /> EXIT
+                                <LogOut size={11} /> EXIT
                             </button>
                         </div>
                     ) : (
-                        <Link href="/login" className="px-6 py-2 bg-neon-blue/10 border border-neon-blue/20 hover:bg-neon-blue/20 hover:border-neon-blue/50 text-neon-blue rounded-full text-xs font-display font-bold tracking-wider transition-all text-glow">
-                            SIGN IN
+                        <Link 
+                            href="/login" 
+                            className="px-5 py-2 bg-black/90 dark:bg-white/[0.06] border border-black/10 dark:border-white/[0.1] hover:bg-black dark:hover:bg-white/[0.1] text-white rounded-lg text-[11px] font-display font-bold tracking-[0.15em] transition-all duration-200 uppercase"
+                        >
+                            Sign In
                         </Link>
                     )}
                 </div>

@@ -21,8 +21,9 @@ import { GalaxyView } from './GalaxyView';
 import { IntelligenceView } from './IntelligenceView';
 import { TimelineView } from './TimelineView';
 import { LayoutGrid, Table as TableIcon, Search, FileCode, Star, GitFork, Eye, CircleDot, Calendar, ExternalLink, Github, X, BookOpen, BarChart2, Download, Code, Globe, Shield, Activity, Clock, Info } from 'lucide-react';
+import { Tooltip } from '@/components/ui/Tooltip';
 import { toPng } from 'html-to-image';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const nodeTypes = {
     folder: GlassNode,
@@ -100,8 +101,6 @@ export default function VisualizerClient({ data }: { data: RepoAnalysis }) {
                 visibleNodeIds.add(match.id);
                 // Add ancestors
                 let currentId = match.id;
-                // Simple ancestor lookup by finding incoming edges
-                // This is O(N*Depth) inside loop, but graph is small enough (<1000 nodes)
                 while (currentId !== rootId) {
                     const parentEdge = allEdges.find(e => e.target === currentId);
                     if (!parentEdge) break;
@@ -156,14 +155,14 @@ export default function VisualizerClient({ data }: { data: RepoAnalysis }) {
                 source: e.source,
                 target: e.target,
                 animated: false,
-                style: { stroke: '#52525b', strokeWidth: 1.5, opacity: 0.5 },
+                style: { stroke: '#94a3b8', strokeWidth: 1.5, opacity: 0.4 },
                 type: 'smoothstep'
             }))
         );
 
         setNodes(layoutedNodes);
         setEdges(layoutedEdges);
-    }, [data, setNodes, setEdges, getVisibleGraph, collapsedIds]); // Searching triggers getVisibleGraph
+    }, [data, setNodes, setEdges, getVisibleGraph, collapsedIds]);
 
     const onNodeClick = useCallback(async (_: any, node: Node) => {
         if (node.type === 'folder' || node.type === 'root') {
@@ -180,15 +179,13 @@ export default function VisualizerClient({ data }: { data: RepoAnalysis }) {
             const fileName = node.data.label;
             const isImage = ['png', 'jpg', 'jpeg', 'gif', 'svg', 'webp', 'ico'].includes(fileName.split('.').pop()?.toLowerCase() || '');
 
-            // Open Code View Sidebar
             setSidebarTab('code');
             setSelectedFile(fileName);
             setSelectedFilePath(path);
             setIsLoadingCode(true);
-            setCodeContent(''); // Clear previous
+            setCodeContent('');
 
             if (isImage) {
-                // Use raw.githubusercontent.com for images to avoid CORS issues or binary fetching
                 const rawUrl = `https://raw.githubusercontent.com/${owner}/${name}/${default_branch}/${path}`;
                 setCodeContent(rawUrl);
                 setIsLoadingCode(false);
@@ -209,19 +206,13 @@ export default function VisualizerClient({ data }: { data: RepoAnalysis }) {
     }, [data.repo]);
 
     const handleExport = useCallback(() => {
-        if (graphRef.current === null) {
-            return;
-        }
-
-        toPng(graphRef.current, { cacheBust: true, backgroundColor: '#050505' })
+        if (graphRef.current === null) return;
+        toPng(graphRef.current, { cacheBust: true, backgroundColor: document.documentElement.classList.contains('dark') ? '#050505' : '#ffffff' })
             .then((dataUrl) => {
                 const link = document.createElement('a');
                 link.download = `${data.repo.name}-architecture.png`;
                 link.href = dataUrl;
                 link.click();
-            })
-            .catch((err) => {
-                console.error(err);
             });
     }, [graphRef, data.repo.name]);
 
@@ -255,31 +246,31 @@ export default function VisualizerClient({ data }: { data: RepoAnalysis }) {
     }, []);
 
     return (
-        <div className="w-full h-full min-h-[700px] flex flex-col gap-4">
+        <div className="w-full h-full min-h-[700px] flex flex-col gap-4 transition-colors duration-500">
             {/* Header */}
-            <div className="bg-[#09090b] border border-[#27272a] p-3 rounded-xl flex items-center justify-between shadow-sm gap-4">
+            <div className="bg-white dark:bg-[#09090b] border border-black/[0.05] dark:border-[#27272a] p-3 rounded-xl flex items-center justify-between shadow-sm gap-4 transition-colors duration-500">
                 <div className="flex items-center gap-4">
                     <div>
-                        <h2 className="text-lg font-semibold text-zinc-100 flex items-center gap-2">
+                        <h2 className="text-lg font-semibold text-gray-900 dark:text-zinc-100 flex items-center gap-2">
                             <Github size={18} />
-                            {data.repo.owner} / <span className="text-blue-400">{data.repo.name}</span>
+                            {data.repo.owner} / <span className="text-blue-600 dark:text-blue-400">{data.repo.name}</span>
                         </h2>
                     </div>
                 </div>
 
                 <div className="flex-1 max-w-md relative group">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 group-focus-within:text-blue-400 transition-colors" size={16} />
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-zinc-500 group-focus-within:text-blue-600 dark:group-focus-within:text-blue-400 transition-colors" size={16} />
                     <input
                         type="text"
                         placeholder="Search files..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full bg-[#18181b] border border-[#27272a] rounded-lg pl-10 pr-8 py-1.5 text-sm text-zinc-200 outline-none focus:border-blue-500/50 transition-all placeholder:text-zinc-600"
+                        className="w-full bg-gray-50 dark:bg-[#18181b] border border-black/[0.05] dark:border-[#27272a] rounded-lg pl-10 pr-8 py-1.5 text-sm text-gray-900 dark:text-zinc-200 outline-none focus:border-blue-500/50 transition-all placeholder:text-gray-400 dark:placeholder:text-zinc-600"
                     />
                     {searchTerm && (
                         <button
                             onClick={() => setSearchTerm('')}
-                            className="absolute right-2 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-200"
+                            className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 dark:text-zinc-500 hover:text-gray-900 dark:hover:text-zinc-200"
                         >
                             <X size={14} />
                         </button>
@@ -290,57 +281,53 @@ export default function VisualizerClient({ data }: { data: RepoAnalysis }) {
                     <div className="flex items-center gap-1">
                         <button
                             onClick={handleCopyBadge}
-                            className="relative flex items-center gap-2 px-3 py-1.5 rounded-lg bg-green-600/10 text-green-400 border border-green-600/20 hover:bg-green-600/20 transition-all text-xs font-medium"
+                            className="relative flex items-center gap-2 px-3 py-1.5 rounded-lg bg-green-600/5 dark:bg-green-600/10 text-green-600 dark:text-green-400 border border-green-600/10 dark:border-green-600/20 hover:bg-green-600/10 dark:hover:bg-green-600/20 transition-all text-xs font-medium"
                         >
                             <Shield size={14} /> 
                             {showBadgeCopied ? 'Intelligence Link Copied!' : 'Generate Intelligence Link'}
                         </button>
-                        <div className="relative group/tooltip flex items-center mr-2">
-                            <button className="p-1 text-zinc-500 hover:text-zinc-300 transition-colors">
+                        <Tooltip text="Copy a markdown snippet to display your repository's structural intelligence on your GitHub README." position="bottom-left">
+                            <button className="p-1 text-gray-400 dark:text-zinc-500 hover:text-gray-900 dark:hover:text-zinc-300 transition-colors">
                                 <Info size={14} className="cursor-help" />
                             </button>
-                            <div className="absolute top-full right-0 mt-2 w-64 p-3 bg-[#18181b] border border-white/10 rounded-lg shadow-xl text-xs text-zinc-400 opacity-0 group-hover/tooltip:opacity-100 transition-opacity pointer-events-none z-50">
-                                <span className="font-semibold text-white block mb-1">Add to your README!</span>
-                                Clicking this copies a markdown snippet. Paste it into your GitHub <code className="text-primary font-mono bg-white/5 px-1 rounded">README.md</code> to proudly display that your repo has been structurally analyzed by GetMyGit.
-                            </div>
-                        </div>
+                        </Tooltip>
                     </div>
                     
                     <button
                         onClick={handleExport}
-                        className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-blue-600/10 text-blue-400 border border-blue-600/20 hover:bg-blue-600/20 transition-all text-xs font-medium mr-2"
+                        className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-blue-600/5 dark:bg-blue-600/10 text-blue-600 dark:text-blue-400 border border-blue-600/10 dark:border-blue-600/20 hover:bg-blue-600/10 dark:hover:bg-blue-600/20 transition-all text-xs font-medium mr-2"
                     >
                         <Download size={14} /> Export
                     </button>
 
-                    <div className="flex bg-[#18181b] rounded-lg p-1 border border-[#27272a]">
-                        <button onClick={() => setViewMode('graph')} className={`p-1.5 rounded-md transition-all ${viewMode === 'graph' ? 'bg-[#27272a] text-zinc-100' : 'text-zinc-500 hover:text-zinc-300'}`} title="Graph View">
+                    <div className="flex bg-gray-50 dark:bg-[#18181b] rounded-lg p-1 border border-black/[0.05] dark:border-[#27272a] transition-colors">
+                        <button onClick={() => setViewMode('graph')} className={`p-1.5 rounded-md transition-all ${viewMode === 'graph' ? 'bg-white dark:bg-[#27272a] text-blue-600 dark:text-zinc-100 shadow-sm dark:shadow-none' : 'text-gray-400 dark:text-zinc-500 hover:text-gray-600 dark:hover:text-zinc-300'}`} title="Graph View">
                             <LayoutGrid size={16} />
                         </button>
-                        <button onClick={() => setViewMode('galaxy')} className={`p-1.5 rounded-md transition-all ${viewMode === 'galaxy' ? 'bg-[#27272a] text-zinc-100' : 'text-zinc-500 hover:text-zinc-300'}`} title="Architecture View">
+                        <button onClick={() => setViewMode('galaxy')} className={`p-1.5 rounded-md transition-all ${viewMode === 'galaxy' ? 'bg-white dark:bg-[#27272a] text-blue-600 dark:text-zinc-100 shadow-sm dark:shadow-none' : 'text-gray-400 dark:text-zinc-500 hover:text-gray-600 dark:hover:text-zinc-300'}`} title="Architecture View">
                             <Globe size={16} />
                         </button>
-                        <button onClick={() => setViewMode('intelligence')} className={`p-1.5 rounded-md transition-all ${viewMode === 'intelligence' ? 'bg-[#27272a] text-zinc-100' : 'text-zinc-500 hover:text-zinc-300'}`} title="Intelligence View">
+                        <button onClick={() => setViewMode('intelligence')} className={`p-1.5 rounded-md transition-all ${viewMode === 'intelligence' ? 'bg-white dark:bg-[#27272a] text-blue-600 dark:text-zinc-100 shadow-sm dark:shadow-none' : 'text-gray-400 dark:text-zinc-500 hover:text-gray-600 dark:hover:text-zinc-300'}`} title="Intelligence View">
                             <Activity size={16} />
                         </button>
-                        <button onClick={() => setViewMode('timeline')} className={`p-1.5 rounded-md transition-all ${viewMode === 'timeline' ? 'bg-[#27272a] text-zinc-100' : 'text-zinc-500 hover:text-zinc-300'}`} title="Timeline View">
+                        <button onClick={() => setViewMode('timeline')} className={`p-1.5 rounded-md transition-all ${viewMode === 'timeline' ? 'bg-white dark:bg-[#27272a] text-blue-600 dark:text-zinc-100 shadow-sm dark:shadow-none' : 'text-gray-400 dark:text-zinc-500 hover:text-gray-600 dark:hover:text-zinc-300'}`} title="Timeline View">
                             <Clock size={16} />
                         </button>
-                        <button onClick={() => setViewMode('table')} className={`p-1.5 rounded-md transition-all ${viewMode === 'table' ? 'bg-[#27272a] text-zinc-100' : 'text-zinc-500 hover:text-zinc-300'}`} title="Table View">
+                        <button onClick={() => setViewMode('table')} className={`p-1.5 rounded-md transition-all ${viewMode === 'table' ? 'bg-white dark:bg-[#27272a] text-blue-600 dark:text-zinc-100 shadow-sm dark:shadow-none' : 'text-gray-400 dark:text-zinc-500 hover:text-gray-600 dark:hover:text-zinc-300'}`} title="Table View">
                             <TableIcon size={16} />
                         </button>
                     </div>
 
-                    <div className="h-4 w-[1px] bg-[#27272a] mx-1" />
+                    <div className="h-4 w-[1px] bg-black/[0.05] dark:bg-[#27272a] mx-1" />
 
-                    <div className="flex bg-[#18181b] rounded-lg p-1 border border-[#27272a]">
-                        <button onClick={() => setSidebarTab(prev => prev === 'readme' ? 'none' : 'readme')} className={`p-1.5 rounded-md transition-all ${sidebarTab === 'readme' ? 'bg-[#27272a] text-blue-400' : 'text-zinc-500 hover:text-zinc-300'}`} title="README">
+                    <div className="flex bg-gray-50 dark:bg-[#18181b] rounded-lg p-1 border border-black/[0.05] dark:border-[#27272a] transition-colors">
+                        <button onClick={() => setSidebarTab(prev => prev === 'readme' ? 'none' : 'readme')} className={`p-1.5 rounded-md transition-all ${sidebarTab === 'readme' ? 'bg-white dark:bg-[#27272a] text-blue-600 shadow-sm dark:shadow-none' : 'text-gray-400 dark:text-zinc-500 hover:text-gray-600 dark:hover:text-zinc-300'}`} title="README">
                             <BookOpen size={16} />
                         </button>
-                        <button onClick={() => setSidebarTab(prev => prev === 'stats' ? 'none' : 'stats')} className={`p-1.5 rounded-md transition-all ${sidebarTab === 'stats' ? 'bg-[#27272a] text-blue-400' : 'text-zinc-500 hover:text-zinc-300'}`} title="Stats">
+                        <button onClick={() => setSidebarTab(prev => prev === 'stats' ? 'none' : 'stats')} className={`p-1.5 rounded-md transition-all ${sidebarTab === 'stats' ? 'bg-white dark:bg-[#27272a] text-blue-600 shadow-sm dark:shadow-none' : 'text-gray-400 dark:text-zinc-500 hover:text-gray-600 dark:hover:text-zinc-300'}`} title="Stats">
                             <BarChart2 size={16} />
                         </button>
-                        <button onClick={() => setSidebarTab(prev => prev === 'code' ? 'none' : 'code')} className={`p-1.5 rounded-md transition-all ${sidebarTab === 'code' ? 'bg-[#27272a] text-blue-400' : 'text-zinc-500 hover:text-zinc-300'}`} title="Code View">
+                        <button onClick={() => setSidebarTab(prev => prev === 'code' ? 'none' : 'code')} className={`p-1.5 rounded-md transition-all ${sidebarTab === 'code' ? 'bg-white dark:bg-[#27272a] text-blue-600 shadow-sm dark:shadow-none' : 'text-gray-400 dark:text-zinc-500 hover:text-gray-600 dark:hover:text-zinc-300'}`} title="Code View">
                             <Code size={16} />
                         </button>
                     </div>
@@ -350,14 +337,14 @@ export default function VisualizerClient({ data }: { data: RepoAnalysis }) {
             {/* Main Content (Split View) */}
             <div className="flex-1 flex overflow-hidden gap-4">
                 {/* Visualizer Area */}
-                <div ref={graphRef} className={`flex-1 bg-[#050505] rounded-xl overflow-hidden relative border border-[#27272a] shadow-inner transition-all duration-300`}>
+                <div ref={graphRef} className={`flex-1 bg-[#fcfcfc] dark:bg-[#050505] rounded-xl overflow-hidden relative border border-black/[0.05] dark:border-[#27272a] shadow-inner transition-all duration-500`}>
                     {viewMode === 'graph' ? (
                         <div className="w-full h-full relative">
                             <div className="absolute top-6 left-6 z-10 pointer-events-none">
-                                <h3 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">
+                                <h3 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">
                                     Architectural Blueprint
                                 </h3>
-                                <p className="text-zinc-400 text-xs mt-1">
+                                <p className="text-gray-400 dark:text-zinc-400 text-xs mt-1 font-light">
                                     Structural anatomy and file hierarchy
                                 </p>
                             </div>
@@ -373,8 +360,8 @@ export default function VisualizerClient({ data }: { data: RepoAnalysis }) {
                                 maxZoom={2}
                                 proOptions={{ hideAttribution: true }}
                             >
-                                <Background color="#27272a" gap={24} size={1} />
-                                <Controls className="!bg-[#18181b] !border-[#27272a] [&>button]:!fill-zinc-400 [&>button:hover]:!fill-zinc-100" />
+                                <Background color={document.documentElement.classList.contains('dark') ? '#27272a' : '#e2e8f0'} gap={24} size={1} />
+                                <Controls className="!bg-white dark:!bg-[#18181b] !border-black/[0.05] dark:!border-[#27272a] [&>button]:!fill-gray-400 dark:[&>button]:!fill-zinc-400 [&>button:hover]:!fill-gray-900 dark:[&>button:hover]:!fill-zinc-100" />
                             </ReactFlow>
                         </div>
                     ) : viewMode === 'galaxy' ? (
@@ -384,9 +371,9 @@ export default function VisualizerClient({ data }: { data: RepoAnalysis }) {
                     ) : viewMode === 'timeline' ? (
                         <TimelineView data={data} />
                     ) : (
-                        <div className="h-full overflow-auto p-6">
-                            <table className="w-full text-left text-sm text-gray-400">
-                                <thead className="text-xs uppercase bg-white/5 text-gray-200">
+                        <div className="h-full overflow-auto p-6" data-lenis-prevent>
+                            <table className="w-full text-left text-sm text-gray-500">
+                                <thead className="text-xs uppercase bg-gray-50 dark:bg-white/5 text-gray-700 dark:text-gray-200">
                                     <tr>
                                         <th className="px-6 py-3 rounded-tl-lg">Type</th>
                                         <th className="px-6 py-3">File Name</th>
@@ -394,16 +381,16 @@ export default function VisualizerClient({ data }: { data: RepoAnalysis }) {
                                         <th className="px-6 py-3 rounded-tr-lg">Size (Bytes)</th>
                                     </tr>
                                 </thead>
-                                <tbody className="divide-y divide-white/5">
+                                <tbody className="divide-y divide-black/[0.05] dark:divide-white/5">
                                     {data.fileTree
                                         .filter(file => file.path.toLowerCase().includes(searchTerm.toLowerCase()))
                                         .slice(0, 100)
                                         .map((file, i) => (
-                                            <tr key={i} className="hover:bg-white/5 transition-colors">
+                                            <tr key={i} className="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
                                                 <td className="px-6 py-4 flex items-center gap-2">
-                                                    {file.type === 'tree' ? <FolderIcon /> : <FileCode size={16} className="text-blue-400" />}
+                                                    {file.type === 'tree' ? <FolderIcon /> : <FileCode size={16} className="text-blue-600 dark:text-blue-400" />}
                                                 </td>
-                                                <td className={`px-6 py-4 font-mono ${file.type === 'tree' ? 'font-bold text-white' : ''}`}>
+                                                <td className={`px-6 py-4 font-mono ${file.type === 'tree' ? 'font-bold text-gray-900 dark:text-white' : ''}`}>
                                                     {file.path.split('/').pop()}
                                                 </td>
                                                 <td className="px-6 py-4 truncate max-w-xs opacity-50">{file.path}</td>
@@ -417,15 +404,16 @@ export default function VisualizerClient({ data }: { data: RepoAnalysis }) {
                 </div>
 
                 {/* Sidebar */}
+                <AnimatePresence>
                 {sidebarTab !== 'none' && (
                     <motion.div
                         initial={{ width: 0, opacity: 0 }}
                         animate={{ width: 500, opacity: 1 }}
                         exit={{ width: 0, opacity: 0 }}
-                        className="bg-[#09090b] border border-[#27272a] rounded-xl flex flex-col shadow-xl"
+                        className="bg-white dark:bg-[#09090b] border border-black/[0.05] dark:border-[#27272a] rounded-xl flex flex-col shadow-xl overflow-hidden transition-colors duration-500"
                     >
-                        <div className="p-3 border-b border-[#27272a] flex items-center justify-between">
-                            <h3 className="font-semibold text-zinc-200 text-sm flex items-center gap-2">
+                        <div className="p-3 border-b border-black/[0.05] dark:border-[#27272a] flex items-center justify-between">
+                            <h3 className="font-semibold text-gray-900 dark:text-zinc-200 text-sm flex items-center gap-2">
                                 {sidebarTab === 'readme' ? <><BookOpen size={14} /> README</> :
                                     sidebarTab === 'stats' ? <><BarChart2 size={14} /> Statistics</> :
                                         <><Code size={14} /> Code Preview</>}
@@ -436,18 +424,18 @@ export default function VisualizerClient({ data }: { data: RepoAnalysis }) {
                                         href={`https://github.com/${data.repo.owner}/${data.repo.name}/blob/${data.repo.default_branch}/${selectedFilePath}`}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="text-zinc-500 hover:text-white transition-colors"
+                                        className="text-gray-400 dark:text-zinc-500 hover:text-gray-900 dark:hover:text-white transition-colors"
                                         title="View on GitHub"
                                     >
                                         <Github size={14} />
                                     </a>
                                 )}
-                                <button onClick={() => setSidebarTab('none')} className="text-zinc-500 hover:text-white">
+                                <button onClick={() => setSidebarTab('none')} className="text-gray-400 dark:text-zinc-500 hover:text-gray-900 dark:hover:text-white">
                                     <X size={14} />
                                 </button>
                             </div>
                         </div>
-                        <div className="flex-1 overflow-hidden">
+                        <div className="flex-1 overflow-hidden" data-lenis-prevent>
                             {sidebarTab === 'readme' ? (
                                 <ReadmeViewer content={data.readme || ''} />
                             ) : sidebarTab === 'stats' ? (
@@ -455,7 +443,7 @@ export default function VisualizerClient({ data }: { data: RepoAnalysis }) {
                             ) : (
                                 <div className="h-full">
                                     {isLoadingCode ? (
-                                        <div className="flex items-center justify-center h-full text-zinc-500 text-sm animate-pulse">Loading content...</div>
+                                        <div className="flex items-center justify-center h-full text-gray-400 dark:text-zinc-500 text-sm animate-pulse">Loading content...</div>
                                     ) : (
                                         <CodeViewer content={codeContent} fileName={selectedFile} />
                                     )}
@@ -464,6 +452,7 @@ export default function VisualizerClient({ data }: { data: RepoAnalysis }) {
                         </div>
                     </motion.div>
                 )}
+                </AnimatePresence>
             </div>
         </div>
     );
@@ -471,7 +460,7 @@ export default function VisualizerClient({ data }: { data: RepoAnalysis }) {
 
 function FolderIcon() {
     return (
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 text-blue-500/80">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 text-blue-600 dark:text-blue-500/80">
             <path d="M19.5 21a3 3 0 0 0 3-3v-4.5a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3V18a3 3 0 0 0 3 3h15ZM1.5 10.146V6a3 3 0 0 1 3-3h5.379a2.25 2.25 0 0 1 1.59.659l2.122 2.121c.14.141.331.22.53.22H19.5a3 3 0 0 1 3 3v1.146A4.483 4.483 0 0 0 19.5 9h-15a4.483 4.483 0 0 0-3 1.146Z" />
         </svg>
     );

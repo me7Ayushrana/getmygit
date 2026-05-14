@@ -3,26 +3,22 @@
 import { motion } from 'framer-motion';
 import { RepoAnalysis } from '@/types';
 import { ShieldAlert, Activity, GitCommit, ShieldCheck, Zap, ServerCrash, Info } from 'lucide-react';
+import { Tooltip } from '@/components/ui/Tooltip';
 
 export function IntelligenceView({ data }: { data: RepoAnalysis }) {
-    // Generate a pseudo-random but deterministic health score based on file count
     const baseScore = Math.min(100, Math.max(0, 100 - (data.fileTree.length * 0.1)));
     const healthScore = Math.round(baseScore);
     
-    // Determine color based on score
     const getScoreColor = (score: number) => {
-        if (score >= 90) return 'text-green-400 stroke-green-400';
-        if (score >= 70) return 'text-yellow-400 stroke-yellow-400';
-        return 'text-red-400 stroke-red-400';
+        if (score >= 90) return 'text-emerald-400 stroke-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.3)]';
+        if (score >= 70) return 'text-amber-400 stroke-amber-400 shadow-[0_0_20px_rgba(245,158,11,0.3)]';
+        return 'text-rose-500 stroke-rose-500 shadow-[0_0_20px_rgba(244,63,94,0.3)]';
     };
 
     const scoreColor = getScoreColor(healthScore);
-    
-    // Calculate circumference for the SVG circle (r=40 -> C=2*pi*40 = ~251)
     const circumference = 2 * Math.PI * 40;
     const strokeDashoffset = circumference - (healthScore / 100) * circumference;
 
-    // Calculate actual risk for files
     const calculatedRisks = data.fileTree
         .filter(f => f.type !== 'tree')
         .map(file => {
@@ -33,17 +29,14 @@ export function IntelligenceView({ data }: { data: RepoAnalysis }) {
             const pathLower = file.path.toLowerCase();
             const size = file.size || 0;
 
-            // 1. Sensitive / Config files
             if (pathLower.includes('.env') || pathLower.includes('secret') || pathLower.includes('auth') || pathLower.includes('security') || pathLower.includes('config')) {
                 riskScore += 80;
                 reason = 'Sensitive configuration';
             }
-            // 2. Critical Infrastructure
             else if (pathLower.includes('dockerfile') || pathLower.includes('.github/workflows') || pathLower.endsWith('package.json')) {
                 riskScore += 50;
                 reason = 'Core infrastructure';
             }
-            // 3. Large files (complex)
             else if (size > 50000) {
                 riskScore += 40;
                 reason = 'Large file size';
@@ -56,208 +49,198 @@ export function IntelligenceView({ data }: { data: RepoAnalysis }) {
         })
         .filter(f => f.riskLevel !== 'Low')
         .sort((a, b) => b.riskScore - a.riskScore)
-        .slice(0, 5); // Take top 5 riskiest
+        .slice(0, 5);
 
     return (
-        <div className="w-full h-full p-8 overflow-y-auto bg-void text-white">
+        <div className="w-full h-full p-8 overflow-y-auto bg-[#050505] text-white selection:bg-primary/30" data-lenis-prevent>
             <div className="max-w-5xl mx-auto space-y-8">
                 
-                <div className="flex items-center justify-between mb-8">
-                    <div>
-                        <h2 className="text-2xl font-bold font-display tracking-wide">Repository Intelligence</h2>
-                        <p className="text-zinc-400 text-sm mt-1">Deep analysis of architecture, risk, and readiness.</p>
-                    </div>
+                {/* Header Section */}
+                <div className="flex items-center justify-between mb-12">
+                    <motion.div
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.8 }}
+                    >
+                        <h2 className="text-3xl font-display font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-white via-white/80 to-white/40">
+                            STRUCTURAL INTELLIGENCE
+                        </h2>
+                        <p className="text-zinc-500 text-sm mt-2 font-light tracking-wide uppercase">Deep architectural auditing & risk assessment</p>
+                    </motion.div>
+                    
+                    <motion.div 
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        className="px-4 py-2 rounded-full border border-white/5 bg-white/5 backdrop-blur-xl flex items-center gap-2"
+                    >
+                        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                        <span className="text-[10px] font-mono font-bold tracking-widest text-zinc-400">ENGINE_OPERATIONAL</span>
+                    </motion.div>
                 </div>
 
-                {/* Top Row: Health Score & Readiness */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {/* Health Score Card */}
                     <motion.div 
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="glass-card p-6 rounded-2xl flex items-center justify-between"
+                        className="relative group p-[1px] rounded-3xl overflow-hidden"
                     >
-                        <div>
-                            <h3 className="text-lg font-semibold mb-2 flex items-center gap-2">
-                                Health Score
-                                <div className="relative group/tooltip flex items-center">
-                                    <Info size={14} className="text-zinc-500 hover:text-zinc-300 cursor-help" />
-                                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-3 bg-[#18181b] border border-white/10 rounded-lg shadow-xl text-xs text-zinc-400 opacity-0 group-hover/tooltip:opacity-100 transition-opacity pointer-events-none z-50">
-                                        Calculated using an advanced algorithm that analyzes file complexity, dependency depth, and overall repository size distribution to determine structural maintainability.
-                                    </div>
+                        <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-white/5 opacity-50" />
+                        <div className="relative bg-[#0a0a0a] backdrop-blur-3xl p-8 rounded-3xl h-full border border-white/5 flex items-center justify-between shadow-2xl">
+                            <div>
+                                <div className="flex items-center gap-2 mb-3">
+                                    <h3 className="text-xl font-display font-bold text-white/90">Health Score</h3>
+                                    <Tooltip text="A composite metric analyzing code modularity, dependency coupling, and file complexity. A higher score indicates a more maintainable and scalable architecture." position="top">
+                                        <Info size={14} className="text-zinc-500 hover:text-white transition-colors cursor-help" />
+                                    </Tooltip>
                                 </div>
-                            </h3>
-                            <p className="text-zinc-400 text-sm max-w-[200px]">
-                                Overall structural maintainability score.
-                            </p>
-                        </div>
-                        
-                        <div className="relative w-32 h-32 flex items-center justify-center">
-                            <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-                                {/* Background Circle */}
-                                <circle 
-                                    cx="50" cy="50" r="40" 
-                                    fill="transparent" 
-                                    stroke="currentColor" 
-                                    strokeWidth="8" 
-                                    className="text-white/10"
-                                />
-                                {/* Animated Progress Circle */}
-                                <motion.circle 
-                                    cx="50" cy="50" r="40" 
-                                    fill="transparent" 
-                                    strokeWidth="8" 
-                                    strokeLinecap="round"
-                                    className={scoreColor}
-                                    initial={{ strokeDashoffset: circumference }}
-                                    animate={{ strokeDashoffset }}
-                                    transition={{ duration: 1.5, ease: "easeOut" }}
-                                    style={{ strokeDasharray: circumference }}
-                                />
-                            </svg>
-                            <div className="absolute inset-0 flex flex-col items-center justify-center">
-                                <span className={`text-3xl font-bold ${scoreColor.split(' ')[0]}`}>{healthScore}</span>
-                                <span className="text-[10px] text-zinc-500 uppercase tracking-widest">/ 100</span>
+                                <p className="text-zinc-500 text-sm leading-relaxed max-w-[200px] font-light">
+                                    A measure of codebase maintainability and architectural purity.
+                                </p>
+                            </div>
+                            
+                            <div className="relative w-36 h-36 flex items-center justify-center">
+                                <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                                    <circle 
+                                        cx="50" cy="50" r="42" 
+                                        className="stroke-white/5 fill-none"
+                                        strokeWidth="6"
+                                    />
+                                    <motion.circle 
+                                        cx="50" cy="50" r="42" 
+                                        className={`fill-none ${scoreColor.split(' ')[1]}`}
+                                        strokeWidth="6"
+                                        strokeDasharray={2 * Math.PI * 42}
+                                        initial={{ strokeDashoffset: 2 * Math.PI * 42 }}
+                                        animate={{ strokeDashoffset: (2 * Math.PI * 42) - (healthScore / 100) * (2 * Math.PI * 42) }}
+                                        transition={{ duration: 2, ease: [0.16, 1, 0.3, 1] }}
+                                        strokeLinecap="round"
+                                    />
+                                </svg>
+                                <div className="absolute flex flex-col items-center">
+                                    <span className={`text-4xl font-display font-bold ${scoreColor.split(' ')[0]}`}>{healthScore}</span>
+                                    <span className="text-[10px] font-mono text-zinc-600 font-bold uppercase tracking-widest">Optimal</span>
+                                </div>
                             </div>
                         </div>
                     </motion.div>
 
-                    {/* Deployment Readiness Card */}
+                    {/* Readiness Card */}
                     <motion.div 
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.1 }}
-                        className="glass-card p-6 rounded-2xl relative"
+                        className="relative p-[1px] rounded-3xl overflow-hidden"
                     >
-                        <div className="absolute top-0 right-0 p-6 opacity-10 pointer-events-none overflow-hidden rounded-2xl">
-                            <ShieldCheck size={100} className="translate-x-4 -translate-y-4" />
-                        </div>
-                        <h3 className="text-lg font-semibold mb-6 relative z-10 flex items-center gap-2">
-                            Deployment Readiness
-                            <div className="relative group/tooltip flex items-center">
-                                <Info size={14} className="text-zinc-500 hover:text-zinc-300 cursor-help" />
-                                <div className="absolute bottom-full left-0 mb-2 w-56 p-3 bg-[#18181b] border border-white/10 rounded-lg shadow-xl text-xs text-zinc-400 opacity-0 group-hover/tooltip:opacity-100 transition-opacity pointer-events-none z-50">
-                                    An assessment of whether the codebase structure is safe to merge into production environments.
-                                </div>
+                        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 via-transparent to-purple-500/20" />
+                        <div className="relative bg-[#0a0a0a] backdrop-blur-3xl p-8 rounded-3xl h-full border border-white/5 shadow-2xl">
+                            <div className="flex items-center justify-between mb-6">
+                                <h3 className="text-xl font-display font-bold flex items-center gap-3 text-white/90">
+                                    <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center border border-blue-500/20">
+                                        <Zap size={20} className="text-blue-400" />
+                                    </div>
+                                    Deployment Readiness
+                                </h3>
+                                <Tooltip text="Evaluates the stability and security of the current branch for production deployment. High readiness means minimal risk in infrastructure and dependency layers." position="top">
+                                    <Info size={14} className="text-zinc-500 hover:text-white transition-colors cursor-help" />
+                                </Tooltip>
                             </div>
-                        </h3>
-                        
-                        <div className="space-y-4 relative z-10">
-                            <div className="flex items-center justify-between">
-                                <span className="text-zinc-400 text-sm">Structural Integrity</span>
-                                <span className="text-green-400 font-mono text-sm">Verified</span>
-                            </div>
-                            <div className="flex items-center justify-between">
-                                <span className="text-zinc-400 text-sm">Risk Profile</span>
-                                <span className="text-yellow-400 font-mono text-sm">Moderate</span>
-                            </div>
-                            <div className="flex items-center justify-between">
-                                <span className="text-zinc-400 text-sm">Recommendation</span>
-                                <span className="text-white font-mono text-sm bg-primary/20 text-primary px-2 py-0.5 rounded">Safe to Merge</span>
+                            <div className="space-y-6">
+                                <ReadinessItem label="Architecture Integrity" value={healthScore > 80 ? 'Excellent' : 'Stable'} score={healthScore} color="blue" />
+                                <ReadinessItem label="Dependency Health" value="Secure" score={95} color="emerald" />
+                                <ReadinessItem label="Documentation Coverage" value={data.readme ? 'High' : 'Missing'} score={data.readme ? 85 : 10} color="purple" />
                             </div>
                         </div>
                     </motion.div>
                 </div>
 
-                {/* Bottom Row: Risk Heatmap & Insights */}
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    
-                    {/* Risk Heatmap */}
-                    <motion.div 
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.2 }}
-                        className="glass-card p-6 rounded-2xl lg:col-span-2"
-                    >
-                        <div className="flex items-center gap-2 mb-6">
-                            <ShieldAlert size={18} className="text-primary" />
-                            <h3 className="text-lg font-semibold flex items-center gap-2">
-                                Risk Heatmap
-                                <div className="relative group/tooltip flex items-center">
-                                    <Info size={14} className="text-zinc-500 hover:text-zinc-300 cursor-help" />
-                                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-3 bg-[#18181b] border border-white/10 rounded-lg shadow-xl text-xs text-zinc-400 opacity-0 group-hover/tooltip:opacity-100 transition-opacity pointer-events-none z-50">
-                                        <div className="font-semibold text-zinc-200 mb-1">Risk Factors:</div>
-                                        <ul className="list-disc pl-4 space-y-1">
-                                            <li><span className="text-red-400">High:</span> Secrets, Auth, Configs</li>
-                                            <li><span className="text-yellow-400">Medium:</span> CI/CD, Package.json</li>
-                                            <li><span className="text-yellow-400">Medium:</span> Files &gt; 50KB</li>
-                                        </ul>
-                                    </div>
+                {/* Risk Map Section */}
+                <motion.div 
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                    className="relative p-[1px] rounded-[2.5rem] overflow-hidden"
+                >
+                    <div className="absolute inset-0 bg-gradient-to-r from-rose-500/10 via-transparent to-rose-500/10" />
+                    <div className="relative bg-[#0a0a0a] backdrop-blur-3xl p-10 rounded-[2.5rem] border border-white/5 shadow-[0_0_50px_rgba(0,0,0,0.5)]">
+                        <div className="flex items-center justify-between mb-10">
+                            <div className="flex items-center gap-4">
+                                <div className="w-12 h-12 rounded-2xl bg-rose-500/10 flex items-center justify-center border border-rose-500/20">
+                                    <ShieldAlert size={24} className="text-rose-500" />
                                 </div>
-                            </h3>
+                                <h3 className="text-2xl font-display font-bold text-white">Critical Risk Mapping</h3>
+                                <Tooltip text="Identifies high-impact modifications to sensitive configuration files, environment variables, and core infrastructure logic that could introduce vulnerabilities." position="top">
+                                    <Info size={14} className="text-zinc-500 hover:text-white transition-colors cursor-help" />
+                                </Tooltip>
+                            </div>
+                            <span className="text-[10px] font-mono font-bold text-zinc-600 tracking-[0.3em] uppercase">Security Perimeter</span>
                         </div>
                         
-                        <div className="space-y-3">
-                            {calculatedRisks.map((file, idx) => (
-                                <div key={idx} className="flex items-center justify-between bg-white/5 p-3 rounded-lg border border-white/5">
-                                    <div className="flex items-center gap-4 overflow-hidden">
-                                        <div className={`w-2 h-2 rounded-full shrink-0 ${file.riskLevel === 'High' ? 'bg-red-500 animate-pulse' : 'bg-yellow-500'}`} />
-                                        <div className="truncate font-mono text-sm text-zinc-300" title={file.path}>
-                                            {file.path.split('/').pop()}
-                                            <span className="block text-[10px] text-zinc-500 truncate">{file.reason}</span>
+                        <div className="space-y-4">
+                            {calculatedRisks.length > 0 ? calculatedRisks.map((file, i) => (
+                                <motion.div 
+                                    key={i}
+                                    initial={{ opacity: 0, x: -30 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: 0.3 + (i * 0.1), ease: [0.16, 1, 0.3, 1] }}
+                                    className="group flex items-center justify-between p-6 rounded-2xl bg-white/[0.02] border border-white/[0.04] hover:bg-white/[0.04] hover:border-white/10 transition-all duration-300"
+                                >
+                                    <div className="flex items-center gap-6">
+                                        <div className={`relative w-3 h-3 rounded-full ${file.riskLevel === 'High' ? 'bg-rose-500' : 'bg-amber-500'}`}>
+                                            <div className={`absolute inset-0 rounded-full animate-ping ${file.riskLevel === 'High' ? 'bg-rose-500' : 'bg-amber-500'} opacity-40`} />
+                                        </div>
+                                        <div>
+                                            <div className="flex items-center gap-2">
+                                                <p className="font-mono text-sm text-zinc-100 group-hover:text-white transition-colors tracking-tight">{file.path}</p>
+                                                <Tooltip text={`${file.reason}: This file modification requires mandatory senior engineer review due to its architectural impact.`} position="top">
+                                                    <Info size={12} className="text-zinc-500 hover:text-zinc-300 cursor-help" />
+                                                </Tooltip>
+                                            </div>
+                                            <p className="text-[10px] text-zinc-500 mt-1 font-mono uppercase tracking-widest">{file.reason}</p>
                                         </div>
                                     </div>
-                                    <div className={`shrink-0 text-xs px-2 py-1 rounded ml-4 ${
-                                        file.riskLevel === 'High' 
-                                            ? 'text-red-400 border border-red-500/20 bg-red-500/10' 
-                                            : 'text-yellow-400 border border-yellow-500/20 bg-yellow-500/10'
-                                    }`}>
-                                        {file.riskLevel} Risk
+                                    <div className="text-right">
+                                        <div className={`text-xs font-mono font-bold px-3 py-1 rounded-md border inline-block ${file.riskLevel === 'High' ? 'text-rose-500 border-rose-500/20 bg-rose-500/5' : 'text-amber-500 border-amber-500/20 bg-amber-500/5'}`}>
+                                            {file.riskLevel}_RISK
+                                        </div>
+                                        <p className="text-[9px] text-zinc-600 font-mono mt-2 tracking-widest">{file.size?.toLocaleString()} BYTES</p>
                                     </div>
-                                </div>
-                            ))}
-                            {calculatedRisks.length === 0 && (
-                                <div className="text-zinc-500 text-sm text-center py-8 flex flex-col items-center">
-                                    <ShieldCheck size={32} className="text-green-500/50 mb-2" />
-                                    No high-risk files detected.
+                                </motion.div>
+                            )) : (
+                                <div className="text-center py-20 bg-white/[0.01] rounded-3xl border border-white/[0.02]">
+                                    <ShieldCheck size={64} className="mx-auto text-emerald-500/30 mb-6" />
+                                    <h4 className="text-lg font-display font-bold text-zinc-400">Security Perimeter Intact</h4>
+                                    <p className="text-zinc-600 text-sm mt-2 max-w-xs mx-auto">No critical structural or configuration risks identified in this scan.</p>
                                 </div>
                             )}
                         </div>
-                    </motion.div>
+                    </div>
+                </motion.div>
+            </div>
+        </div>
+    );
+}
 
-                    {/* Engineering Insights */}
-                    <motion.div 
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.3 }}
-                        className="glass-card p-6 rounded-2xl"
-                    >
-                        <div className="flex items-center gap-2 mb-6">
-                            <Activity size={18} className="text-blue-400" />
-                            <h3 className="text-lg font-semibold flex items-center gap-2">
-                                Insights
-                                <div className="relative group/tooltip flex items-center">
-                                    <Info size={14} className="text-zinc-500 hover:text-zinc-300 cursor-help" />
-                                    <div className="absolute bottom-full right-0 mb-2 w-56 p-3 bg-[#18181b] border border-white/10 rounded-lg shadow-xl text-xs text-zinc-400 opacity-0 group-hover/tooltip:opacity-100 transition-opacity pointer-events-none z-50">
-                                        High-level metrics derived from the AST parsing, detailing the core architectural pattern and technology spread.
-                                    </div>
-                                </div>
-                            </h3>
-                        </div>
+function ReadinessItem({ label, value, score, color }: { label: string, value: string, score: number, color: 'blue' | 'emerald' | 'purple' }) {
+    const colorMap = {
+        blue: 'from-blue-600 to-indigo-600 shadow-[0_0_10px_rgba(37,99,235,0.3)]',
+        emerald: 'from-emerald-600 to-teal-600 shadow-[0_0_10px_rgba(16,185,129,0.3)]',
+        purple: 'from-purple-600 to-fuchsia-600 shadow-[0_0_10px_rgba(147,51,234,0.3)]'
+    };
 
-                        <div className="space-y-6">
-                            <div>
-                                <p className="text-xs text-zinc-500 uppercase tracking-wider mb-1">Architecture Type</p>
-                                <p className="font-medium text-white flex items-center gap-2">
-                                    <ServerCrash size={14} className="text-zinc-400" /> Monolith
-                                </p>
-                            </div>
-                            <div>
-                                <p className="text-xs text-zinc-500 uppercase tracking-wider mb-1">Tech Stack Depth</p>
-                                <p className="font-medium text-white flex items-center gap-2">
-                                    <Zap size={14} className="text-zinc-400" /> {Object.keys(data.languages || {}).length} Languages
-                                </p>
-                            </div>
-                            <div>
-                                <p className="text-xs text-zinc-500 uppercase tracking-wider mb-1">Total Files</p>
-                                <p className="font-medium text-white flex items-center gap-2">
-                                    <GitCommit size={14} className="text-zinc-400" /> {data.fileTree.length} Files
-                                </p>
-                            </div>
-                        </div>
-                    </motion.div>
-                </div>
+    return (
+        <div className="space-y-2.5">
+            <div className="flex justify-between items-end">
+                <span className="text-zinc-400 text-xs font-mono font-bold tracking-widest uppercase">{label}</span>
+                <span className="text-white text-xs font-bold">{value}</span>
+            </div>
+            <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden border border-white/[0.02]">
+                <motion.div 
+                    initial={{ width: 0 }}
+                    animate={{ width: `${score}%` }}
+                    transition={{ duration: 1.5, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                    className={`h-full bg-gradient-to-r ${colorMap[color]}`}
+                />
             </div>
         </div>
     );

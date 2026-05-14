@@ -4,29 +4,53 @@ import { TrendingFeed } from '@/components/landing/TrendingFeed';
 import { FeaturesSection } from '@/components/landing/FeaturesSection';
 import { WorkflowTimeline } from '@/components/landing/WorkflowTimeline';
 import { StorySection, TargetAudienceSection } from '@/components/landing/Sections';
+import { FutureCTA } from '@/components/landing/FutureCTA';
+import { ContactSection } from '@/components/landing/ContactSection';
 import { Footer } from '@/components/landing/Footer';
-import { RepoSearch } from '@/components/RepoSearch';
+import { ScrollReveal } from '@/components/ui/ScrollReveal';
 
 export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col overflow-x-hidden bg-void text-zinc-200 selection:bg-primary/20 selection:text-primary">
+    <div className="min-h-screen flex flex-col overflow-x-hidden selection:bg-primary/20 selection:text-primary transition-colors duration-500">
       <Navbar />
 
-      <main className="flex-1 relative z-10">
+      <main className="flex-1 relative z-10 transition-colors duration-500">
         <Hero />
-        <TrendingFeed />
+        
+        <ScrollReveal delay={0.2}>
+          <TrendingFeed />
+        </ScrollReveal>
 
         {/* Story & Manifesto */}
-        <StorySection />
+        <ScrollReveal>
+          <StorySection />
+        </ScrollReveal>
 
         {/* Live Visualization Mockup & Features */}
         <div className="relative z-10">
-          <FeaturesSection />
-          <WorkflowTimeline />
+          <ScrollReveal>
+            <FeaturesSection />
+          </ScrollReveal>
+          
+          <ScrollReveal>
+            <WorkflowTimeline />
+          </ScrollReveal>
         </div>
 
         {/* Target Audience */}
-        <TargetAudienceSection />
+        <ScrollReveal>
+          <TargetAudienceSection />
+        </ScrollReveal>
+
+        {/* Future & Planning CTA */}
+        <ScrollReveal>
+          <FutureCTA />
+        </ScrollReveal>
+        
+        {/* Contact & Highlights */}
+        <ScrollReveal>
+          <ContactSection />
+        </ScrollReveal>
       </main>
 
       <Footer />

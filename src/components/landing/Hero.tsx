@@ -1,8 +1,7 @@
 'use client';
 
 import { motion, useScroll, useTransform } from 'framer-motion';
-import Link from 'next/link';
-import { ArrowRight, Play, ShieldCheck, Zap, Code2 } from 'lucide-react';
+import { ArrowRight, Sparkles } from 'lucide-react';
 import { useRef, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { TerminalLoader } from './TerminalLoader';
@@ -51,6 +50,21 @@ export function Hero() {
     };
 
     const containerRef = useRef<HTMLDivElement>(null);
+    const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
+    useEffect(() => {
+        const handleMouseMove = (e: MouseEvent) => {
+            if (!containerRef.current) return;
+            const rect = containerRef.current.getBoundingClientRect();
+            setMousePos({
+                x: (e.clientX - rect.left) / rect.width - 0.5,
+                y: (e.clientY - rect.top) / rect.height - 0.5
+            });
+        };
+        window.addEventListener('mousemove', handleMouseMove);
+        return () => window.removeEventListener('mousemove', handleMouseMove);
+    }, []);
+
     const { scrollYProgress } = useScroll({
         target: containerRef,
         offset: ['start start', 'end start']
@@ -61,48 +75,36 @@ export function Hero() {
     const scale = useTransform(scrollYProgress, [0, 1], [1, 0.8]);
 
     return (
-        <section ref={containerRef} className="relative min-h-[140vh] flex flex-col items-center pt-32 overflow-hidden z-10">
+        <section ref={containerRef} className="relative min-h-[140vh] flex flex-col items-center pt-32 overflow-hidden z-10 transition-colors duration-500">
             
-            {/* Cinematic Netflix/Vercel Background */}
-            <div className="absolute inset-0 bg-void -z-30" />
+            {/* Background Layer */}
+            <div className="absolute inset-0 bg-[#fafafa] dark:bg-void -z-30 transition-colors duration-500" />
 
-            {/* Premium Purple Glassmorphism Shimmer (Moving Right to Left) */}
+            {/* Premium Shimmer */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none -z-25">
                 <motion.div 
                     initial={{ x: '100%' }}
                     animate={{ x: '-100%' }}
                     transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-                    className="absolute inset-0 w-[200%] h-full bg-gradient-to-r from-transparent via-purple-500/10 to-transparent blur-[120px] skew-x-12"
+                    className="absolute inset-0 w-[200%] h-full bg-gradient-to-r from-transparent via-purple-500/5 dark:via-purple-500/10 to-transparent blur-[120px] skew-x-12"
                 />
             </div>
 
-            {/* Premium Right Border Animation (Data Flow) */}
-            <div className="absolute right-0 top-0 w-32 h-full pointer-events-none hidden xl:block z-0 mix-blend-screen opacity-60">
-                {/* Subtle Grid Lines */}
-                <div className="absolute right-8 top-0 w-[1px] h-full bg-gradient-to-b from-transparent via-white/10 to-transparent" />
-                <div className="absolute right-16 top-0 w-[1px] h-full bg-gradient-to-b from-transparent via-white/5 to-transparent" />
-                
-                {/* Glowing Data Packets moving down */}
-                <motion.div 
-                    animate={{ top: ['-20%', '120%'] }}
-                    transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-                    className="absolute right-[31px] w-[3px] h-40 bg-gradient-to-b from-transparent via-primary to-transparent shadow-[0_0_15px_#E11D48]"
-                />
-                {/* Glowing Data Packets moving up */}
-                <motion.div 
-                    animate={{ top: ['120%', '-20%'] }}
-                    transition={{ duration: 6, repeat: Infinity, ease: "linear", delay: 1.5 }}
-                    className="absolute right-[63px] w-[3px] h-64 bg-gradient-to-b from-transparent via-secondary to-transparent shadow-[0_0_15px_#7C3AED]"
-                />
-            </div>
-            
-            {/* Massive Multi-color Aura Glow */}
-            <motion.div style={{ y, opacity }} className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] -z-20 pointer-events-none mix-blend-screen opacity-70">
+            {/* Massive Multi-color Aura Glow with Mouse Parallax */}
+            <motion.div 
+                style={{ 
+                    y, 
+                    opacity,
+                    translateX: mousePos.x * 50,
+                    translateY: mousePos.y * 50
+                }} 
+                className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] -z-20 pointer-events-none mix-blend-multiply dark:mix-blend-screen opacity-40 dark:opacity-70 transition-opacity"
+            >
                 <div className="absolute inset-0 bg-gradient-to-br from-secondary via-primary to-tertiary rounded-full blur-[140px] animate-pulse-slow" />
             </motion.div>
             
-            {/* Dark Vignette Overlay */}
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#030008_70%)] -z-10 pointer-events-none" />
+            {/* Vignette Overlay */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(250,250,250,0.8)_70%)] dark:bg-[radial-gradient(circle_at_center,transparent_0%,#030008_70%)] -z-10 pointer-events-none transition-colors duration-500" />
 
             <div className="container px-4 z-10 w-full max-w-6xl mx-auto flex flex-col items-center">
                 
@@ -111,30 +113,33 @@ export function Hero() {
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md mb-8 hover:bg-white/10 transition-colors cursor-pointer"
+                    whileHover={{ scale: 1.05, backgroundColor: 'rgba(0,0,0,0.08)' }}
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-black/5 dark:border-white/10 bg-white/50 dark:bg-white/5 backdrop-blur-md mb-8 hover:bg-black/5 dark:hover:bg-white/10 transition-all cursor-pointer shadow-sm group"
                 >
                     <span className="flex h-2 w-2 rounded-full bg-primary shadow-[0_0_10px_#E11D48]" />
-                    <span className="text-xs font-semibold tracking-wide text-zinc-300">GetMyGit Cinematic Engine is live</span>
-                    <ArrowRight size={14} className="text-zinc-500" />
+                    <span className="text-xs font-semibold tracking-wide text-gray-600 dark:text-zinc-300">GetMyGit Cinematic Engine is live</span>
+                    <ArrowRight size={14} className="text-gray-400 dark:text-zinc-500 group-hover:translate-x-1 transition-transform" />
                 </motion.div>
 
-                {/* Main Headline */}
-                <motion.h1
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-                    className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-center leading-[1.1] mb-6 max-w-5xl"
-                >
-                    <span className="golden-shimmer-text">Intelligent</span> <span className="cinematic-text">GitHub PR &</span> <br className="hidden md:block" />
-                    <span className="cinematic-text">Repository Intelligence</span>
-                </motion.h1>
+                {/* Main Headline with Split Text Effect */}
+                <div className="overflow-hidden mb-6">
+                    <motion.h1
+                        initial={{ opacity: 0, y: 100 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                        className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-center leading-[1.1] max-w-5xl"
+                    >
+                        <span className="text-gray-900 dark:text-white dark:golden-shimmer-text">Intelligent</span> <br className="hidden md:block" />
+                        <span className="text-gray-900 dark:text-white dark:cinematic-text">GitHub Intelligence</span>
+                    </motion.h1>
+                </div>
 
                 {/* Subtitle */}
                 <motion.p
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                    className="text-lg md:text-xl text-zinc-400 text-center max-w-2xl mb-12 leading-relaxed"
+                    className="text-lg md:text-xl text-gray-500 dark:text-zinc-400 text-center max-w-2xl mb-12 leading-relaxed font-light"
                 >
                     Elevate your engineering workflows with deep structural analysis, automated PR risk scoring, and intelligent reviewer assignments.
                 </motion.p>
@@ -146,7 +151,8 @@ export function Hero() {
                     transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
                     className="w-full max-w-2xl flex flex-col sm:flex-row gap-4 justify-center items-center relative z-20"
                 >
-                    <div className="relative w-full">
+                    <div className="relative w-full group">
+                        <div className="absolute -inset-1 bg-gradient-to-r from-primary to-secondary rounded-2xl blur opacity-0 group-focus-within:opacity-20 transition-opacity" />
                         <input
                             type="text"
                             placeholder="Paste GitHub Repository or PR URL..."
@@ -154,71 +160,67 @@ export function Hero() {
                             onChange={(e) => setUrl(e.target.value)}
                             onKeyDown={(e) => e.key === 'Enter' && handleAnalyze()}
                             disabled={isLoading}
-                            className="w-full bg-black/60 border border-white/10 rounded-2xl pl-6 pr-4 py-4 text-white focus:outline-none focus:border-primary/50 transition-all font-sans placeholder:text-zinc-500 shadow-inner backdrop-blur-2xl disabled:opacity-50"
+                            className="relative w-full bg-white/80 dark:bg-black/60 border border-black/10 dark:border-white/10 rounded-2xl pl-6 pr-4 py-4 text-gray-900 dark:text-white focus:outline-none focus:border-primary/30 dark:focus:border-primary/50 transition-all font-sans placeholder:text-gray-400 dark:placeholder:text-zinc-500 shadow-xl dark:shadow-inner backdrop-blur-2xl disabled:opacity-50"
                         />
                     </div>
                     
-                    <button 
+                    <motion.button 
                         onClick={handleAnalyze}
                         disabled={isLoading}
-                        className="whitespace-nowrap group relative px-8 py-4 bg-white text-black font-bold rounded-2xl hover:bg-zinc-200 transition-all flex items-center justify-center gap-2 shadow-[0_0_40px_rgba(255,255,255,0.1)] disabled:opacity-50"
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        style={{
+                            x: mousePos.x * 10,
+                            y: mousePos.y * 10
+                        }}
+                        className="whitespace-nowrap group relative px-8 py-4 bg-gray-900 dark:bg-white text-white dark:text-black font-bold rounded-2xl hover:bg-black dark:hover:bg-zinc-200 transition-all flex items-center justify-center gap-2 shadow-2xl dark:shadow-[0_0_40px_rgba(255,255,255,0.1)] disabled:opacity-50"
                     >
                         {isLoading ? 'Scanning...' : 'Analyze'} {!isLoading && <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />}
-                    </button>
+                    </motion.button>
                 </motion.div>
 
-                {/* Dashboard Mockup (The "Movie Poster") */}
+                {/* Dashboard Mockup with Mouse Parallax */}
                 <motion.div 
-                    style={{ scale }}
+                    style={{ 
+                        scale,
+                        rotateX: mousePos.y * -15,
+                        rotateY: mousePos.x * 15,
+                    }}
                     initial={{ opacity: 0, y: 100 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 1.2, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                    className="mt-20 relative w-full"
+                    className="mt-20 relative w-full perspective-[2000px]"
                 >
-                    <motion.div 
-                    className="relative mx-auto max-w-5xl perspective-[2000px]"
-                    animate={{ 
-                        y: [-10, 10, -10],
-                        rotateX: [2, -2, 2],
-                        rotateY: [-1, 1, -1]
-                    }}
-                    transition={{ 
-                        duration: 8, 
-                        repeat: Infinity, 
-                        ease: "easeInOut" 
-                    }}
-                >
-                    <div className="glass-card rounded-xl border border-white/10 shadow-[0_0_100px_rgba(255,255,255,0.05)] overflow-hidden relative bg-[#030008]">
-                        {/* Mac Window Header */}
-                        <div className="h-10 bg-[#18181b]/80 backdrop-blur-md border-b border-white/5 flex items-center px-4 gap-2">
-                            <div className="w-3 h-3 rounded-full bg-red-500/80 shadow-[0_0_10px_rgba(239,68,68,0.5)]" />
-                            <div className="w-3 h-3 rounded-full bg-yellow-500/80 shadow-[0_0_10px_rgba(234,179,8,0.5)]" />
-                            <div className="w-3 h-3 rounded-full bg-green-500/80 shadow-[0_0_10px_rgba(34,197,94,0.5)]" />
-                            
-                            {/* Fake URL Bar */}
-                            <div className="ml-4 flex-1 max-w-md h-6 bg-black/40 rounded-md border border-white/5 flex items-center px-3">
-                                <span className="text-[10px] text-zinc-500 font-mono">getmygit.com/analysis</span>
+                    <div className="relative mx-auto max-w-5xl">
+                        <div className="relative rounded-2xl border border-black/[0.05] dark:border-white/10 shadow-2xl dark:shadow-[0_0_100px_rgba(255,255,255,0.05)] overflow-hidden bg-white dark:bg-[#030008] transition-colors duration-500">
+                            {/* Mac Window Header */}
+                            <div className="h-11 bg-gray-50/80 dark:bg-[#18181b]/80 backdrop-blur-md border-b border-black/[0.05] dark:border-white/5 flex items-center px-4 gap-2 transition-colors">
+                                <div className="w-3 h-3 rounded-full bg-red-400" />
+                                <div className="w-3 h-3 rounded-full bg-amber-400" />
+                                <div className="w-3 h-3 rounded-full bg-emerald-400" />
+                                
+                                <div className="ml-4 flex-1 max-w-md h-6 bg-black/[0.03] dark:bg-black/40 rounded-lg border border-black/[0.05] dark:border-white/5 flex items-center px-3">
+                                    <span className="text-[10px] text-gray-400 dark:text-zinc-500 font-mono">getmygit.com/analysis</span>
+                                </div>
+                            </div>
+
+                            {/* Image Section */}
+                            <div className="w-full aspect-video relative overflow-hidden bg-gray-100 dark:bg-void">
+                                <img 
+                                    src="/hero-dashboard.jpg" 
+                                    alt="GetMyGit Intelligence Dashboard"
+                                    className="w-full h-full object-cover"
+                                />
+                                {/* Gradient overlay */}
+                                <div className="absolute inset-0 bg-gradient-to-t from-white/10 dark:from-black/60 via-transparent to-transparent pointer-events-none" />
                             </div>
                         </div>
-
-                        {/* Image Section */}
-                        <div className="w-full relative overflow-hidden bg-void">
-                            <img 
-                                src="/hero-dashboard.jpg" 
-                                alt="GetMyGit Intelligence Dashboard"
-                                className="w-full h-auto block"
-                            />
-                        </div>
-
-                        {/* Elegant Gradient overlay for depth inside the window */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
                     </div>
-                </motion.div>
                 </motion.div>
             </div>
             
-            {/* Fade out bottom to blend with next section */}
-            <div className="absolute bottom-0 left-0 w-full h-64 bg-gradient-to-t from-void to-transparent pointer-events-none" />
+            {/* Fade out bottom */}
+            <div className="absolute bottom-0 left-0 w-full h-64 bg-gradient-to-t from-[#fafafa] dark:from-void to-transparent pointer-events-none transition-colors duration-500" />
             
             <TerminalLoader isVisible={isLoading} repoName={url || 'repository'} />
         </section>

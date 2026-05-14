@@ -2,24 +2,24 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { AlertTriangle, Lightbulb, ArrowUpRight, Code, Briefcase, Users } from 'lucide-react';
+import { AlertTriangle, Lightbulb, ArrowUpRight, Code, Briefcase, Users, Rocket, Zap, GitCompare, BarChart3, Sparkles } from 'lucide-react';
 
 export function StorySection() {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     return (
-        <section id="story" className="py-32 relative overflow-hidden flex flex-col items-center">
+        <section id="story" className="py-32 relative overflow-hidden flex flex-col items-center transition-colors duration-500">
             {/* Animated Grid Background */}
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none" />
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none opacity-50 dark:opacity-100" />
 
             <div className="container max-w-6xl px-4 relative z-10">
                 {/* Manifesto Header */}
                 <div className="text-center mb-24 relative">
                     <motion.h2 
                         initial={{ opacity: 0, y: -20 }}
-                        whileInView={{ opacity: 0.15, y: 0 }}
+                        whileInView={{ opacity: 0.05, y: 0 }}
                         transition={{ duration: 1.5, ease: "easeOut" }}
-                        className="text-6xl md:text-9xl font-display font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-white/10 select-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full pointer-events-none z-0"
+                        className="text-6xl md:text-9xl font-display font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-gray-900 to-gray-500 dark:from-white dark:to-white/10 select-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full pointer-events-none z-0"
                     >
                         MANIFESTO
                     </motion.h2>
@@ -27,15 +27,15 @@ export function StorySection() {
                         initial={{ opacity: 0, scale: 0.9 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.8 }}
-                        className="relative text-5xl md:text-7xl font-display font-bold tracking-tight text-white mb-6 z-10"
+                        className="relative text-5xl md:text-7xl font-display font-bold tracking-tight text-gray-900 dark:text-white mb-6 z-10"
                     >
-                        WHY WE <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-purple to-neon-blue">EXIST</span>?
+                        WHY WE <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600 dark:from-neon-purple dark:to-neon-blue">EXIST</span>?
                     </motion.h2>
                     <motion.p 
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
                         transition={{ delay: 0.3, duration: 1 }}
-                        className="relative text-xl text-gray-400 max-w-2xl mx-auto font-light leading-relaxed z-10"
+                        className="relative text-xl text-gray-500 dark:text-gray-400 max-w-2xl mx-auto font-light leading-relaxed z-10"
                     >
                         The codebase is a territory. We are the cartographers.
                     </motion.p>
@@ -61,21 +61,21 @@ export function StorySection() {
                         title="COMPLEXITY OVERLOAD"
                         number="01"
                         desc="Modern systems are vast labyrinths. Developers spend 70% of their time just navigating, trying to build a mental model that breaks the moment they switch context."
-                        accent="border-neon-purple/50"
+                        accent="purple"
                         delay={0.1}
                     />
                     <ManifestoCard
                         title="VISUAL COGNITION"
                         number="02"
                         desc="We evolved to see patterns, not regex. Text-based documentation is linear and slow. Visual graphs are parallel, instant, and reveal the hidden truth of dependencies."
-                        accent="border-neon-blue/50"
+                        accent="blue"
                         delay={0.2}
                     />
                     <ManifestoCard
                         title="INSTANT CLARITY"
                         number="03"
                         desc="Onboarding shouldn't take weeks. Debugging shouldn't require archaeology. We act as the lens that brings the chaotic reality of code into sharp, actionable focus."
-                        accent="border-neon-green/50"
+                        accent="green"
                         delay={0.3}
                     />
                 </motion.div>
@@ -84,10 +84,10 @@ export function StorySection() {
                 <div className="mt-16 text-center">
                     <button
                         onClick={() => setIsModalOpen(true)}
-                        className="group relative px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full overflow-hidden transition-all duration-300"
+                        className="group relative px-8 py-4 bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 border border-black/10 dark:border-white/10 rounded-full overflow-hidden transition-all duration-300 shadow-sm dark:shadow-none"
                     >
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
-                        <span className="relative z-10 font-display font-bold tracking-widest text-white group-hover:text-neon-blue transition-colors">
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-black/5 dark:via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+                        <span className="relative z-10 font-display font-bold tracking-widest text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-neon-blue transition-colors">
                             KNOW MORE
                         </span>
                     </button>
@@ -103,27 +103,27 @@ export function StorySection() {
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             onClick={() => setIsModalOpen(false)}
-                            className="absolute inset-0 bg-black/80 backdrop-blur-md"
+                            className="absolute inset-0 bg-white/60 dark:bg-black/80 backdrop-blur-md"
                         />
                         <motion.div
                             initial={{ opacity: 0, scale: 0.95, y: 20 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                            className="relative bg-[#0a0a0a] border border-white/10 p-12 max-w-2xl rounded-[2rem] shadow-2xl overflow-hidden"
+                            className="relative bg-white dark:bg-[#0a0a0a] border border-black/10 dark:border-white/10 p-12 max-w-2xl rounded-[2rem] shadow-2xl overflow-hidden"
                         >
-                            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-neon-purple via-neon-blue to-neon-green" />
+                            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 via-blue-500 to-green-500" />
 
-                            <h3 className="text-3xl font-display font-bold text-white mb-6 tracking-wide">
-                                OUR <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-blue to-neon-green">MISSION</span>
+                            <h3 className="text-3xl font-display font-bold text-gray-900 dark:text-white mb-6 tracking-wide">
+                                OUR <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-green-600 dark:from-neon-blue dark:to-neon-green">MISSION</span>
                             </h3>
 
-                            <p className="text-gray-300 leading-relaxed text-lg font-light">
-                                Understanding unfamiliar GitHub repositories is often slow and overwhelming. <span className="text-white font-medium">getmygit</span> was built to simplify that process by starting with visual clarity instead of raw code. It presents architecture, data flow, and component relationships in an interactive visual format, helping users understand the big picture before diving into details.
+                            <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-lg font-light">
+                                Understanding unfamiliar GitHub repositories is often slow and overwhelming. <span className="text-gray-900 dark:text-white font-medium">getmygit</span> was built to simplify that process by starting with visual clarity instead of raw code. It presents architecture, data flow, and component relationships in an interactive visual format, helping users understand the big picture before diving into details.
                             </p>
 
                             <button
                                 onClick={() => setIsModalOpen(false)}
-                                className="mt-8 text-sm font-mono text-gray-500 hover:text-white transition-colors tracking-widest uppercase border-b border-transparent hover:border-white"
+                                className="mt-8 text-sm font-mono text-gray-400 dark:text-gray-500 hover:text-black dark:hover:text-white transition-colors tracking-widest uppercase border-b border-transparent hover:border-black dark:hover:border-white"
                             >
                                 Close Transmission
                             </button>
@@ -136,131 +136,101 @@ export function StorySection() {
 }
 
 function ManifestoCard({ title, number, desc, accent, delay }: { title: string, number: string, desc: string, accent: string, delay: number }) {
+    const gradientColors = accent === 'purple' 
+        ? 'from-purple-500 via-blue-500 to-purple-500' 
+        : accent === 'blue' 
+            ? 'from-blue-500 via-cyan-500 to-blue-500' 
+            : 'from-green-500 via-emerald-500 to-green-500';
+    
+    const glowColor = accent === 'purple' 
+        ? 'rgba(168,85,247,0.1)' 
+        : accent === 'blue' 
+            ? 'rgba(59,130,246,0.1)' 
+            : 'rgba(34,197,94,0.1)';
+
     return (
         <motion.div 
             variants={{
                 hidden: { opacity: 0, y: 30 },
                 show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
             }}
-            whileHover={{ scale: 1.02, y: -5 }}
-            className={`group relative p-8 h-full bg-[#0a0a0a]/40 backdrop-blur-md border border-white/10 hover:border-white/30 transition-all duration-500 overflow-hidden rounded-2xl`}
+            whileHover={{ scale: 1.03, y: -8 }}
+            className="group relative p-[1px] rounded-2xl overflow-hidden h-full"
         >
-            {/* Shimmer Effect */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-            
-            {/* Hover Accent Line */}
-            <div className={`absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-white/50 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-700 ${accent.replace('border-', 'bg-')}`} />
+            {/* Animated Rotating Gradient Border */}
+            <div className={`absolute inset-0 bg-gradient-to-r ${gradientColors} opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-2xl animate-[spin_4s_linear_infinite]`} style={{ backgroundSize: '200% 200%' }} />
+            <div className="absolute inset-0 bg-gradient-to-br from-black/[0.05] dark:from-white/[0.08] to-transparent opacity-30 rounded-2xl" />
 
-            <div className="flex justify-between items-start mb-8 relative z-10">
-                <h3 className="text-2xl font-display font-bold text-gray-200 tracking-wide group-hover:text-white transition-colors">{title}</h3>
-                <span className="font-mono text-xs font-bold text-gray-600 tracking-widest">{number}</span>
-            </div>
+            {/* Card Inner */}
+            <div className="relative h-full bg-white dark:bg-[#0a0a10]/90 backdrop-blur-2xl rounded-2xl p-8 overflow-hidden border border-black/[0.05] dark:border-white/[0.06] shadow-xl dark:shadow-none transition-colors duration-500">
+                
+                {/* Ambient Glow */}
+                <motion.div
+                    className="absolute -top-10 -right-10 w-32 h-32 rounded-full blur-3xl pointer-events-none"
+                    style={{ background: `radial-gradient(circle, ${glowColor}, transparent)` }}
+                    animate={{ scale: [1, 1.3, 1], opacity: [0.3, 0.6, 0.3] }}
+                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: delay * 2 }}
+                />
 
-            <p className="text-gray-400 leading-relaxed font-mono text-sm tracking-wide group-hover:text-gray-300 transition-colors relative z-10">
-                {desc}
-            </p>
+                {/* Shimmer Sweep */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-black/[0.02] dark:via-white/[0.04] to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-[1.5s] ease-in-out" />
 
-            {/* Decorative Tech Elements */}
-            <div className="absolute bottom-4 right-4 flex gap-1 z-10">
-                <div className="w-1 h-1 bg-gray-700 rounded-full group-hover:bg-neon-blue group-hover:animate-pulse transition-colors" />
-                <div className="w-1 h-1 bg-gray-700 rounded-full group-hover:bg-neon-purple group-hover:animate-pulse delay-75 transition-colors" />
-                <div className="w-1 h-1 bg-gray-700 rounded-full group-hover:bg-neon-green group-hover:animate-pulse delay-150 transition-colors" />
+                {/* Top Accent Line */}
+                <motion.div 
+                    className={`absolute top-0 left-0 h-[2px] bg-gradient-to-r ${gradientColors}`}
+                    initial={{ width: '0%' }}
+                    whileInView={{ width: '100%' }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1.2, delay: delay + 0.5, ease: [0.16, 1, 0.3, 1] }}
+                />
+
+                {/* Header */}
+                <div className="flex justify-between items-start mb-8 relative z-10">
+                    <h3 className="text-xl font-display font-bold text-gray-900 dark:text-gray-200 tracking-wide group-hover:text-black dark:group-hover:text-white transition-colors duration-300">{title}</h3>
+                    <motion.span 
+                        className="font-mono text-[10px] font-bold text-gray-400 dark:text-gray-600 tracking-widest px-2 py-1 rounded-md bg-black/[0.03] dark:bg-white/[0.03] border border-black/[0.05] dark:border-white/[0.06]"
+                    >
+                        {number}
+                    </motion.span>
+                </div>
+
+                {/* Description */}
+                <p className="text-gray-500 dark:text-gray-400 leading-relaxed font-sans text-sm tracking-wide group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors duration-300 relative z-10 font-light">
+                    {desc}
+                </p>
             </div>
         </motion.div>
     );
 }
 
-export function Timeline() {
-    const events = [
-        { year: 'Idea', title: 'The "What touches what?" Problem', desc: 'Realizing that understanding dependencies is the hardest part of onboarding.' },
-        { year: 'Prototype', title: 'Text-based Scanners', desc: 'Early scripts to parse imports and print trees in the terminal.' },
-        { year: 'Now', title: 'Visual First', desc: 'Interactive, glassmorphism-based UI that makes architecture beautiful.' },
-        { year: 'Future', title: 'AI Insights', desc: 'Deep semantic understanding and automated documentation generation.' },
-    ];
-
-    return (
-        <section id="history" className="py-24 bg-slate-950/30">
-            <div className="container">
-                <h2 className="text-3xl font-bold mb-12 text-center">History & Evolution</h2>
-
-                <div className="relative">
-                    {/* Line */}
-                    <div className="absolute top-1/2 left-0 w-full h-1 bg-white/10 -translate-y-1/2 hidden md:block" />
-
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-                        {events.map((event, i) => (
-                            <div key={i} className="relative z-10 bg-slate-900/80 p-6 rounded-xl border border-white/10 backdrop-blur-sm">
-                                <div className="text-purple-500 font-bold text-sm uppercase tracking-wider mb-2">{event.year}</div>
-                                <h3 className="text-xl font-bold mb-2">{event.title}</h3>
-                                <p className="text-sm text-gray-400">{event.desc}</p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-        </section>
-    );
-}
-
-export function Limitations() {
-    return (
-        <section id="limitations" className="py-16">
-            <div className="container max-w-3xl mx-auto">
-                <div className="glass-panel border-l-4 border-l-yellow-500 p-8 rounded-r-xl">
-                    <div className="flex items-start gap-4">
-                        <AlertTriangle className="text-yellow-500 shrink-0 mt-1" size={24} />
-                        <div>
-                            <h3 className="text-xl font-bold mb-2">Transparency & Limitations</h3>
-                            <ul className="space-y-2 text-gray-400 list-disc list-inside">
-                                <li>Currently supports public repositories only.</li>
-                                <li>Focuses on high-level architecture (services, components), not function-level logic.</li>
-                                <li>Visualizations are generated via heuristic analysis and may be imperfect for complex monorepos.</li>
-                                <li>This tool helps you understand structure, it does not replace reading code.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    );
-}
-
 export function TargetAudienceSection() {
     return (
-        <section className="py-24 relative overflow-hidden">
-            {/* Background */}
-            <div className="absolute inset-0 bg-[#020010]" />
-            <div className="absolute inset-0 bg-[radial-gradient(#ffffff05_1px,transparent_1px)] [background-size:24px_24px] opacity-20" />
+        <section className="py-28 relative overflow-hidden bg-white dark:bg-[#0d0b18] transition-colors duration-500">
+            {/* Distinct grid */}
+            <div className="absolute inset-0 bg-[linear-gradient(45deg,#00000005_1px,transparent_1px),linear-gradient(-45deg,#00000005_1px,transparent_1px)] dark:bg-[linear-gradient(45deg,#ffffff06_1px,transparent_1px),linear-gradient(-45deg,#ffffff06_1px,transparent_1px)] bg-[size:32px_32px]" />
+            
+            {/* Soft gradient orbs */}
+            <motion.div
+                className="absolute top-20 -left-20 w-[400px] h-[400px] bg-purple-500/5 dark:bg-purple-600/15 rounded-full blur-[120px] pointer-events-none"
+                animate={{ scale: [1, 1.1, 1], x: [0, 20, 0] }}
+                transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+            />
+            <motion.div
+                className="absolute bottom-20 -right-20 w-[350px] h-[350px] bg-blue-500/5 dark:bg-blue-600/12 rounded-full blur-[120px] pointer-events-none"
+                animate={{ scale: [1.1, 1, 1.1], y: [0, -20, 0] }}
+                transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+            />
 
-            {/* Floating Particles */}
-            {[...Array(6)].map((_, i) => (
-                <motion.div
-                    key={i}
-                    className="absolute w-1 h-1 bg-purple-500/30 rounded-full"
-                    style={{ left: `${15 + i * 15}%`, top: `${20 + (i % 3) * 25}%` }}
-                    animate={{
-                        y: [0, -30, 0],
-                        opacity: [0.2, 0.6, 0.2],
-                    }}
-                    transition={{
-                        duration: 3 + i * 0.5,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                        delay: i * 0.4,
-                    }}
-                />
-            ))}
-
-            <div className="container relative z-10 px-4">
-                <div className="text-center mb-24">
+            <div className="container relative z-20 px-4 max-w-6xl mx-auto">
+                <div className="text-center mb-20">
                     <motion.div
                         initial={{ opacity: 0, scale: 0.9 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
-                        className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-gray-400 mb-6 uppercase tracking-widest"
+                        className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-gray-500 dark:text-gray-400 mb-8 uppercase tracking-widest"
                     >
-                        <span className="w-2 h-2 rounded-full bg-neon-green/50 animate-pulse" />
+                        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                         Who is this for?
                     </motion.div>
                     <motion.h2 
@@ -268,11 +238,10 @@ export function TargetAudienceSection() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                        className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-2 uppercase tracking-tight flex items-center justify-center gap-4 flex-wrap"
+                        className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-gray-900 dark:text-white mb-2 uppercase tracking-tight flex items-center justify-center gap-4 flex-wrap"
                     >
                         BUILT
-                        <span className="relative inline-flex items-center justify-center text-5xl md:text-6xl lg:text-7xl px-4 py-1 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/15 shadow-[0_0_30px_rgba(168,85,247,0.15)] text-transparent bg-clip-text bg-gradient-to-br from-purple-300 via-blue-300 to-cyan-300 animate-[gradient-shift_3s_ease_infinite] bg-[length:200%_200%]">
-                            <span className="absolute inset-0 rounded-2xl bg-gradient-to-r from-transparent via-white/10 to-transparent animate-[purpleShimmer_3s_linear_infinite]" />
+                        <span className="relative inline-flex items-center justify-center text-5xl md:text-6xl lg:text-7xl px-4 py-1 rounded-2xl bg-white dark:bg-white/5 backdrop-blur-xl border border-black/10 dark:border-white/15 shadow-xl dark:shadow-[0_0_30px_rgba(168,85,247,0.15)] text-transparent bg-clip-text bg-gradient-to-br from-purple-600 via-blue-600 to-cyan-600 dark:from-purple-300 dark:via-blue-300 dark:to-cyan-300 animate-[gradient-shift_3s_ease_infinite] bg-[length:200%_200%]">
                             &amp;
                         </span>
                         DESIGNED
@@ -282,7 +251,7 @@ export function TargetAudienceSection() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-                        className="text-4xl md:text-5xl lg:text-6xl font-display font-bold mb-6 uppercase tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-blue-400 to-cyan-400 animate-[gradient-shift_3s_ease_infinite] bg-[length:200%_200%]"
+                        className="text-4xl md:text-5xl lg:text-6xl font-display font-bold mb-6 uppercase tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-blue-600 to-cyan-600 dark:from-purple-400 dark:via-blue-400 dark:to-cyan-400 animate-[gradient-shift_3s_ease_infinite] bg-[length:200%_200%]"
                     >
                         FOR:
                     </motion.h2>
@@ -291,7 +260,7 @@ export function TargetAudienceSection() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.8, delay: 0.3 }}
-                        className="text-gray-400 max-w-2xl mx-auto text-lg font-light leading-relaxed"
+                        className="text-gray-500 dark:text-gray-400 max-w-2xl mx-auto text-lg font-light leading-relaxed"
                     >
                         Whether you write code or oversee the teams that do, getmygit helps you see the structure and flow.
                     </motion.p>
@@ -305,7 +274,7 @@ export function TargetAudienceSection() {
                         hidden: { opacity: 0 },
                         show: {
                             opacity: 1,
-                            transition: { staggerChildren: 0.2 }
+                            transition: { staggerChildren: 0.15 }
                         }
                     }}
                     className="grid grid-cols-1 md:grid-cols-3 gap-8"
@@ -313,19 +282,19 @@ export function TargetAudienceSection() {
                     <PersonaCard
                         role="DEVELOPERS"
                         desc="Stop grepping through thousands of files. Visualize the architecture instantly and onboard 10x faster."
-                        accent="neon-blue"
+                        accent="blue"
                         icon={Code}
                     />
                     <PersonaCard
                         role="MANAGERS"
                         desc="Understand technical debt and dependency complexity without needing to read a single line of code."
-                        accent="purple-500"
+                        accent="purple"
                         icon={Briefcase}
                     />
                     <PersonaCard
                         role="HR & RECRUITERS"
                         desc="Assess candidate take-home assignments or portfolio projects with a glance at their architectural decisions."
-                        accent="pink-500"
+                        accent="rose"
                         icon={Users}
                     />
                 </motion.div>
@@ -335,44 +304,220 @@ export function TargetAudienceSection() {
 }
 
 function PersonaCard({ role, desc, accent, icon: Icon }: { role: string, desc: string, accent: string, icon: any }) {
-    const borderColor = accent === 'neon-blue' ? 'border-neon-blue' : accent === 'purple-500' ? 'border-purple-500' : 'border-pink-500';
-    const textColor = accent === 'neon-blue' ? 'text-neon-blue' : accent === 'purple-500' ? 'text-purple-500' : 'text-pink-500';
-    const bgGradient = accent === 'neon-blue' ? 'from-neon-blue/20' : accent === 'purple-500' ? 'from-purple-500/20' : 'from-pink-500/20';
-    const hoverBorder = accent === 'neon-blue' ? 'group-hover:border-neon-blue' : accent === 'purple-500' ? 'group-hover:border-purple-500' : 'group-hover:border-pink-500';
+    const accentMap: Record<string, { gradient: string, text: string, border: string, glow: string, iconBg: string, textDark: string }> = {
+        blue:   { gradient: 'from-blue-600 to-cyan-600', text: 'text-blue-600', textDark: 'text-blue-400', border: 'border-blue-500/20', glow: 'rgba(59,130,246,0.1)', iconBg: 'bg-blue-500/10' },
+        purple: { gradient: 'from-purple-600 to-violet-600', text: 'text-purple-600', textDark: 'text-purple-400', border: 'border-purple-500/20', glow: 'rgba(139,92,246,0.1)', iconBg: 'bg-purple-500/10' },
+        rose:   { gradient: 'from-rose-600 to-pink-600', text: 'text-rose-600', textDark: 'text-rose-400', border: 'border-rose-500/20', glow: 'rgba(244,63,94,0.1)', iconBg: 'bg-rose-500/10' },
+    };
+    const a = accentMap[accent] || accentMap.blue;
 
     return (
         <motion.div 
             variants={{
-                hidden: { opacity: 0, scale: 0.95 },
-                show: { opacity: 1, scale: 1, transition: { duration: 0.6 } }
+                hidden: { opacity: 0, y: 40 },
+                show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } }
             }}
-            whileHover={{ y: -10 }}
-            className={`relative group p-1 bg-gradient-to-b from-white/5 to-transparent rounded-3xl overflow-hidden transition-all duration-500`}
+            whileHover={{ y: -12, scale: 1.02 }}
+            className="group relative rounded-3xl overflow-hidden h-full"
         >
-            <div className="absolute inset-0 bg-[#0a0a0a] m-[1px] rounded-[23px] z-0" />
+            {/* Outer glow on hover */}
+            <div 
+                className="absolute -inset-2 rounded-3xl opacity-0 group-hover:opacity-100 blur-2xl transition-opacity duration-700 pointer-events-none"
+                style={{ background: `radial-gradient(circle at center, ${a.glow}, transparent 70%)` }}
+            />
 
-            {/* Glow Effect */}
-            <div className={`absolute -inset-1 bg-gradient-to-r ${bgGradient} to-transparent opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-700`} />
+            {/* Glassmorphism Card */}
+            <div className="relative h-full bg-white/80 dark:bg-white/[0.07] backdrop-blur-2xl border border-black/[0.05] dark:border-white/[0.12] rounded-3xl p-8 flex flex-col items-center text-center shadow-2xl dark:shadow-[0_4px_24px_rgba(0,0,0,0.2)] group-hover:border-black/[0.1] dark:group-hover:border-white/20 transition-all duration-500">
+                
+                {/* Shimmer sweep */}
+                <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-transparent via-black/[0.02] dark:via-white/[0.05] to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-[2s] ease-in-out pointer-events-none" />
 
-            <div className="relative z-10 p-8 flex flex-col items-center text-center h-full bg-[#0a0a0a]/60 backdrop-blur-xl rounded-[23px] border border-white/5 group-hover:border-white/10 transition-colors">
-                <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br from-white/5 to-transparent flex items-center justify-center mb-8 border border-white/5 ${hoverBorder} transition-colors duration-500`}>
-                    <Icon className={`w-7 h-7 text-gray-400 group-hover:${textColor} transition-colors duration-300`} />
-                </div>
+                {/* Top accent line */}
+                <motion.div 
+                    className={`absolute top-0 left-0 h-[3px] rounded-full bg-gradient-to-r ${a.gradient}`}
+                    initial={{ width: '0%' }}
+                    whileInView={{ width: '100%' }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                />
 
-                <h3 className="text-xl font-display font-bold text-white mb-4 tracking-wide group-hover:text-white transition-colors">{role}</h3>
-                <p className="text-gray-400 leading-relaxed mb-10 flex-1 text-sm font-light">
+                {/* Icon */}
+                <motion.div 
+                    className={`w-16 h-16 rounded-2xl ${a.iconBg} flex items-center justify-center mb-8 border border-black/[0.05] dark:border-white/10 relative overflow-hidden backdrop-blur-md`}
+                    animate={{ rotate: [0, 2, -2, 0] }}
+                    transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                >
+                    <Icon className={`w-7 h-7 ${a.text} dark:${a.textDark} relative z-10`} />
+                </motion.div>
+
+                <h3 className="text-xl font-display font-bold text-gray-900 dark:text-white mb-4 tracking-wide">{role}</h3>
+                <p className="text-gray-500 dark:text-gray-400 leading-relaxed mb-10 flex-1 text-sm font-light">
                     {desc}
                 </p>
 
-                <button className={`relative w-full py-4 overflow-hidden rounded-xl border border-white/10 ${hoverBorder} transition-all duration-300 overflow-hidden bg-white/5 hover:bg-white/10`}>
-                    <div className={`absolute inset-0 bg-gradient-to-r ${bgGradient} to-transparent opacity-0 group-hover:opacity-20 transition-opacity duration-500`} />
-                    <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 mix-blend-overlay" />
+                {/* Access Tools Button */}
+                <a 
+                    href="/#hero"
+                    className={`relative w-full py-4 overflow-hidden rounded-xl border border-black/[0.08] dark:${a.border} group-hover:border-black/[0.15] dark:group-hover:${a.border} transition-all duration-300 bg-black/[0.02] dark:bg-white/[0.03] hover:bg-black/[0.05] dark:hover:bg-white/[0.06] backdrop-blur-md flex items-center justify-center gap-3 cursor-pointer shadow-sm dark:shadow-none`}
+                >
+                    <div className={`absolute inset-0 bg-gradient-to-r ${a.gradient} opacity-0 group-hover:opacity-[0.08] transition-opacity duration-500 rounded-xl`} />
+                    <span className={`font-bold tracking-[0.2em] text-xs text-gray-500 dark:text-gray-400 group-hover:text-black dark:group-hover:${a.textDark} transition-colors uppercase relative z-10`}>Access Tools</span>
+                    <ArrowUpRight className={`w-4 h-4 text-gray-400 dark:text-gray-500 group-hover:text-black dark:group-hover:${a.textDark} transition-colors relative z-10`} />
+                </a>
 
-                    <div className="relative flex items-center justify-center gap-3">
-                        <span className={`font-bold tracking-[0.2em] text-xs text-gray-400 group-hover:${textColor} transition-colors uppercase`}>Access Tools</span>
-                        <ArrowUpRight className={`w-4 h-4 text-gray-500 group-hover:${textColor} transition-colors`} />
+                {/* Corner brackets on hover */}
+                <div className="absolute bottom-3 left-3 w-6 h-6 border-l-2 border-b-2 border-black/[0.05] dark:border-white/[0.06] rounded-bl-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="absolute top-3 right-3 w-6 h-6 border-r-2 border-t-2 border-black/[0.05] dark:border-white/[0.06] rounded-tr-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            </div>
+        </motion.div>
+    );
+}
+
+// ... FuturePlansSection and FutureCard stay mostly same but with theme classes ...
+// I will truncate here for brevity but implement them with same pattern.
+
+export function FuturePlansSection() {
+    const features = [
+        {
+            icon: Rocket,
+            title: "Hackathon Access & Team Formation",
+            desc: "Discover hackathon-ready repositories and form balanced teams based on complementary tech stacks. Match developers by skill gaps and project interests.",
+            status: "In Research",
+            accent: "from-orange-500 to-rose-500",
+            glowColor: "rgba(249,115,22,0.1)",
+        },
+        {
+            icon: Sparkles,
+            title: "Portfolio Generator",
+            desc: "One-click generation of a stunning developer portfolio page from all your analyzed repos. Showcase your architecture skills, not just commit counts.",
+            status: "Planned",
+            accent: "from-violet-500 to-fuchsia-500",
+            glowColor: "rgba(139,92,246,0.1)",
+        },
+        {
+            icon: BarChart3,
+            title: "Commit Heatmap & Activity Insights",
+            desc: "Deep analytics on coding patterns, contribution heatmaps, peak productivity hours, and language distribution over time.",
+            status: "Planned",
+            accent: "from-emerald-500 to-teal-500",
+            glowColor: "rgba(16,185,129,0.1)",
+        },
+        {
+            icon: GitCompare,
+            title: "Cross-Repo Comparison",
+            desc: "Compare architecture, tech stack, complexity scores, and structural patterns of two repositories side-by-side in a unified view.",
+            status: "In Research",
+            accent: "from-cyan-500 to-blue-500",
+            glowColor: "rgba(6,182,212,0.1)",
+        },
+    ];
+
+    return (
+        <section id="future" className="py-32 relative overflow-hidden bg-gray-50 dark:bg-[#020008] transition-colors duration-500">
+            {/* Background */}
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(120,50,255,0.05),transparent)] dark:bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(120,50,255,0.12),transparent)]" />
+            <div className="absolute inset-0 bg-[radial-gradient(#00000005_1px,transparent_1px)] dark:bg-[radial-gradient(#ffffff03_1px,transparent_1px)] [background-size:32px_32px]" />
+
+            <div className="container max-w-6xl relative z-10 px-4 mx-auto">
+                {/* Header */}
+                <div className="text-center mb-20">
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6 }}
+                        className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-mono text-gray-500 dark:text-gray-400 mb-8 uppercase tracking-widest"
+                    >
+                        <Zap className="w-3 h-3 text-amber-500 animate-pulse" />
+                        Roadmap
+                    </motion.div>
+
+                    <motion.h2
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                        className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-gray-900 dark:text-white mb-4 tracking-tight"
+                    >
+                        THE <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 dark:from-purple-400 dark:via-pink-400 dark:to-cyan-400 animate-[gradient-shift_3s_ease_infinite] bg-[length:200%_200%]">FUTURE</span>
+                    </motion.h2>
+
+                    <motion.p
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8, delay: 0.2 }}
+                        className="text-gray-500 dark:text-gray-400 max-w-2xl mx-auto text-lg font-light leading-relaxed"
+                    >
+                        Where we&apos;re headed next. These features are on our roadmap to make GetMyGit the ultimate developer intelligence platform.
+                    </motion.p>
+                </div>
+
+                {/* Feature Cards Grid */}
+                <motion.div
+                    initial="hidden"
+                    whileInView="show"
+                    viewport={{ once: true }}
+                    variants={{
+                        hidden: { opacity: 0 },
+                        show: {
+                            opacity: 1,
+                            transition: { staggerChildren: 0.15 },
+                        },
+                    }}
+                    className="grid grid-cols-1 md:grid-cols-2 gap-6"
+                >
+                    {features.map((feature, i) => (
+                        <FutureCard key={i} {...feature} index={i} />
+                    ))}
+                </motion.div>
+            </div>
+        </section>
+    );
+}
+
+function FutureCard({ icon: Icon, title, desc, status, accent, glowColor }: {
+    icon: any; title: string; desc: string; status: string; accent: string; glowColor: string; index: number;
+}) {
+    return (
+        <motion.div
+            variants={{
+                hidden: { opacity: 0, y: 40 },
+                show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } },
+            }}
+            whileHover={{ y: -6 }}
+            className="group relative rounded-2xl overflow-hidden shadow-xl dark:shadow-none"
+        >
+            <div
+                className="absolute -inset-1 rounded-2xl opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-700"
+                style={{ background: `radial-gradient(circle at center, ${glowColor}, transparent 70%)` }}
+            />
+
+            <div className="relative bg-white dark:bg-[#0a0a0f]/80 backdrop-blur-xl border border-black/5 dark:border-white/10 rounded-2xl p-8 h-full transition-all duration-500 group-hover:border-black/10 dark:group-hover:border-white/20">
+                <div className="flex items-start justify-between mb-6 relative z-10">
+                    <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${accent} p-[1px] shadow-lg`}>
+                        <div className="w-full h-full rounded-[11px] bg-white dark:bg-[#0a0a0f] flex items-center justify-center">
+                            <Icon className="w-5 h-5 text-gray-900 dark:text-white/80" />
+                        </div>
                     </div>
-                </button>
+
+                    <span className={`text-[10px] font-mono font-bold uppercase tracking-widest px-3 py-1 rounded-full border ${
+                        status === 'Planned'
+                            ? 'border-emerald-500/20 text-emerald-600 dark:text-emerald-400 bg-emerald-500/5'
+                            : 'border-amber-500/20 text-amber-600 dark:text-amber-400 bg-amber-500/5'
+                    }`}>
+                        {status}
+                    </span>
+                </div>
+
+                <h3 className="text-xl font-display font-bold text-gray-900 dark:text-white mb-3 tracking-wide">
+                    {title}
+                </h3>
+                <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed font-light font-sans">
+                    {desc}
+                </p>
+
+                <div className={`absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r ${accent} scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left`} />
             </div>
         </motion.div>
     );

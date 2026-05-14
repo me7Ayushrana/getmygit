@@ -1,5 +1,6 @@
 import React from 'react';
-import { PieChart, BarChart2, Star, GitFork, Eye, Disc } from 'lucide-react';
+import { PieChart, BarChart2, Star, GitFork, Eye, Disc, Info } from 'lucide-react';
+import { Tooltip } from '@/components/ui/Tooltip';
 import { GitHubRepo } from '@/types';
 
 interface StatsPanelProps {
@@ -20,22 +21,27 @@ export const StatsPanel = ({ languages, repo }: StatsPanelProps) => {
         }));
 
     return (
-        <div className="h-full overflow-y-auto p-4 space-y-6 text-zinc-300">
+        <div className="h-full overflow-y-auto p-4 space-y-6 text-gray-600 dark:text-zinc-300 transition-colors duration-500" data-lenis-prevent>
             {/* Repo Stats */}
             <div className="grid grid-cols-3 gap-2">
-                <StatCard icon={Star} label="Stars" value={repo.stars} />
-                <StatCard icon={GitFork} label="Forks" value={repo.forks_count} />
-                <StatCard icon={Eye} label="Watchers" value={repo.watchers_count} />
+                <StatCard icon={Star} label="Stars" value={repo.stars} tooltip="Total stargazers for this repository on GitHub." />
+                <StatCard icon={GitFork} label="Forks" value={repo.forks_count} tooltip="Number of times this repository has been forked." />
+                <StatCard icon={Eye} label="Watchers" value={repo.watchers_count} tooltip="Users actively watching this repository for updates." />
             </div>
 
             {/* Language Breakdown */}
             <div className="space-y-3">
-                <h3 className="text-sm font-semibold text-zinc-100 flex items-center gap-2">
-                    <PieChart size={16} /> Languages
-                </h3>
+                <div className="flex items-center justify-between">
+                    <h3 className="text-sm font-semibold text-gray-900 dark:text-zinc-100 flex items-center gap-2">
+                        <PieChart size={16} /> Languages
+                    </h3>
+                    <Tooltip text="The distribution of programming languages used in the codebase, calculated by total byte count per file." position="bottom-left">
+                        <Info size={14} className="text-zinc-500 hover:text-white cursor-help" />
+                    </Tooltip>
+                </div>
 
                 {/* Progress Bar */}
-                <div className="flex h-3 rounded-full overflow-hidden bg-zinc-800">
+                <div className="flex h-3 rounded-full overflow-hidden bg-black/[0.05] dark:bg-zinc-800">
                     {languagesList.map((lang) => (
                         <div
                             key={lang.name}
@@ -50,28 +56,33 @@ export const StatsPanel = ({ languages, repo }: StatsPanelProps) => {
                     {languagesList.map((lang) => (
                         <div key={lang.name} className="flex items-center gap-2 text-xs">
                             <span className="w-2 h-2 rounded-full" style={{ backgroundColor: lang.color }} />
-                            <span className="font-medium text-zinc-200">{lang.name}</span>
-                            <span className="text-zinc-500 ml-auto">{lang.percent}%</span>
+                            <span className="font-medium text-gray-800 dark:text-zinc-200">{lang.name}</span>
+                            <span className="text-gray-400 dark:text-zinc-500 ml-auto">{lang.percent}%</span>
                         </div>
                     ))}
                 </div>
             </div>
 
             {/* Quick Facts */}
-            <div className="space-y-2 pt-4 border-t border-zinc-800">
-                <h3 className="text-sm font-semibold text-zinc-100">Details</h3>
+            <div className="space-y-2 pt-4 border-t border-black/[0.05] dark:border-zinc-800">
+                <div className="flex items-center justify-between mb-2">
+                    <h3 className="text-sm font-semibold text-gray-900 dark:text-zinc-100">Details</h3>
+                    <Tooltip text="Key metadata and synchronization details retrieved from the GitHub API." position="bottom-left">
+                        <Info size={14} className="text-zinc-500 hover:text-white cursor-help" />
+                    </Tooltip>
+                </div>
                 <div className="text-xs space-y-2">
                     <div className="flex justify-between">
                         <span>Default Branch</span>
-                        <span className="font-mono text-zinc-400">{repo.default_branch}</span>
+                        <span className="font-mono text-gray-500 dark:text-zinc-400">{repo.default_branch}</span>
                     </div>
                     <div className="flex justify-between">
                         <span>Created</span>
-                        <span className="font-mono text-zinc-400">{new Date(repo.updated_at).toLocaleDateString()}</span>
+                        <span className="font-mono text-gray-500 dark:text-zinc-400">{new Date(repo.updated_at).toLocaleDateString()}</span>
                     </div>
                     <div className="flex justify-between">
                         <span>Open Issues</span>
-                        <span className="font-mono text-zinc-400">{repo.open_issues_count}</span>
+                        <span className="font-mono text-gray-500 dark:text-zinc-400">{repo.open_issues_count}</span>
                     </div>
                 </div>
             </div>
@@ -79,13 +90,17 @@ export const StatsPanel = ({ languages, repo }: StatsPanelProps) => {
     );
 };
 
-const StatCard = ({ icon: Icon, label, value }: any) => (
-    <div className="bg-[#18181b] border border-[#27272a] p-3 rounded-lg flex flex-col items-center justify-center text-center">
-        <Icon size={16} className="text-zinc-400 mb-1" />
-        <span className="text-lg font-bold text-zinc-100">{value}</span>
-        <span className="text-[10px] text-zinc-500 uppercase tracking-wider">{label}</span>
-    </div>
+const StatCard = ({ icon: Icon, label, value, tooltip }: any) => (
+    <Tooltip text={tooltip} position="bottom">
+        <div className="bg-gray-50 dark:bg-[#18181b] border border-black/[0.05] dark:border-[#27272a] p-3 rounded-lg flex flex-col items-center justify-center text-center transition-colors hover:border-blue-500/30">
+            <Icon size={16} className="text-gray-400 dark:text-zinc-400 mb-1" />
+            <span className="text-lg font-bold text-gray-900 dark:text-zinc-100">{value}</span>
+            <span className="text-[10px] text-gray-400 dark:text-zinc-500 uppercase tracking-wider">{label}</span>
+        </div>
+    </Tooltip>
 );
+
+
 
 function getLanguageColor(lang: string) {
     const map: Record<string, string> = {

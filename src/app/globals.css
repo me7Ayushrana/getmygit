@@ -3,33 +3,59 @@
 @tailwind utilities;
 
 @layer base {
+  html.lenis, html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
   html {
-    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
   body {
-    @apply bg-void text-zinc-200 antialiased selection:bg-primary/30 selection:text-white;
+    @apply bg-[#fafafa] dark:bg-void text-gray-900 dark:text-zinc-200 antialiased selection:bg-primary/30 selection:text-white transition-colors duration-500;
+  }
+
+  /* Respect reduced motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* GPU acceleration for animated elements */
+  .will-change-transform {
+    will-change: transform;
   }
 }
 
 @layer utilities {
   .glass-panel {
-    @apply bg-panel backdrop-blur-3xl border border-border shadow-2xl;
+    @apply bg-white/70 dark:bg-panel backdrop-blur-3xl border border-black/[0.05] dark:border-border shadow-2xl transition-colors duration-500;
   }
 
   .glass-card {
-    @apply bg-glass-gradient backdrop-blur-xl border border-white/10 shadow-2xl hover:border-white/20 hover:shadow-[0_0_30px_rgba(225,29,72,0.15)] transition-all duration-500;
+    @apply bg-white/80 dark:bg-glass-gradient backdrop-blur-xl border border-black/[0.05] dark:border-white/10 shadow-xl dark:shadow-2xl hover:border-black/[0.1] dark:hover:border-white/20 transition-all duration-500;
   }
 
   .glass-button {
-    @apply relative overflow-hidden bg-white/10 border border-white/20 text-white font-bold hover:bg-white/20 hover:shadow-[0_0_20px_rgba(255,255,255,0.2)] transition-all duration-300 backdrop-blur-md;
+    @apply relative overflow-hidden bg-black/[0.03] dark:bg-white/10 border border-black/[0.05] dark:border-white/20 text-gray-900 dark:text-white font-bold hover:bg-black/[0.05] dark:hover:bg-white/20 transition-all duration-300 backdrop-blur-md;
   }
 
   .text-glow {
-    text-shadow: 0 0 30px rgba(225, 29, 72, 0.6);
+    text-shadow: 0 0 30px rgba(225, 29, 72, 0.4);
   }
 
   .shimmer-text {
-    background: linear-gradient(90deg, #ffffff 0%, #ffffff 40%, #E11D48 50%, #ffffff 60%, #ffffff 100%);
+    background: linear-gradient(90deg, #111 0%, #333 40%, #E11D48 50%, #333 60%, #111 100%);
     background-size: 200% auto;
     color: transparent;
     -webkit-background-clip: text;
@@ -37,7 +63,31 @@
     animation: shimmer 4s linear infinite;
   }
 
+  .dark .shimmer-text {
+    background: linear-gradient(90deg, #ffffff 0%, #ffffff 40%, #E11D48 50%, #ffffff 60%, #ffffff 100%);
+    background-size: 200% auto;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
   .cinematic-text {
+    background: linear-gradient(
+      to right,
+      #111 20%,
+      #333 40%,
+      #7c3aed 50%,
+      #333 60%,
+      #111 80%
+    );
+    background-size: 200% auto;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: purpleShimmer 5s linear infinite reverse;
+  }
+
+  .dark .cinematic-text {
     background: linear-gradient(
       to right,
       #F8FAFC 20%,
@@ -50,17 +100,16 @@
     color: transparent;
     -webkit-background-clip: text;
     background-clip: text;
-    animation: purpleShimmer 5s linear infinite reverse;
   }
 
   .golden-shimmer-text {
     background: linear-gradient(
       to right,
-      #F8FAFC 20%,
-      #F8FAFC 40%,
-      #fbbf24 50%, /* Golden Amber */
-      #F8FAFC 60%,
-      #F8FAFC 80%
+      #111 20%,
+      #333 40%,
+      #f59e0b 50%,
+      #333 60%,
+      #111 80%
     );
     background-size: 200% auto;
     color: transparent;
@@ -69,9 +118,29 @@
     animation: purpleShimmer 5s linear infinite reverse;
   }
 
+  .dark .golden-shimmer-text {
+    background: linear-gradient(
+      to right,
+      #F8FAFC 20%,
+      #F8FAFC 40%,
+      #fbbf24 50%,
+      #F8FAFC 60%,
+      #F8FAFC 80%
+    );
+    background-size: 200% auto;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
   @keyframes purpleShimmer {
     0% { background-position: 200% center; }
     100% { background-position: -200% center; }
+  }
+
+  @keyframes shimmer {
+    from { backgroundPosition: 0 0; }
+    to { backgroundPosition: -200% 0; }
   }
 
   @keyframes gradient-shift {
@@ -89,10 +158,16 @@
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.05);
     border-radius: 10px;
   }
+  .dark ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+  }
   ::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.1);
+  }
+  .dark ::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.3);
   }
 }
