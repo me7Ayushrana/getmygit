@@ -149,8 +149,8 @@ export function Hero() {
                         transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
                         className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-center leading-[1.1] max-w-5xl"
                     >
-                        <span className="text-gray-900 dark:text-white dark:golden-shimmer-text">Intelligent</span> <br className="hidden md:block" />
-                        <span className="text-gray-900 dark:text-white dark:cinematic-text">GitHub Intelligence</span>
+                        <span className="prism-text">Intelligent</span> <br className="hidden md:block" />
+                        <span className="cinematic-text">GitHub Intelligence</span>
                     </motion.h1>
                 </div>
 

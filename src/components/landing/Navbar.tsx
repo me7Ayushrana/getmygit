@@ -5,6 +5,7 @@ import { Github, LogOut, User, Sparkles } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { ThemeToggle } from '@/components/theme/ThemeToggle';
+import { Logo } from '@/components/ui/Logo';
 
 export function Navbar() {
     const [scrolled, setScrolled] = useState(false);
@@ -28,14 +29,8 @@ export function Navbar() {
                 w-full max-w-6xl
             `}>
                 {/* Logo */}
-                <Link href="/" className="flex items-center gap-3 group">
-                    <div className="relative w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 border border-emerald-500/20 flex items-center justify-center overflow-hidden group-hover:border-emerald-400/40 transition-all duration-300">
-                        <div className="absolute inset-0 bg-emerald-500/10 dark:bg-emerald-500/10 blur-sm" />
-                        <span className="relative z-10 text-xs font-display font-black text-emerald-600 dark:text-emerald-400 tracking-tight">GG</span>
-                    </div>
-                    <span className="text-base font-display font-bold tracking-[0.15em] text-gray-900 dark:text-white/90 group-hover:text-black dark:group-hover:text-white transition-colors">
-                        getmygit
-                    </span>
+                <Link href="/" className="group">
+                    <Logo size="md" />
                 </Link>
 
                 {/* Desktop Links */}

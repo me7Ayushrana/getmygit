@@ -2,15 +2,15 @@
 
 import Link from 'next/link';
 import { Github, Twitter, Mail, ArrowRight } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Logo } from '@/components/ui/Logo';
 
 export function Footer() {
     return (
         <footer className="relative border-t border-black/[0.05] dark:border-white/5 bg-white dark:bg-[#030014] pt-32 pb-12 overflow-hidden transition-colors duration-500">
             {/* Giant Watermark */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full text-center pointer-events-none select-none z-0">
-                <h1 className="text-[15vw] md:text-[20vw] font-bold text-black/[0.02] dark:text-white/[0.02] tracking-tighter leading-none">
-                    getmygit
+                <h1 className="text-[15vw] md:text-[20vw] font-bold text-black/[0.02] dark:text-white/[0.02] tracking-tighter leading-none uppercase font-display opacity-20">
+                    GETMYGIT
                 </h1>
             </div>
 
@@ -40,10 +40,8 @@ export function Footer() {
                 {/* Links Grid */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-12 md:gap-8 mb-24">
                     <div className="col-span-2 md:col-span-1">
-                        <Link href="/" className="inline-block mb-6">
-                            <span className="text-2xl font-bold text-gray-900 dark:text-white dark:bg-clip-text dark:text-transparent dark:bg-gradient-to-r dark:from-blue-400 dark:to-purple-400">
-                                getmygit
-                            </span>
+                        <Link href="/" className="inline-block mb-6 group">
+                            <Logo size="md" />
                         </Link>
                         <p className="text-gray-500 dark:text-gray-500 mb-8 max-w-sm font-mono text-sm leading-relaxed">
                             The visual layer for the world&apos;s code. Built for developers who value clarity over complexity.
