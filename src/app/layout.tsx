@@ -3,6 +3,9 @@ import { Inter, Orbitron } from 'next/font/google'
 import './globals.css'
 import { AuthProvider } from '@/context/AuthContext'
 import { SmoothScroll } from '@/components/SmoothScroll'
+import { Footer } from "@/components/landing/Footer"
+import { CyberGrid } from "@/components/ui/CyberGrid"
+import { Navbar } from "@/components/landing/Navbar"
 
 const inter = Inter({
   subsets: ['latin'],
@@ -56,7 +59,13 @@ export default function RootLayout({
 
           <AuthProvider>
             <SmoothScroll>
-              {children}
+              <div className="grain-overlay" />
+              <CyberGrid />
+              <div className="relative min-h-screen">
+                <Navbar />
+                <main>{children}</main>
+                <Footer />
+              </div>
             </SmoothScroll>
           </AuthProvider>
         </ThemeProvider>

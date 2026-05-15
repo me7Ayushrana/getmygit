@@ -5,6 +5,8 @@ import { ArrowRight, Sparkles } from 'lucide-react';
 import { useRef, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { TerminalLoader } from './TerminalLoader';
+import { Magnetic } from '../ui/Magnetic';
+import { Logo } from '../ui/Logo';
 
 export function Hero() {
     const [url, setUrl] = useState('');
@@ -123,23 +125,25 @@ export function Hero() {
             <div className="container px-4 z-10 w-full max-w-6xl mx-auto flex flex-col items-center">
                 
                 {/* Top Badge */}
-                <motion.div
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                    whileHover={{ scale: 1.05 }}
-                    className={`inline-flex items-center gap-2 px-4 py-2 rounded-full border transition-all duration-500 cursor-default shadow-sm group mb-8 backdrop-blur-md ${
-                        isOnline 
-                        ? 'border-black/5 dark:border-white/10 bg-white/50 dark:bg-white/5 hover:bg-black/5 dark:hover:bg-white/10' 
-                        : 'border-rose-500/30 bg-rose-500/10 dark:bg-rose-500/20 shadow-[0_0_15px_rgba(244,63,94,0.2)]'
-                    }`}
-                >
-                    <span className={`flex h-2 w-2 rounded-full ${isOnline ? 'bg-emerald-500 shadow-[0_0_10px_#10b981]' : 'bg-rose-600 shadow-[0_0_12px_#e11d48] animate-pulse'}`} />
-                    <span className={`text-xs font-semibold tracking-wide ${isOnline ? 'text-gray-600 dark:text-zinc-300' : 'text-rose-600 dark:text-rose-400'}`}>
-                        {isOnline ? 'GetMyGit Cinematic Engine is live' : 'oops! GetMyGit Engine is offline.'}
-                    </span>
-                    <ArrowRight size={14} className={`text-gray-400 dark:text-zinc-500 group-hover:translate-x-1 transition-transform ${!isOnline && 'hidden'}`} />
-                </motion.div>
+                <Magnetic strength={0.2}>
+                    <motion.div
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                        whileHover={{ scale: 1.05 }}
+                        className={`inline-flex items-center gap-2 px-4 py-2 rounded-full border transition-all duration-500 cursor-default shadow-sm group mb-8 backdrop-blur-md ${
+                            isOnline 
+                            ? 'border-black/5 dark:border-white/10 bg-white/50 dark:bg-white/5 hover:bg-black/5 dark:hover:bg-white/10' 
+                            : 'border-rose-500/30 bg-rose-500/10 dark:bg-rose-500/20 shadow-[0_0_15px_rgba(244,63,94,0.2)]'
+                        }`}
+                    >
+                        <span className={`flex h-2 w-2 rounded-full ${isOnline ? 'bg-emerald-500 shadow-[0_0_10px_#10b981]' : 'bg-rose-600 shadow-[0_0_12px_#e11d48] animate-pulse'}`} />
+                        <span className={`text-xs font-semibold tracking-wide ${isOnline ? 'text-gray-600 dark:text-zinc-300' : 'text-rose-600 dark:text-rose-400'}`}>
+                            {isOnline ? 'GetMyGit Cinematic Engine is live' : 'oops! GetMyGit Engine is offline.'}
+                        </span>
+                        <ArrowRight size={14} className={`text-gray-400 dark:text-zinc-500 group-hover:translate-x-1 transition-transform ${!isOnline && 'hidden'}`} />
+                    </motion.div>
+                </Magnetic>
 
                 {/* Main Headline with Split Text Effect */}
                 <div className="overflow-hidden mb-6">
@@ -184,19 +188,17 @@ export function Hero() {
                         />
                     </div>
                     
-                    <motion.button 
-                        onClick={handleAnalyze}
-                        disabled={isLoading}
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                        style={{
-                            x: mousePos.x * 10,
-                            y: mousePos.y * 10
-                        }}
-                        className="whitespace-nowrap group relative px-8 py-4 bg-gray-900 dark:bg-white text-white dark:text-black font-bold rounded-2xl hover:bg-black dark:hover:bg-zinc-200 transition-all flex items-center justify-center gap-2 shadow-2xl dark:shadow-[0_0_40px_rgba(255,255,255,0.1)] disabled:opacity-50"
-                    >
-                        {isLoading ? 'Scanning...' : 'Analyze'} {!isLoading && <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />}
-                    </motion.button>
+                    <Magnetic strength={0.3}>
+                        <motion.button 
+                            onClick={handleAnalyze}
+                            disabled={isLoading}
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            className="whitespace-nowrap group relative px-8 py-4 bg-gray-900 dark:bg-white text-white dark:text-black font-bold rounded-2xl hover:bg-black dark:hover:bg-zinc-200 transition-all flex items-center justify-center gap-2 shadow-2xl dark:shadow-[0_0_40px_rgba(255,255,255,0.1)] disabled:opacity-50"
+                        >
+                            {isLoading ? 'Scanning...' : 'Analyze'} {!isLoading && <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />}
+                        </motion.button>
+                    </Magnetic>
                 </motion.div>
 
                 {/* Dashboard Mockup with Mouse Parallax */}
