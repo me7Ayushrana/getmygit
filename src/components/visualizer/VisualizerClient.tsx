@@ -248,7 +248,7 @@ export default function VisualizerClient({ data }: { data: RepoAnalysis }) {
     return (
         <div className="w-full h-full min-h-[700px] flex flex-col gap-4 transition-colors duration-500">
             {/* Header */}
-            <div className="bg-white dark:bg-[#09090b] border border-black/[0.05] dark:border-[#27272a] p-3 rounded-xl flex items-center justify-between shadow-sm gap-4 transition-colors duration-500">
+            <div className="sticky top-0 z-30 bg-white/80 dark:bg-[#09090b]/80 backdrop-blur-md border border-black/[0.05] dark:border-[#27272a] p-3 rounded-xl flex items-center justify-between shadow-sm gap-4 transition-colors duration-500">
                 <div className="flex items-center gap-4">
                     <div>
                         <h2 className="text-lg font-semibold text-gray-900 dark:text-zinc-100 flex items-center gap-2">

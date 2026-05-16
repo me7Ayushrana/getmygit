@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { Github, LogOut, User, Sparkles } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { ThemeToggle } from '@/components/theme/ThemeToggle';
@@ -10,6 +11,9 @@ import { Logo } from '@/components/ui/Logo';
 export function Navbar() {
     const [scrolled, setScrolled] = useState(false);
     const { user, logout } = useAuth();
+    const pathname = usePathname();
+
+    const isLanding = pathname === '/';
 
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -17,11 +21,13 @@ export function Navbar() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    const showGlass = scrolled || !isLanding;
+
     return (
         <div className="fixed top-5 left-0 right-0 z-50 flex justify-center px-6 pointer-events-none">
             <nav className={`
                 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-auto
-                ${scrolled 
+                ${showGlass 
                     ? 'py-2.5 bg-white/70 dark:bg-[#0a0814]/60 backdrop-blur-2xl border border-black/[0.05] dark:border-white/[0.08] shadow-[0_8px_32px_rgba(0,0,0,0.05)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.4)]' 
                     : 'py-4 bg-transparent border border-transparent shadow-none'
                 }
