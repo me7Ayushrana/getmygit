@@ -12,9 +12,10 @@ export function ThemeToggle() {
 
     React.useEffect(() => {
         setMounted(true);
-        // Show hint after 3 seconds if in light mode
+        // Show hint after 3 seconds if in light mode and not dismissed
         const timer = setTimeout(() => {
-            if (theme !== 'dark') {
+            const dismissed = localStorage.getItem('theme-toggle-dismissed') === 'true';
+            if (theme !== 'dark' && !dismissed) {
                 setShowHint(true);
             }
         }, 3000);
@@ -36,7 +37,10 @@ export function ThemeToggle() {
                     >
                         <span>Switch to Dark Mode for a cinematic experience</span>
                         <button 
-                            onClick={() => setShowHint(false)}
+                            onClick={() => {
+                                setShowHint(false);
+                                localStorage.setItem('theme-toggle-dismissed', 'true');
+                            }}
                             className="p-1 hover:bg-white/10 rounded-full transition-colors"
                         >
                             <X size={10} />
@@ -51,6 +55,7 @@ export function ThemeToggle() {
                 onClick={() => {
                     setTheme(theme === 'dark' ? 'light' : 'dark');
                     setShowHint(false);
+                    localStorage.setItem('theme-toggle-dismissed', 'true');
                 }}
                 className="relative w-10 h-10 flex items-center justify-center rounded-xl bg-white dark:bg-white/[0.03] border border-black/[0.1] dark:border-white/[0.1] hover:border-blue-500/50 dark:hover:border-blue-400/50 transition-all duration-300 group overflow-hidden shadow-[0_2px_10px_rgba(0,0,0,0.05)] dark:shadow-none"
                 aria-label="Toggle theme"

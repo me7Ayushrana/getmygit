@@ -12,8 +12,8 @@ export const ReadmeViewer = ({ content }: { content: string }) => {
     }
 
     return (
-        <div className="h-full overflow-y-auto p-6 bg-[#09090b]">
-            <article className="prose prose-invert prose-sm max-w-none prose-pre:bg-[#18181b] prose-pre:border prose-pre:border-[#27272a]">
+        <div className="h-full overflow-y-auto p-6 bg-white dark:bg-[#09090b] transition-colors duration-500">
+            <article className="prose dark:prose-invert prose-sm max-w-none prose-pre:bg-gray-50 dark:prose-pre:bg-[#18181b] prose-pre:border prose-pre:border-black/[0.05] dark:prose-pre:border-[#27272a] text-gray-900 dark:text-zinc-200">
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>
                     {content}
                 </ReactMarkdown>
