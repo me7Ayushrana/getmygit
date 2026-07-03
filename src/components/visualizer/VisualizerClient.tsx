@@ -24,6 +24,7 @@ import { LayoutGrid, Table as TableIcon, Search, FileCode, Star, GitFork, Eye, C
 import { Tooltip } from '@/components/ui/Tooltip';
 import { toPng } from 'html-to-image';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTheme } from 'next-themes';
 
 const nodeTypes = {
     folder: GlassNode,
@@ -68,7 +69,24 @@ export default function VisualizerClient({ data }: { data: RepoAnalysis }) {
     const [viewMode, setViewMode] = useState<'graph' | 'table' | 'galaxy' | 'intelligence' | 'timeline'>('graph');
     const [sidebarTab, setSidebarTab] = useState<'readme' | 'stats' | 'code' | 'none'>('readme');
     const [searchTerm, setSearchTerm] = useState('');
-    const [collapsedIds, setCollapsedIds] = useState<Set<string>>(new Set());
+    const [collapsedIds, setCollapsedIds] = useState<Set<string>>(() => {
+        const initial = new Set<string>();
+        if (data?.architecture?.nodes) {
+            data.architecture.nodes.forEach((node) => {
+                if (node.type === 'folder' && node.id.includes('/')) {
+                    initial.add(node.id);
+                }
+            });
+        }
+        return initial;
+    });
+
+    const { resolvedTheme } = useTheme();
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     // Code View State
     const [codeContent, setCodeContent] = useState('');
@@ -92,6 +110,18 @@ export default function VisualizerClient({ data }: { data: RepoAnalysis }) {
         const visibleNodeIds = new Set<string>();
         const rootId = 'root';
 
+        // Precompute parent map and children map to avoid O(E) searches in loops
+        const parentMap = new Map<string, string>();
+        const childrenMap = new Map<string, string[]>();
+        
+        allEdges.forEach(e => {
+            parentMap.set(e.target, e.source);
+            if (!childrenMap.has(e.source)) {
+                childrenMap.set(e.source, []);
+            }
+            childrenMap.get(e.source)!.push(e.target);
+        });
+
         // If Searching: Show matches and their ancestors
         if (searchTerm.trim()) {
             const term = searchTerm.toLowerCase();
@@ -99,13 +129,13 @@ export default function VisualizerClient({ data }: { data: RepoAnalysis }) {
 
             matches.forEach(match => {
                 visibleNodeIds.add(match.id);
-                // Add ancestors
+                // Add ancestors in O(depth) time
                 let currentId = match.id;
                 while (currentId !== rootId) {
-                    const parentEdge = allEdges.find(e => e.target === currentId);
-                    if (!parentEdge) break;
-                    visibleNodeIds.add(parentEdge.source);
-                    currentId = parentEdge.source;
+                    const parentId = parentMap.get(currentId);
+                    if (!parentId) break;
+                    visibleNodeIds.add(parentId);
+                    currentId = parentId;
                 }
             });
             // Ensure root is there
@@ -118,7 +148,7 @@ export default function VisualizerClient({ data }: { data: RepoAnalysis }) {
             while (queue.length > 0) {
                 const currentId = queue.shift()!;
                 if (!collapsedIds.has(currentId)) {
-                    const children = allEdges.filter(e => e.source === currentId).map(e => e.target);
+                    const children = childrenMap.get(currentId) || [];
                     children.forEach(childId => {
                         visibleNodeIds.add(childId);
                         queue.push(childId);
@@ -135,6 +165,7 @@ export default function VisualizerClient({ data }: { data: RepoAnalysis }) {
     // Auto Layout Effect
     useEffect(() => {
         const { filteredNodes, filteredEdges } = getVisibleGraph();
+        const parentIdsSet = new Set(data.architecture.edges.map(e => e.source));
 
         // Dagre Layout
         const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
@@ -147,7 +178,7 @@ export default function VisualizerClient({ data }: { data: RepoAnalysis }) {
                     tech: n.data?.tech,
                     path: n.data?.path,
                     collapsed: collapsedIds.has(n.id),
-                    hasChildren: data.architecture.edges.some(e => e.source === n.id)
+                    hasChildren: parentIdsSet.has(n.id)
                 }
             })),
             filteredEdges.map(e => ({
@@ -244,6 +275,16 @@ export default function VisualizerClient({ data }: { data: RepoAnalysis }) {
             console.error('Link copy error:', error);
         }
     }, []);
+
+    if (!mounted) {
+        return (
+            <div className="w-full h-[calc(100vh-136px)] flex items-center justify-center bg-white/70 dark:bg-void backdrop-blur-2xl border border-black/[0.05] dark:border-white/[0.08] rounded-xl shadow-inner transition-colors duration-500">
+                <div className="text-gray-400 dark:text-zinc-500 animate-pulse text-sm font-light">
+                    Initializing Cinematic Engine...
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="w-full h-full min-h-[700px] flex flex-col gap-4 transition-colors duration-500">
@@ -360,7 +401,7 @@ export default function VisualizerClient({ data }: { data: RepoAnalysis }) {
                                 maxZoom={2}
                                 proOptions={{ hideAttribution: true }}
                             >
-                                <Background color={document.documentElement.classList.contains('dark') ? '#27272a' : '#e2e8f0'} gap={24} size={1} />
+                                <Background color={mounted && resolvedTheme === 'dark' ? '#27272a' : '#e2e8f0'} gap={24} size={1} />
                                 <Controls className="!bg-white dark:!bg-[#18181b] !border-black/[0.05] dark:!border-[#27272a] [&>button]:!fill-gray-400 dark:[&>button]:!fill-zinc-400 [&>button:hover]:!fill-gray-900 dark:[&>button:hover]:!fill-zinc-100" />
                             </ReactFlow>
                         </div>

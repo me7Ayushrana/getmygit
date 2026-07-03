@@ -6,8 +6,29 @@ export class RepoAnalyzer {
         const edges: GraphEdge[] = [];
         const nodeMap = new Map<string, GraphNode>();
 
+        // Filter out dependency folders, lock files, built/compiled/cache/temp folders, DS_Store, etc.
+        const ignoredPatterns = [
+            /node_modules\//,
+            /^\.git\//,
+            /\.next\//,
+            /package-lock\.json$/,
+            /yarn\.lock$/,
+            /pnpm-lock\.yaml$/,
+            /dist\//,
+            /build\//,
+            /out\//,
+            /\.vercel\//,
+            /\.DS_Store$/,
+            /coverage\//,
+            /\.cache\//
+        ];
+
+        const filteredFiles = files.filter(file => {
+            return !ignoredPatterns.some(pattern => pattern.test(file.path));
+        });
+
         // 1. Identify Framework/Stack
-        const techStack = this.detectStack(files);
+        const techStack = this.detectStack(filteredFiles);
 
         // 2. Create Root Node
         const rootId = 'root';
@@ -23,7 +44,7 @@ export class RepoAnalyzer {
         nodeMap.set(rootId, rootNode);
 
         // 3. Build Graph from File Tree
-        files.forEach(file => {
+        filteredFiles.forEach(file => {
             const parts = file.path.split('/');
             let parentId = rootId;
 

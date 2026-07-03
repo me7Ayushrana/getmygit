@@ -21,7 +21,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ owne
         analysis.readme = readme;
 
         return (
-            <div className="w-full min-h-screen pt-28 px-6 pb-6">
+            <div className="w-full h-screen pt-28 px-6 pb-6 flex flex-col">
                 <VisualizerClient data={analysis} />
             </div>
         );
