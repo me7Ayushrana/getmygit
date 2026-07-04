@@ -12,12 +12,16 @@ export function ThemeToggle() {
 
     React.useEffect(() => {
         setMounted(true);
+        
+        // Return early if already dismissed or in dark mode
+        const dismissed = typeof window !== 'undefined' && localStorage.getItem('theme-toggle-dismissed') === 'true';
+        if (theme === 'dark' || dismissed) {
+            return;
+        }
+
         // Show hint after 3 seconds if in light mode and not dismissed
         const timer = setTimeout(() => {
-            const dismissed = localStorage.getItem('theme-toggle-dismissed') === 'true';
-            if (theme !== 'dark' && !dismissed) {
-                setShowHint(true);
-            }
+            setShowHint(true);
         }, 3000);
 
         return () => clearTimeout(timer);
@@ -30,10 +34,11 @@ export function ThemeToggle() {
             <AnimatePresence>
                 {showHint && theme !== 'dark' && (
                     <motion.div
-                        initial={{ opacity: 0, x: 20, scale: 0.8 }}
-                        animate={{ opacity: 1, x: 0, scale: 1 }}
-                        exit={{ opacity: 0, x: 10, scale: 0.8 }}
-                        className="absolute right-full mr-4 whitespace-nowrap px-4 py-2 bg-zinc-900 text-white text-[11px] font-medium rounded-full shadow-2xl border border-white/10 flex items-center gap-3 z-[100]"
+                        initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 8, scale: 0.95 }}
+                        transition={{ duration: 0.15, ease: "easeOut" }}
+                        className="absolute top-full mt-3 right-0 whitespace-nowrap px-4 py-2.5 bg-zinc-950 text-white text-[11px] font-medium rounded-xl shadow-2xl border border-white/10 flex items-center gap-3 z-[100] pointer-events-auto"
                     >
                         <span>Switch to Dark Mode for a cinematic experience</span>
                         <button 
@@ -41,12 +46,13 @@ export function ThemeToggle() {
                                 setShowHint(false);
                                 localStorage.setItem('theme-toggle-dismissed', 'true');
                             }}
-                            className="p-1 hover:bg-white/10 rounded-full transition-colors"
+                            className="p-1 text-zinc-400 hover:text-white hover:bg-white/10 rounded-md transition-colors flex items-center justify-center cursor-pointer"
+                            aria-label="Dismiss hint"
                         >
-                            <X size={10} />
+                            <X size={12} />
                         </button>
-                        {/* Little Arrow */}
-                        <div className="absolute top-1/2 -right-1 -translate-y-1/2 w-2 h-2 bg-zinc-900 border-r border-t border-white/10 rotate-45" />
+                        {/* Little Arrow pointing up */}
+                        <div className="absolute -top-1 right-4 w-2 h-2 bg-zinc-950 border-l border-t border-white/10 rotate-45" />
                     </motion.div>
                 )}
             </AnimatePresence>
