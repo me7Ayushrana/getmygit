@@ -1,17 +1,16 @@
 'use client';
 
 import Link from 'next/link';
-import { Github, LogOut, User, Sparkles } from 'lucide-react';
+import { Github, Sparkles } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { useAuth } from '@/context/AuthContext';
 import { ThemeToggle } from '@/components/theme/ThemeToggle';
-import { TokenSettings } from '@/components/theme/TokenSettings';
 import { Logo } from '@/components/ui/Logo';
+import { useAuth } from '@/context/AuthContext';
 
 export function Navbar() {
     const [scrolled, setScrolled] = useState(false);
-    const { user, logout } = useAuth();
+    const { user } = useAuth();
     const pathname = usePathname();
 
     const isLanding = pathname === '/';
@@ -70,7 +69,6 @@ export function Navbar() {
 
                 {/* Right Actions */}
                 <div className="flex items-center gap-3">
-                    <TokenSettings />
                     <ThemeToggle />
                     
                     <a 
@@ -81,28 +79,6 @@ export function Navbar() {
                     >
                         <Github size={15} />
                     </a>
-
-                    {user ? (
-                        <div className="flex items-center gap-2">
-                            <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-black/[0.03] dark:bg-white/[0.03] border border-black/[0.05] dark:border-white/[0.06] rounded-lg">
-                                <User size={12} className="text-emerald-600 dark:text-emerald-400" />
-                                <span className="text-[10px] font-display tracking-[0.15em] text-gray-500 dark:text-gray-400 uppercase">{user.role}</span>
-                            </div>
-                            <button
-                                onClick={logout}
-                                className="flex items-center gap-1.5 px-3 py-1.5 bg-red-500/[0.06] border border-red-500/15 hover:bg-red-500/[0.12] text-red-600 dark:text-red-400 rounded-lg text-[10px] font-display font-bold tracking-[0.15em] transition-all duration-200"
-                            >
-                                <LogOut size={11} /> EXIT
-                            </button>
-                        </div>
-                    ) : (
-                        <Link 
-                            href="/login" 
-                            className="px-5 py-2 bg-black/90 dark:bg-white/[0.06] border border-black/10 dark:border-white/[0.1] hover:bg-black dark:hover:bg-white/[0.1] text-white rounded-lg text-[11px] font-display font-bold tracking-[0.15em] transition-all duration-200 uppercase"
-                        >
-                            Sign In
-                        </Link>
-                    )}
                 </div>
             </nav>
         </div>
