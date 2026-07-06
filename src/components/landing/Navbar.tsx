@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { ThemeToggle } from '@/components/theme/ThemeToggle';
+import { TokenSettings } from '@/components/theme/TokenSettings';
 import { Logo } from '@/components/ui/Logo';
 
 export function Navbar() {
@@ -69,6 +70,7 @@ export function Navbar() {
 
                 {/* Right Actions */}
                 <div className="flex items-center gap-3">
+                    <TokenSettings />
                     <ThemeToggle />
                     
                     <a 

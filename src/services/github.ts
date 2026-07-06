@@ -2,19 +2,25 @@ import { GitHubRepo, FileTreeNode } from '@/types';
 import { RequestCache } from '@/utils/cache';
 import { Octokit } from '@octokit/rest';
 
-const getOctokit = () => {
-    const token = process.env.GITHUB_TOKEN?.trim();
+const getOctokit = (customToken?: string) => {
+    const token = customToken || process.env.GITHUB_TOKEN?.trim();
     return new Octokit({
         auth: token && token !== '' ? token : undefined,
     });
 };
 
+const getCacheKey = (prefix: string, owner: string, name: string, suffix = '', customToken?: string) => {
+    const activeToken = customToken || process.env.GITHUB_TOKEN?.trim() || '';
+    const tokenPart = activeToken ? `_t_${activeToken.substring(0, 12)}` : '';
+    return `${prefix}_${owner}_${name}${suffix ? `_${suffix}` : ''}${tokenPart}`;
+};
+
 export class GitHubService {
-    static async getRepo(owner: string, name: string): Promise<GitHubRepo> {
-        const cacheKey = `repo_${owner}_${name}`;
+    static async getRepo(owner: string, name: string, customToken?: string): Promise<GitHubRepo> {
+        const cacheKey = getCacheKey('repo', owner, name, '', customToken);
         
         return RequestCache.fetchWithCache(cacheKey, async () => {
-            const octokit = getOctokit();
+            const octokit = getOctokit(customToken);
             try {
                 const { data } = await octokit.repos.get({ owner, repo: name });
                 return {
@@ -40,11 +46,11 @@ export class GitHubService {
         });
     }
 
-    static async getFileTree(owner: string, name: string, branch: string): Promise<FileTreeNode[]> {
-        const cacheKey = `tree_${owner}_${name}_${branch}`;
+    static async getFileTree(owner: string, name: string, branch: string, customToken?: string): Promise<FileTreeNode[]> {
+        const cacheKey = getCacheKey('tree', owner, name, branch, customToken);
         
         return RequestCache.fetchWithCache(cacheKey, async () => {
-            const octokit = getOctokit();
+            const octokit = getOctokit(customToken);
             try {
                 const { data } = await octokit.git.getTree({
                     owner,
@@ -68,9 +74,9 @@ export class GitHubService {
         });
     }
 
-    static async getFileContent(owner: string, name: string, path: string): Promise<string> {
+    static async getFileContent(owner: string, name: string, path: string, customToken?: string): Promise<string> {
         try {
-            const octokit = getOctokit();
+            const octokit = getOctokit(customToken);
             const { data } = await octokit.repos.getContent({
                 owner,
                 repo: name,
@@ -84,11 +90,11 @@ export class GitHubService {
             return '';
         }
     }
-    static async getLanguages(owner: string, name: string): Promise<Record<string, number>> {
-        const cacheKey = `langs_${owner}_${name}`;
+    static async getLanguages(owner: string, name: string, customToken?: string): Promise<Record<string, number>> {
+        const cacheKey = getCacheKey('langs', owner, name, '', customToken);
         return RequestCache.fetchWithCache(cacheKey, async () => {
             try {
-                const octokit = getOctokit();
+                const octokit = getOctokit(customToken);
                 const { data } = await octokit.repos.listLanguages({ owner, repo: name });
                 return data as Record<string, number>;
             } catch (error) {
@@ -97,11 +103,11 @@ export class GitHubService {
         });
     }
 
-    static async getReadme(owner: string, name: string): Promise<string> {
-        const cacheKey = `readme_${owner}_${name}`;
+    static async getReadme(owner: string, name: string, customToken?: string): Promise<string> {
+        const cacheKey = getCacheKey('readme', owner, name, '', customToken);
         return RequestCache.fetchWithCache(cacheKey, async () => {
             try {
-                const octokit = getOctokit();
+                const octokit = getOctokit(customToken);
                 const { data } = await octokit.repos.getReadme({
                     owner,
                     repo: name,
