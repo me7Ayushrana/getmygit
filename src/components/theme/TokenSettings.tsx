@@ -179,9 +179,28 @@ export function TokenSettings() {
                             </div>
                         </form>
 
-                        <div className="mt-4 pt-4 border-t border-white/[0.05] text-[9px] text-zinc-500 flex items-center gap-1 leading-normal">
-                            <HelpCircle className="w-3 h-3 text-zinc-400 shrink-0" />
-                            <span>Classic token with <code>repo</code> scope is required.</span>
+                        <div className="mt-4 pt-4 border-t border-white/10 space-y-3">
+                            <h4 className="text-[10px] font-bold text-blue-400 uppercase tracking-widest flex items-center gap-1.5">
+                                <HelpCircle className="w-3.5 h-3.5" />
+                                How to get a token:
+                            </h4>
+                            <ol className="list-decimal list-inside text-[9px] text-zinc-400 space-y-2 leading-relaxed">
+                                <li>
+                                    Go to <a href="https://github.com/settings/tokens" target="_blank" rel="noreferrer" className="text-blue-400 hover:text-blue-300 font-semibold underline inline-flex items-center gap-0.5">GitHub Settings <span className="text-[8px] font-normal">↗</span></a>
+                                </li>
+                                <li>
+                                    Click <strong>Generate new token (classic)</strong>
+                                </li>
+                                <li>
+                                    Set a note and check the <strong><code>repo</code></strong> scope checkbox
+                                </li>
+                                <li>
+                                    Click <strong>Generate token</strong> at the bottom and copy the token
+                                </li>
+                            </ol>
+                            <div className="p-2 bg-blue-500/[0.05] border border-blue-500/10 rounded-lg text-[9px] text-zinc-400 leading-normal">
+                                <strong>How to add it:</strong> Paste the copied token in the input field above and click <strong>Save</strong>. The application will immediately reload and use your token to analyze repositories.
+                            </div>
                         </div>
                     </motion.div>
                 )}
