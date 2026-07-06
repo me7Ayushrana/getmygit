@@ -21,7 +21,7 @@ export function ContactSection() {
                     >
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 dark:via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
                         
-                        <div className="relative bg-slate-100/90 dark:bg-[#0a0814]/90 backdrop-blur-xl rounded-[23px] p-10 h-full flex flex-col items-start border border-slate-200/80 dark:border-white/5">
+                        <div className="glass-card relative rounded-3xl p-10 h-full flex flex-col items-start transition-all duration-[250ms] ease-out">
                             <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 dark:bg-emerald-500/20 flex items-center justify-center mb-8 border border-emerald-500/20">
                                 <Layout className="w-7 h-7 text-emerald-600 dark:text-emerald-400" />
                             </div>
@@ -55,7 +55,7 @@ export function ContactSection() {
                         transition={{ duration: 0.8, delay: 0.2 }}
                         className="relative group p-[1px] rounded-3xl bg-black/5 dark:bg-white/10 overflow-hidden"
                     >
-                        <div className="relative bg-slate-100/90 dark:bg-[#05030f]/80 backdrop-blur-xl rounded-[23px] p-10 h-full flex flex-col items-center text-center border border-slate-200/80 dark:border-transparent">
+                        <div className="glass-card relative rounded-3xl p-10 h-full flex flex-col items-center text-center transition-all duration-[250ms] ease-out">
                             <div className="w-14 h-14 rounded-full bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 p-1 mb-8 shadow-xl">
                                 <div className="w-full h-full rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center">
                                     <User className="w-7 h-7 text-white" />

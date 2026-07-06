@@ -14,12 +14,12 @@ export function AccordionItem({ title, children, defaultOpen = false }: Accordio
     const [isOpen, setIsOpen] = useState(defaultOpen);
 
     return (
-        <div className="border-b border-white/5 last:border-none">
+        <div className="border-b border-black/[0.06] dark:border-white/5 last:border-none">
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-full flex items-center justify-between py-6 text-left hover:text-purple-400 transition-colors group"
+                className="w-full flex items-center justify-between py-6 text-left hover:text-purple-600 dark:hover:text-purple-400 transition-colors group"
             >
-                <span className="text-lg font-medium text-white group-hover:text-purple-400">{title}</span>
+                <span className="text-lg font-medium text-gray-900 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-400">{title}</span>
                 {isOpen ? <ChevronUp size={20} className="text-gray-500" /> : <ChevronDown size={20} className="text-gray-500" />}
             </button>
             <AnimatePresence>
@@ -30,7 +30,7 @@ export function AccordionItem({ title, children, defaultOpen = false }: Accordio
                         exit={{ height: 0, opacity: 0 }}
                         className="overflow-hidden"
                     >
-                        <div className="pb-6 text-gray-400 leading-relaxed">
+                        <div className="pb-6 text-gray-500 dark:text-gray-400 leading-relaxed">
                             {children}
                         </div>
                     </motion.div>

@@ -21,15 +21,15 @@ export default function DashboardPage() {
     const [activeTab, setActiveTab] = useState<'overview' | 'prs' | 'admin'>('overview');
 
     return (
-        <div className="flex h-screen bg-void text-zinc-200 overflow-hidden font-sans">
+        <div className="flex h-screen bg-[#fafafa] dark:bg-void text-gray-900 dark:text-zinc-200 overflow-hidden font-sans transition-colors duration-500">
             
             {/* Sidebar */}
-            <aside className="w-20 lg:w-64 border-r border-white/5 bg-zinc-900/20 backdrop-blur-3xl flex flex-col items-center lg:items-stretch py-6 transition-all duration-300 z-20">
+            <aside className="w-20 lg:w-64 border-r border-black/[0.06] dark:border-white/5 bg-[#F8F9FB] dark:bg-zinc-900/20 backdrop-blur-3xl flex flex-col items-center lg:items-stretch py-6 transition-all duration-300 z-20">
                 <div className="px-4 mb-10 flex justify-center lg:justify-start items-center gap-3">
                     <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center">
                         <FolderGit2 className="text-primary" size={20} />
                     </div>
-                    <span className="font-bold text-xl hidden lg:block tracking-tight">GetMyGit</span>
+                    <span className="font-bold text-xl hidden lg:block tracking-tight text-gray-900 dark:text-white">GetMyGit</span>
                 </div>
 
                 <nav className="flex-1 px-4 space-y-2 w-full">
@@ -53,22 +53,22 @@ export default function DashboardPage() {
                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[150px] -z-10 pointer-events-none" />
 
                 {/* Top Navbar */}
-                <header className="h-20 border-b border-white/5 px-8 flex items-center justify-between bg-zinc-900/10 backdrop-blur-md">
+                <header className="h-20 border-b border-black/[0.06] dark:border-white/5 px-8 flex items-center justify-between bg-white/20 dark:bg-zinc-900/10 backdrop-blur-md">
                     <div className="relative w-64 lg:w-96">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" size={16} />
                         <input 
                             type="text" 
                             placeholder="Search repositories, PRs..." 
-                            className="w-full bg-black/40 border border-white/10 rounded-full pl-10 pr-4 py-2 text-sm focus:outline-none focus:border-primary/50 transition-colors placeholder:text-zinc-600"
+                            className="w-full bg-white/50 dark:bg-black/40 border border-black/[0.08] dark:border-white/10 text-gray-900 dark:text-white rounded-full pl-10 pr-4 py-2 text-sm focus:outline-none focus:border-primary/50 transition-colors placeholder:text-zinc-500 dark:placeholder:text-zinc-600"
                         />
                     </div>
                     <div className="flex items-center gap-4">
-                        <button className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-zinc-400 hover:text-white transition-colors relative">
+                        <button className="w-10 h-10 rounded-full bg-black/[0.03] dark:bg-white/5 border border-black/[0.06] dark:border-white/10 flex items-center justify-center text-gray-500 dark:text-zinc-400 hover:text-gray-900 dark:hover:text-white transition-colors relative">
                             <Bell size={18} />
                             <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-primary animate-pulse" />
                         </button>
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-primary/20 to-blue-500/20 border border-white/10 flex items-center justify-center cursor-pointer">
-                            <User size={18} className="text-white" />
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-primary/20 to-blue-500/20 border border-black/[0.06] dark:border-white/10 flex items-center justify-center cursor-pointer">
+                            <User size={18} className="text-gray-700 dark:text-white" />
                         </div>
                     </div>
                 </header>
@@ -88,11 +88,11 @@ function SidebarItem({ icon: Icon, label, active, onClick }: any) {
     return (
         <button 
             onClick={onClick}
-            className={`w-full flex items-center justify-center lg:justify-start gap-3 p-3 rounded-xl transition-all group ${
-                active ? 'bg-primary/10 text-primary border border-primary/20 shadow-[0_0_15px_rgba(139,255,77,0.05)]' : 'text-zinc-400 hover:bg-white/5 hover:text-white border border-transparent'
+            className={`w-full flex items-center justify-center lg:justify-start gap-3 p-3 rounded-xl transition-all group border ${
+                active ? 'bg-primary/10 text-primary border-primary/20 shadow-[0_0_15px_rgba(225,29,72,0.05)]' : 'text-gray-500 dark:text-zinc-400 hover:bg-black/[0.03] dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white border border-transparent'
             }`}
         >
-            <Icon size={20} className={active ? 'text-primary' : 'text-zinc-500 group-hover:text-white transition-colors'} />
+            <Icon size={20} className={active ? 'text-primary' : 'text-zinc-500 group-hover:text-gray-900 dark:group-hover:text-white transition-colors'} />
             <span className={`hidden lg:block text-sm font-medium ${active ? 'text-primary' : ''}`}>{label}</span>
         </button>
     );
@@ -101,7 +101,7 @@ function SidebarItem({ icon: Icon, label, active, onClick }: any) {
 function OverviewTab() {
     return (
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-8">
-            <h1 className="text-2xl font-bold tracking-tight">Repository Intelligence</h1>
+            <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Repository Intelligence</h1>
             
             {/* Stats */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -111,15 +111,15 @@ function OverviewTab() {
             </div>
 
             {/* Architecture Preview (Mock) */}
-            <div className="glass-card rounded-3xl p-8 border border-white/5 bg-zinc-900/30">
+            <div className="glass-card rounded-3xl p-8 transition-all duration-[250ms] ease-out">
                 <div className="flex justify-between items-center mb-6">
-                    <h2 className="font-bold text-lg">Architecture Visualization</h2>
-                    <span className="px-3 py-1 bg-white/5 rounded-full text-xs text-zinc-400 border border-white/10">frontend-core</span>
+                    <h2 className="font-bold text-lg text-gray-900 dark:text-white">Architecture Visualization</h2>
+                    <span className="px-3 py-1 bg-black/[0.03] dark:bg-white/5 rounded-full text-xs text-gray-500 dark:text-zinc-400 border border-black/[0.06] dark:border-white/10">frontend-core</span>
                 </div>
-                <div className="h-64 w-full rounded-2xl bg-black/40 border border-white/5 flex items-center justify-center overflow-hidden relative group">
-                    <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:2rem_2rem]" />
+                <div className="h-64 w-full rounded-2xl bg-black/[0.02] dark:bg-black/40 border border-black/[0.06] dark:border-white/5 flex items-center justify-center overflow-hidden relative group">
+                    <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:2rem_2rem]" />
                     <div className="text-center z-10">
-                        <FolderGit2 size={48} className="text-zinc-600 mx-auto mb-4 group-hover:text-primary transition-colors duration-500" />
+                        <FolderGit2 size={48} className="text-zinc-400 dark:text-zinc-600 mx-auto mb-4 group-hover:text-primary transition-colors duration-500" />
                         <p className="text-zinc-500 text-sm">Interactive tree rendering...</p>
                     </div>
                 </div>
@@ -133,7 +133,7 @@ function PRIntelligenceTab() {
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-8">
              <div className="flex justify-between items-end mb-8">
                 <div>
-                    <h1 className="text-2xl font-bold tracking-tight mb-2">PR Intelligence</h1>
+                    <h1 className="text-2xl font-bold tracking-tight mb-2 text-gray-900 dark:text-white">PR Intelligence</h1>
                     <p className="text-zinc-500 text-sm">Automated risk scoring and impact analysis.</p>
                 </div>
                 <button className="glass-button px-6 py-2 rounded-xl text-sm border-primary/30 hover:border-primary/50 hover:bg-primary/10 text-primary">
@@ -143,7 +143,7 @@ function PRIntelligenceTab() {
 
             <div className="grid gap-4">
                 {mockPrs.map(pr => (
-                    <div key={pr.id} className="glass-card p-6 rounded-2xl flex items-center justify-between group hover:border-white/20 transition-all cursor-pointer">
+                    <div key={pr.id} className="glass-card p-6 rounded-2xl flex items-center justify-between group cursor-pointer transition-all duration-[250ms] ease-out">
                         <div className="flex items-start gap-4">
                             <div className="mt-1">
                                 {pr.status === 'APPROVED' ? (
@@ -153,12 +153,12 @@ function PRIntelligenceTab() {
                                 )}
                             </div>
                             <div>
-                                <h3 className="text-base font-bold text-white group-hover:text-primary transition-colors">{pr.title}</h3>
-                                <div className="flex items-center gap-3 mt-2 text-xs text-zinc-500 font-medium">
+                                <h3 className="text-base font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors">{pr.title}</h3>
+                                <div className="flex items-center gap-3 mt-2 text-xs text-zinc-500 font-medium font-sans">
                                     <span className="flex items-center gap-1"><User size={12}/> {pr.author}</span>
                                     <span>•</span>
-                                    <span className="flex items-center gap-1 text-green-400"><span className="text-green-500 font-mono">+{pr.additions}</span></span>
-                                    <span className="flex items-center gap-1 text-red-400"><span className="text-red-500 font-mono">-{pr.deletions}</span></span>
+                                    <span className="flex items-center gap-1 text-green-500 font-mono">+{pr.additions}</span>
+                                    <span className="flex items-center gap-1 text-red-500 font-mono">-{pr.deletions}</span>
                                     <span>•</span>
                                     <span className="flex items-center gap-1"><Clock size={12}/> {pr.time}</span>
                                 </div>
@@ -172,7 +172,7 @@ function PRIntelligenceTab() {
                                     {pr.riskScore}/100
                                 </div>
                             </div>
-                            <div className="w-px h-10 bg-white/10" />
+                            <div className="w-px h-10 bg-black/[0.08] dark:bg-white/10" />
                             <div className={`px-3 py-1 text-xs font-bold rounded-full border ${pr.status === 'APPROVED' ? 'bg-green-500/10 border-green-500/20 text-green-500' : 'bg-orange-500/10 border-orange-500/20 text-orange-500'}`}>
                                 {pr.status}
                             </div>
@@ -187,10 +187,10 @@ function PRIntelligenceTab() {
 function AdminTab() {
     return (
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-8">
-            <h1 className="text-2xl font-bold tracking-tight">Admin Portal</h1>
-            <div className="glass-card rounded-3xl border border-white/5 bg-zinc-900/30 p-8 flex flex-col items-center justify-center h-96 text-center">
-                <ShieldAlert size={48} className="text-zinc-600 mb-4" />
-                <h3 className="text-lg font-bold mb-2">Governance Controls</h3>
+            <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Admin Portal</h1>
+            <div className="glass-card rounded-3xl p-8 flex flex-col items-center justify-center h-96 text-center transition-all duration-[250ms] ease-out">
+                <ShieldAlert size={48} className="text-zinc-500 dark:text-zinc-600 mb-4" />
+                <h3 className="text-lg font-bold mb-2 text-gray-900 dark:text-white">Governance Controls</h3>
                 <p className="text-zinc-500 text-sm max-w-md">Global tracking, reviewer assignments, and audit logs are accessible here for platform administrators.</p>
             </div>
         </motion.div>
@@ -199,15 +199,15 @@ function AdminTab() {
 
 function StatCard({ title, value, icon: Icon, trend }: any) {
     return (
-        <div className="glass-card p-6 rounded-3xl flex flex-col gap-4">
+        <div className="glass-card p-6 rounded-3xl flex flex-col gap-4 transition-all duration-[250ms] ease-out">
             <div className="flex justify-between items-start">
-                <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-zinc-400">
+                <div className="w-10 h-10 rounded-xl bg-black/[0.03] dark:bg-white/5 border border-black/[0.06] dark:border-white/10 flex items-center justify-center text-gray-500 dark:text-zinc-400">
                     <Icon size={20} />
                 </div>
-                <span className="text-xs font-medium text-zinc-500 bg-white/5 px-2 py-1 rounded-full border border-white/5">{trend}</span>
+                <span className="text-xs font-medium text-gray-500 dark:text-zinc-500 bg-black/[0.03] dark:bg-white/5 px-2 py-1 rounded-full border border-black/[0.06] dark:border-white/5">{trend}</span>
             </div>
             <div>
-                <div className="text-3xl font-bold tracking-tight mb-1">{value}</div>
+                <div className="text-3xl font-bold tracking-tight mb-1 text-gray-900 dark:text-white">{value}</div>
                 <div className="text-sm text-zinc-500 font-medium">{title}</div>
             </div>
         </div>

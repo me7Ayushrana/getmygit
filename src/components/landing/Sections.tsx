@@ -109,7 +109,7 @@ export function StorySection() {
                             initial={{ opacity: 0, scale: 0.95, y: 20 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                            className="relative bg-white dark:bg-[#0a0a0a] border border-black/10 dark:border-white/10 p-12 max-w-2xl rounded-[2rem] shadow-2xl overflow-hidden"
+                            className="glass-card relative p-12 max-w-2xl rounded-[2rem] overflow-hidden transition-all duration-[250ms] ease-out"
                         >
                             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 via-blue-500 to-green-500" />
 
@@ -154,15 +154,10 @@ function ManifestoCard({ title, number, desc, accent, delay }: { title: string, 
                 hidden: { opacity: 0, y: 30 },
                 show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
             }}
-            whileHover={{ scale: 1.03, y: -8 }}
-            className="group relative p-[1px] rounded-2xl overflow-hidden h-full"
+            className="relative rounded-2xl h-full"
         >
-            {/* Animated Rotating Gradient Border */}
-            <div className={`absolute inset-0 bg-gradient-to-r ${gradientColors} opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-2xl animate-[spin_4s_linear_infinite]`} style={{ backgroundSize: '200% 200%' }} />
-            <div className="absolute inset-0 bg-gradient-to-br from-black/[0.05] dark:from-white/[0.08] to-transparent opacity-30 rounded-2xl" />
-
             {/* Card Inner */}
-            <div className="relative h-full bg-slate-100/90 dark:bg-[#0a0a10]/90 backdrop-blur-2xl rounded-2xl p-8 overflow-hidden border border-slate-200/80 dark:border-white/[0.06] shadow-xl dark:shadow-none transition-colors duration-500">
+            <div className="glass-card relative h-full rounded-2xl p-8 overflow-hidden transition-all duration-[250ms] ease-out">
                 
                 {/* Ambient Glow */}
                 <motion.div
@@ -317,17 +312,10 @@ function PersonaCard({ role, desc, accent, icon: Icon }: { role: string, desc: s
                 hidden: { opacity: 0, y: 40 },
                 show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } }
             }}
-            whileHover={{ y: -12, scale: 1.02 }}
-            className="group relative rounded-3xl overflow-hidden h-full"
+            className="relative rounded-3xl h-full"
         >
-            {/* Outer glow on hover */}
-            <div 
-                className="absolute -inset-2 rounded-3xl opacity-0 group-hover:opacity-100 blur-2xl transition-opacity duration-700 pointer-events-none"
-                style={{ background: `radial-gradient(circle at center, ${a.glow}, transparent 70%)` }}
-            />
-
             {/* Glassmorphism Card */}
-            <div className="relative h-full bg-slate-100/90 dark:bg-white/[0.07] backdrop-blur-2xl border border-slate-200 dark:border-white/[0.12] rounded-3xl p-8 flex flex-col items-center text-center shadow-2xl dark:shadow-[0_4px_24px_rgba(0,0,0,0.2)] group-hover:border-slate-300 dark:group-hover:border-white/20 transition-all duration-500">
+            <div className="glass-card relative h-full rounded-3xl p-8 flex flex-col items-center text-center transition-all duration-[250ms] ease-out">
                 
                 {/* Shimmer sweep */}
                 <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-transparent via-black/[0.02] dark:via-white/[0.05] to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-[2s] ease-in-out pointer-events-none" />
@@ -485,18 +473,12 @@ function FutureCard({ icon: Icon, title, desc, status, accent, glowColor }: {
                 hidden: { opacity: 0, y: 40 },
                 show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } },
             }}
-            whileHover={{ y: -6 }}
-            className="group relative rounded-2xl overflow-hidden shadow-xl dark:shadow-none"
+            className="relative rounded-2xl h-full"
         >
-            <div
-                className="absolute -inset-1 rounded-2xl opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-700"
-                style={{ background: `radial-gradient(circle at center, ${glowColor}, transparent 70%)` }}
-            />
-
-            <div className="relative bg-slate-100/90 dark:bg-[#0a0a0f]/80 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-2xl p-8 h-full transition-all duration-500 group-hover:border-slate-300 dark:group-hover:border-white/20">
+            <div className="glass-card relative rounded-2xl p-8 h-full transition-all duration-[250ms] ease-out">
                 <div className="flex items-start justify-between mb-6 relative z-10">
                     <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${accent} p-[1px] shadow-lg`}>
-                        <div className="w-full h-full rounded-[11px] bg-white dark:bg-[#0a0a0f] flex items-center justify-center">
+                        <div className="w-full h-full rounded-[11px] bg-slate-50 dark:bg-[#0a0a0f] flex items-center justify-center">
                             <Icon className="w-5 h-5 text-gray-900 dark:text-white/80" />
                         </div>
                     </div>

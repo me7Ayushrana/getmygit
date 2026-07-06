@@ -65,10 +65,10 @@ const features = [
 
 export default function FuturePage() {
     return (
-        <div className="min-h-screen bg-[#020008] text-zinc-200 relative overflow-hidden">
+        <div className="min-h-screen bg-[#fafafa] dark:bg-[#020008] text-gray-900 dark:text-zinc-200 transition-colors duration-500 relative overflow-hidden">
             {/* Background layers */}
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(120,50,255,0.12),transparent)]" />
-            <div className="absolute inset-0 bg-[radial-gradient(#ffffff03_1px,transparent_1px)] [background-size:32px_32px]" />
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(120,50,255,0.06),transparent)] dark:bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(120,50,255,0.12),transparent)]" />
+            <div className="absolute inset-0 bg-[radial-gradient(rgba(0,0,0,0.03)_1px,transparent_1px)] dark:bg-[radial-gradient(#ffffff03_1px,transparent_1px)] [background-size:32px_32px]" />
 
             {/* Floating Orbs */}
             {[...Array(6)].map((_, i) => (
@@ -99,16 +99,16 @@ export default function FuturePage() {
             ))}
 
             {/* Navigation */}
-            <nav className="relative z-20 border-b border-white/5 bg-[#020008]/80 backdrop-blur-xl">
+            <nav className="relative z-20 border-b border-black/[0.06] dark:border-white/5 bg-[#fafafa]/80 dark:bg-[#020008]/80 backdrop-blur-xl">
                 <div className="container max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
                     <Link
                         href="/"
-                        className="flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors group"
+                        className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors group"
                     >
                         <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
                         Back to Home
                     </Link>
-                    <div className="text-xs font-mono text-gray-600 uppercase tracking-widest">
+                    <div className="text-xs font-mono text-gray-400 dark:text-gray-600 uppercase tracking-widest">
                         GetMyGit Roadmap
                     </div>
                 </div>
@@ -121,7 +121,7 @@ export default function FuturePage() {
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.6 }}
-                        className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-gray-400 mb-8 uppercase tracking-widest"
+                        className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/[0.03] dark:bg-white/5 border border-black/[0.06] dark:border-white/10 text-xs font-mono text-gray-500 dark:text-gray-400 mb-8 uppercase tracking-widest"
                     >
                         <Zap className="w-3 h-3 text-yellow-400 animate-pulse" />
                         Future Roadmap
@@ -131,11 +131,11 @@ export default function FuturePage() {
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                        className="text-5xl md:text-6xl lg:text-7xl font-display font-bold text-white mb-6 tracking-tight"
+                        className="text-5xl md:text-6xl lg:text-7xl font-display font-bold text-gray-900 dark:text-white mb-6 tracking-tight"
                     >
                         THE{' '}
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 animate-[gradient-shift_3s_ease_infinite] bg-[length:200%_200%]">
-                            FUTURE
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-500 dark:from-purple-400 dark:to-cyan-400">
+                            ROADMAP
                         </span>
                     </motion.h1>
 
@@ -143,7 +143,7 @@ export default function FuturePage() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.2 }}
-                        className="text-gray-400 max-w-2xl mx-auto text-lg font-light leading-relaxed"
+                        className="text-gray-500 dark:text-gray-400 max-w-2xl mx-auto text-lg font-light leading-relaxed"
                     >
                         Where we&apos;re headed next. These are the features on our roadmap to transform GetMyGit into the ultimate developer intelligence platform.
                     </motion.p>
@@ -174,12 +174,12 @@ export default function FuturePage() {
                     transition={{ duration: 0.8, delay: 1 }}
                     className="text-center pb-12"
                 >
-                    <p className="text-sm text-gray-500 font-mono tracking-wider uppercase mb-8">
+                    <p className="text-sm text-gray-400 dark:text-gray-500 font-mono tracking-wider uppercase mb-8">
                         More features coming soon — stay tuned
                     </p>
                     <Link
                         href="/"
-                        className="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-300 text-sm text-gray-300 hover:text-white font-medium"
+                        className="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-black/[0.03] dark:bg-white/5 border border-black/[0.06] dark:border-white/10 hover:bg-black/[0.06] dark:hover:bg-white/10 transition-all duration-300 text-sm text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white font-medium"
                     >
                         <ArrowLeft className="w-4 h-4" />
                         Return to Explorer
@@ -199,49 +199,42 @@ function FutureCard({ icon: Icon, title, desc, status, accent, glowColor, detail
                 hidden: { opacity: 0, y: 40 },
                 show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } },
             }}
-            whileHover={{ y: -6 }}
-            className="group relative rounded-2xl overflow-hidden"
+            className="relative rounded-3xl h-full"
         >
-            {/* Glow */}
-            <div
-                className="absolute -inset-1 rounded-2xl opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-700"
-                style={{ background: `radial-gradient(circle at center, ${glowColor}, transparent 70%)` }}
-            />
-
             {/* Card Body */}
-            <div className="relative bg-[#0a0a0f]/80 backdrop-blur-xl border border-white/8 rounded-2xl p-8 h-full transition-all duration-500 group-hover:border-white/20">
+            <div className="glass-card relative rounded-3xl p-8 h-full transition-all duration-[250ms] ease-out">
                 {/* Shimmer */}
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-transparent via-white/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+                <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-transparent via-white/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
 
                 {/* Top Row */}
                 <div className="flex items-start justify-between mb-6 relative z-10">
                     <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${accent} p-[1px] shadow-lg`}>
-                        <div className="w-full h-full rounded-[11px] bg-[#0a0a0f] flex items-center justify-center">
-                            <Icon className="w-5 h-5 text-white/80" />
+                        <div className="w-full h-full rounded-[11px] bg-slate-50 dark:bg-[#0a0a0f] flex items-center justify-center">
+                            <Icon className="w-5 h-5 text-gray-700 dark:text-white/80" />
                         </div>
                     </div>
 
                     <span className={`text-[10px] font-mono font-bold uppercase tracking-widest px-3 py-1 rounded-full border ${
                         status === 'Planned'
-                            ? 'border-emerald-500/30 text-emerald-400 bg-emerald-500/5'
-                            : 'border-amber-500/30 text-amber-400 bg-amber-500/5'
+                            ? 'border-emerald-500/30 text-emerald-600 dark:text-emerald-400 bg-emerald-500/5'
+                            : 'border-amber-500/30 text-amber-600 dark:text-amber-400 bg-amber-500/5'
                     }`}>
                         {status}
                     </span>
                 </div>
 
                 {/* Content */}
-                <h3 className="text-xl font-display font-bold text-white mb-3 relative z-10">
+                <h3 className="text-xl font-display font-bold text-gray-900 dark:text-white mb-3 relative z-10">
                     {title}
                 </h3>
-                <p className="text-gray-400 text-sm leading-relaxed font-light mb-6 relative z-10">
+                <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed font-light mb-6 relative z-10">
                     {desc}
                 </p>
 
                 {/* Feature Bullets */}
                 <ul className="space-y-2 relative z-10">
                     {details.map((detail, i) => (
-                        <li key={i} className="flex items-center gap-2 text-xs text-gray-500 group-hover:text-gray-400 transition-colors">
+                        <li key={i} className="flex items-center gap-2 text-xs text-gray-400 dark:text-gray-500 group-hover:text-gray-600 dark:group-hover:text-gray-400 transition-colors">
                             <div className={`w-1 h-1 rounded-full bg-gradient-to-r ${accent} shrink-0`} />
                             {detail}
                         </li>

@@ -67,7 +67,7 @@ export function AnalysisErrorView({ owner, repo, errorMessage }: AnalysisErrorVi
                 </a>
 
                 {/* Error Card */}
-                <div className="bg-white/80 dark:bg-panel backdrop-blur-xl border border-red-500/10 dark:border-red-500/20 rounded-2xl p-6 md:p-8 shadow-2xl mb-6 relative overflow-hidden">
+                <div className="glass-card rounded-3xl p-6 md:p-8 relative overflow-hidden mb-6 border-red-500/20 dark:border-red-500/30 transition-all duration-[250ms] ease-out">
                     <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-red-500/50 to-rose-600/50" />
                     
                     <div className="flex items-start gap-4">
@@ -89,7 +89,7 @@ export function AnalysisErrorView({ owner, repo, errorMessage }: AnalysisErrorVi
                 </div>
 
                 {/* GitHub Token Form */}
-                <div className="glass-card rounded-2xl p-6 md:p-8 relative">
+                <div className="glass-card rounded-3xl p-6 md:p-8 relative transition-all duration-[250ms] ease-out">
                     <h3 className="text-md font-semibold text-gray-900 dark:text-zinc-100 flex items-center gap-2 mb-3">
                         <Key className="w-4 h-4 text-blue-500 dark:text-blue-400" />
                         Supply Personal Access Token (PAT)

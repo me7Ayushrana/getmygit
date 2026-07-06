@@ -92,7 +92,7 @@ export const StatsPanel = ({ languages, repo }: StatsPanelProps) => {
 
 const StatCard = ({ icon: Icon, label, value, tooltip }: any) => (
     <Tooltip text={tooltip} position="bottom">
-        <div className="bg-gray-50 dark:bg-[#18181b] border border-black/[0.05] dark:border-[#27272a] p-3 rounded-lg flex flex-col items-center justify-center text-center transition-colors hover:border-blue-500/30">
+        <div className="glass-card p-3 rounded-2xl flex flex-col items-center justify-center text-center transition-all duration-[250ms] ease-out">
             <Icon size={16} className="text-gray-400 dark:text-zinc-400 mb-1" />
             <span className="text-lg font-bold text-gray-900 dark:text-zinc-100">{value}</span>
             <span className="text-[10px] text-gray-400 dark:text-zinc-500 uppercase tracking-wider">{label}</span>
