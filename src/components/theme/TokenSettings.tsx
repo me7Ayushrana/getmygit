@@ -73,20 +73,26 @@ export function TokenSettings() {
             <button
                 onClick={() => setIsOpen(!isOpen)}
                 className={`
-                    relative w-10 h-10 flex items-center justify-center rounded-xl transition-all duration-300 group shadow-[0_2px_10px_rgba(0,0,0,0.05)] dark:shadow-none cursor-pointer
+                    relative px-4 h-9 flex items-center gap-2 rounded-xl transition-all duration-300 group shadow-[0_2px_10px_rgba(0,0,0,0.05)] dark:shadow-none cursor-pointer border text-xs font-semibold uppercase tracking-wider
                     ${isOpen || hasToken
-                        ? 'bg-blue-500/10 border-blue-500/30 text-blue-600 dark:text-blue-400 border'
-                        : 'bg-white dark:bg-white/[0.03] border border-black/[0.1] dark:border-white/[0.1] text-zinc-400 hover:text-gray-900 dark:hover:text-white'
+                        ? 'bg-gradient-to-r from-blue-500/10 to-indigo-500/10 border-blue-500/40 text-blue-600 dark:text-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.12)]'
+                        : 'bg-white dark:bg-white/[0.03] border-black/[0.1] dark:border-white/[0.1] text-zinc-500 dark:text-zinc-400 hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-500/30'
                     }
                 `}
                 aria-label="GitHub Token Settings"
                 title="GitHub Token Settings"
             >
-                <Key size={16} className="group-hover:rotate-12 transition-transform duration-300" />
+                <Key size={14} className="group-hover:rotate-12 transition-transform duration-300" />
+                <span>GitHub Token</span>
                 
                 {/* Active Indicator Dot */}
-                {hasToken && (
-                    <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-emerald-500 border-2 border-white dark:border-[#0a0814] rounded-full animate-pulse" />
+                {hasToken ? (
+                    <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full" />
+                ) : (
+                    <span className="relative flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                    </span>
                 )}
             </button>
 

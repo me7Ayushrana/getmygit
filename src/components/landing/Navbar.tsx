@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Github, Sparkles } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { ThemeToggle } from '@/components/theme/ThemeToggle';
@@ -72,15 +72,6 @@ export function Navbar() {
                 <div className="flex items-center gap-3">
                     <TokenSettings />
                     <ThemeToggle />
-                    
-                    <a 
-                        href="https://github.com/me7Ayushrana/getmygit" 
-                        target="_blank" 
-                        rel="noreferrer" 
-                        className="w-8 h-8 flex items-center justify-center rounded-lg bg-black/[0.03] dark:bg-white/[0.03] border border-black/10 dark:border-white/[0.06] hover:bg-black/5 dark:hover:bg-white/[0.08] hover:border-black/20 dark:hover:border-white/[0.12] text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all duration-200"
-                    >
-                        <Github size={15} />
-                    </a>
                 </div>
             </nav>
         </div>
