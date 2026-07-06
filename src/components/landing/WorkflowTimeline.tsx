@@ -131,7 +131,7 @@ export function WorkflowTimeline() {
                                         <div className="absolute inset-0 bg-gradient-to-br from-black/[0.05] dark:from-white/[0.08] to-transparent rounded-2xl" />
 
                                         <motion.div 
-                                            className="relative w-full h-full rounded-[15px] bg-white dark:bg-[#0a0814]/90 backdrop-blur-xl flex items-center justify-center overflow-hidden border border-black/[0.05] dark:border-none"
+                                            className="relative w-full h-full rounded-[15px] bg-slate-100/90 dark:bg-[#0a0814]/90 backdrop-blur-xl flex items-center justify-center overflow-hidden border border-slate-200 dark:border-none"
                                             animate={{ rotate: [0, 1.5, -1.5, 0] }}
                                             transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: idx * 0.3 }}
                                         >
@@ -154,7 +154,7 @@ export function WorkflowTimeline() {
 
                                     {/* Step number badge */}
                                     <motion.div
-                                        className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-md bg-white dark:bg-white/[0.08] border border-black/10 dark:border-white/[0.12] flex items-center justify-center z-20 backdrop-blur-md shadow-sm"
+                                        className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-md bg-slate-100 dark:bg-white/[0.08] border border-slate-200 dark:border-white/[0.12] flex items-center justify-center z-20 backdrop-blur-md shadow-sm"
                                         animate={{ opacity: [0.5, 1, 0.5] }}
                                         transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut", delay: idx * 0.3 }}
                                     >

@@ -20,7 +20,7 @@ export function FutureCTA() {
                     className="relative"
                 >
                     {/* Glassmorphism Card */}
-                    <div className="relative bg-white/80 dark:bg-white/[0.03] backdrop-blur-xl border border-black/[0.05] dark:border-white/10 rounded-[2.5rem] p-12 md:p-16 overflow-hidden group hover:border-black/[0.1] dark:hover:border-white/20 transition-all duration-700 shadow-2xl dark:shadow-none">
+                    <div className="relative bg-slate-100/90 dark:bg-white/[0.03] backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-[2.5rem] p-12 md:p-16 overflow-hidden group hover:border-slate-300 dark:hover:border-white/20 transition-all duration-700 shadow-2xl dark:shadow-none">
                         {/* Shimmer sweep */}
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-black/[0.01] dark:via-white/[0.04] to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1500" />
                         

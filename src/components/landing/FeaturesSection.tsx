@@ -100,7 +100,7 @@ function FeatureCard({ feature, idx }: { feature: any, idx: number }) {
                 rotateY: isHovered ? rotateY : 0,
                 transformStyle: 'preserve-3d',
             }}
-            className="group relative p-8 rounded-[2.5rem] bg-white dark:bg-white/[0.03] border border-black/[0.05] dark:border-white/10 transition-all duration-500 shadow-sm hover:shadow-2xl dark:shadow-none overflow-hidden cursor-default"
+            className="group relative p-8 rounded-[2.5rem] bg-slate-100/90 dark:bg-white/[0.03] border border-slate-200 dark:border-white/10 transition-all duration-500 shadow-sm hover:shadow-2xl dark:shadow-none overflow-hidden cursor-default"
         >
             {/* Spotlight Glow Effect */}
             <motion.div 

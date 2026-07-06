@@ -44,7 +44,7 @@ export function TrendingFeed() {
                         <div
                             key={idx}
                             onClick={() => router.push(`/${repo.name}`)}
-                            className="inline-flex items-center gap-6 px-6 py-3 rounded-2xl border border-black/[0.05] dark:border-white/10 bg-white dark:bg-white/5 hover:bg-black/[0.02] dark:hover:bg-white/10 transition-all cursor-pointer group/card shrink-0 shadow-sm dark:shadow-none"
+                            className="inline-flex items-center gap-6 px-6 py-3 rounded-2xl border border-slate-200 dark:border-white/10 bg-slate-100/90 dark:bg-white/5 hover:bg-slate-200/50 dark:hover:bg-white/10 transition-all cursor-pointer group/card shrink-0 shadow-sm dark:shadow-none"
                         >
                             <span className={`font-mono font-bold text-sm ${repo.color}`}>{repo.name}</span>
                             <div className="flex items-center gap-4 text-[11px] text-gray-500 dark:text-zinc-500 uppercase tracking-wider font-medium">
